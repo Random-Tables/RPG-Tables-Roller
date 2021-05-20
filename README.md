@@ -10,7 +10,7 @@ Lightweight Desktop application start
 
 - Linux Mint (Kernel: 5.4.0-37-generic x86_64 bits: 64 compiler: gcc v: 7.5.0
   Desktop: Cinnamon 4.4.8 wm: muffin dm: LightDM Distro: Linux Mint 19.3 Tricia
-  base: Ubuntu 18.04 bionic)
+  base: Ubuntu 18.04 bionic) [Broken - Fixed PR'd awaiting release]
 
 ## Developing
 
