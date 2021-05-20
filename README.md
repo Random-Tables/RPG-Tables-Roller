@@ -1,20 +1,16 @@
-# create-svelte
+# SveltKit + Tauri
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+Lightweight Desktop application start
 
-## Creating a project
+## Tauri Setup
 
-If you're seeing this, you've probably already done this step. Congrats!
+[Follow the setup guide for your OS](https://tauri.studio/en/docs/getting-started/intro)
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+## Testing & working Applications
 
-# create a new project in my-app
-npm init svelte@next my-app
-```
-
-> Note: the `@next` is temporary
+- Linux Mint (Kernel: 5.4.0-37-generic x86_64 bits: 64 compiler: gcc v: 7.5.0
+  Desktop: Cinnamon 4.4.8 wm: muffin dm: LightDM Distro: Linux Mint 19.3 Tricia
+  base: Ubuntu 18.04 bionic)
 
 ## Developing
 
