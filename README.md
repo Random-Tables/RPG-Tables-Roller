@@ -11,6 +11,8 @@ Lightweight Desktop application start
 - Linux Mint (Kernel: 5.4.0-37-generic x86_64 bits: 64 compiler: gcc v: 7.5.0
   Desktop: Cinnamon 4.4.8 wm: muffin dm: LightDM Distro: Linux Mint 19.3 Tricia
   base: Ubuntu 18.04 bionic) [Broken - Fixed PR'd awaiting release]
+- Edition	Windows 10 Pro, Version	20H2, OS build	19042.685, Experience	Windows Feature Experience Pack 120.2212.551.0
+
 
 ## Developing
 
@@ -32,3 +34,7 @@ npm run build
 ```
 
 > You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+
+### Tauri Build
+
+`yarn tauri build`
