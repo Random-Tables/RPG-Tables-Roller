@@ -1,8 +1,8 @@
-<script context="module">
+<script context="module" lang="ts">
 	export const prerender = true;
 </script>
 
-<script>
+<script lang="ts">
 	import Counter from '$lib/Counter/index.svelte';
 </script>
 
