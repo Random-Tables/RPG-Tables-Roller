@@ -1,0 +1,8 @@
+[
+    {
+        "tableID": "castle-medieval",
+        "tableSections": {
+            "Castle Name": ["[[name/place/medieval:Name]] Castle", "[[name/place/medieval:Name]] Redoubt"]
+        }
+    }
+]
