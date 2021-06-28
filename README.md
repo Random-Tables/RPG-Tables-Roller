@@ -25,6 +25,10 @@ npm run dev
 npm run dev -- --open
 ```
 
+To run a Tauri dev window:
+
+```yarn tauri dev```
+
 ## Building
 
 Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:

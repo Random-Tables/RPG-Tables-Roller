@@ -2,10 +2,11 @@
 	import { spring } from 'svelte/motion';
 
 	let count = 12;
+	let offset: number;
 
-	const displayed_count = spring();
+	const displayed_count: any = spring();
 	$: displayed_count.set(count);
-	$: offset = modulo($displayed_count, 1);
+	$: offset = modulo(displayed_count, 1);
 
 	function modulo(n: number, m: number) {
 		// handle negative numbers

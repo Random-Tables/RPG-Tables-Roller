@@ -1,8 +1,13 @@
-[
-    {
-        "tableID": "castle-medieval",
-        "tableSections": {
-            "Castle Name": ["[[name/place/medieval:Name]] Castle", "[[name/place/medieval:Name]] Redoubt"]
-        }
-    }
-]
+{
+	"medieval": {
+		"label": "Medieval European Castle",
+		"tableSections": {
+			"castle-name": {
+				"id": "castle-name",
+				"name": "Castle Name",
+				"table": ["[[name/place/medieval:Name]] Castle", "[[name/place/medieval:Name]] Redoubt"],
+				"type": "simple"
+			}
+		}
+	}
+}

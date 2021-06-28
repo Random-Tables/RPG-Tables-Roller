@@ -1,0 +1,19 @@
+{
+	"japanese": {
+		"label": "Japanese Castle",
+		"tableSections": [
+			{
+				"id": "castle-name",
+				"label": "Castle Name:",
+				"table": ["[[name/place/japan:Name]] Castle", "[[name/place/japan:Name]] Fort"],
+				"type": "simple"
+			},
+			{
+				"id": "castle-type",
+				"label": "Castle Type:",
+				"table": ["large wooden Castle", "Small hillfort"],
+				"type": "simple"
+			}
+		]
+	}
+}
