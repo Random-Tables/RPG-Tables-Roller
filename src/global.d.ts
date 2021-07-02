@@ -1,4 +1,7 @@
 /// <reference types="@sveltejs/kit" />
+interface Window {
+	__TAURI__: any;
+}
 interface FileEntry {
 	path: string;
 	/**
@@ -10,21 +13,27 @@ interface FileEntry {
 	children?: FileEntry[];
 }
 type tableIndex = {
-	collectionID: string, // used as address
-	collectionName: string,  // Readable Name
-	category?: string, // preferred category
-	isUtility?: boolean, // If true not shown, but used in background
-	tags?: string[],
-	tables?: object, // list of tableIds
-	description?: string,
-}
+	collectionID: string; // used as address
+	collectionName: string; // Readable Name
+	category?: string; // preferred category
+	isUtility?: boolean; // If true not shown, but used in background
+	tags?: string[];
+	tables?: object; // list of tableIds
+	description?: string;
+	path: string // root filepath
+};
 type tableItem = {
-	label: string,
-	tableSections: tableSection[],
-}
+	label: string;
+	tableSections: tableSection[];
+};
 type tableSection = {
-	id: string,
-	name: string,
-	type: string, // futureproofing for table type variations, current options; "simple"
-	table: string[],
-}
+	id: string;
+	name: string;
+	type: string; // futureproofing for table type variations, current options; "simple"
+	table: string[];
+};
+type indexTableData = {
+	data: tableItem;
+	dataReady: boolean;
+	tableList: string[];
+};

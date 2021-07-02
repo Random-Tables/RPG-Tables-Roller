@@ -15,19 +15,17 @@
 </script>
 
 <script lang="ts">
-	// import Files from '$lib/FileSys/index';
-	import CollectionBuilder from "$lib/CollectionsBuilder";
+	import CollectionBuilder from '$lib/CollectionsBuilder';
+	import { STATUS } from '$lib/enums';
 
-	// async function getData() {
-	// 	const collections: FileEntry[] = await Files.getCollections();
-	// 	if (collections) {
-	// 		collections.forEach((element) => {
-	// 			Files.getCollectionIndex(element.path);
-	// 		});
-	// 	}
-	// }
-	// getData();
-	CollectionBuilder.iniateBuild();
+	let status = STATUS.UNSTARTED;
+	let masterIndex: object;
+
+	CollectionBuilder.iniateBuild().then(function (newStatus) {
+		status = newStatus;
+		masterIndex = CollectionBuilder.getMasterIndex();
+		console.log('>->masterIndex', masterIndex);
+	});
 </script>
 
 <svelte:head>
@@ -36,6 +34,20 @@
 
 <div class="content">
 	<h3>Building indexes....</h3>
+	{#if status === STATUS.BUILT}
+		<div>Built</div>
+		{#each Object.keys(masterIndex) as collection}
+			<h3>Collection: {masterIndex[collection].collectionName}</h3>
+			{#each Object.keys(masterIndex[collection].tablesData) as tablesGroupKey}
+				<h4>{tablesGroupKey}</h4>
+				{#each masterIndex[collection].tablesData[tablesGroupKey].tablesList as tableName}
+					<button on:click={() => CollectionBuilder.getRoll(collection, tablesGroupKey, tableName)}
+						>{tableName}</button>
+				{/each}
+			{/each}
+		{/each}
+	{/if}
+	<h3>Views</h3>
 </div>
 
 <style>

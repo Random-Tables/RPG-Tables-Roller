@@ -3,7 +3,9 @@ import { STATUS, DATA_MODE } from '$lib/enums';
 
 let status = STATUS.UNSTARTED;
 let dataMode = DATA_MODE.SLOW;
+const callRegex = /\{{([^|]+)\}}/g; // finds all text covered by {{example/roll:default}}
 const masterIndex = {};
+const errorResponse = ['Error: table not found', '', ''];
 
 async function buildIndexData() {
 	const collections: FileEntry[] = await Files.getCollections();
@@ -19,25 +21,56 @@ async function buildIndexData() {
 					tablesList: tableIndexData.tables[key]
 				};
 			});
-
-			console.log('masterIndex', masterIndex);
+			status = STATUS.BUILT;
 		});
 	}
 }
 
+async function rollTable(tableResult: string) {
+	const found: string[] = tableResult.match(callRegex);
+	// use call name to replace, or use default
+	//
+}
+
 export default {
-	iniateBuild() {
-		if (status === STATUS.UNSTARTED) {
-			status = STATUS.STARTED;
-			buildIndexData();
-		} else {
-			console.log('masterIndex Built:', masterIndex);
-		}
+	iniateBuild(): Promise<STATUS> {
+		return new Promise((resolve, reject) => {
+			if (status === STATUS.UNSTARTED) {
+				status = STATUS.STARTED;
+				buildIndexData().then(function () {
+					resolve(status);
+				});
+			} else {
+				resolve(status);
+			}
+		});
 	},
 	getStatus(): STATUS {
 		return status;
 	},
-	getRoll(path: string) {
-		console.log('path - array', path.split('/'));
+	getMasterIndex(): object {
+		return masterIndex;
+	},
+	async getRoll(collection: string, group: string, table: string): Promise<string[]> {
+		return new Promise((resolve, reject) => {
+			const rootCollection = masterIndex[collection];
+			if (rootCollection) {
+				console.log('rootCollection', rootCollection);
+				const tableData: indexTableData = rootCollection.tablesData[group];
+
+				if (tableData.dataReady) {
+					console.log('tableData dataReady');
+					resolve(tableData.data[table].tableSections[0].label);
+				} else {
+					Files.getFile(rootCollection.path + '/' + group).then(function (tableJSON) {
+						console.log('tableJSON', tableJSON);
+						tableData.data = tableJSON;
+						resolve(tableData.data[table].tableSections[0].label);
+					});
+				}
+			} else {
+				resolve(errorResponse);
+			}
+		});
 	}
 };
