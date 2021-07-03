@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import Counter from '$lib/Counter/index.svelte';
+	import Card from '$lib/card/index.svelte';
 </script>
 
 <svelte:head>
@@ -11,22 +11,16 @@
 </svelte:head>
 
 <section>
-	<h1>
-		<div class="welcome">
-			<picture>
-				<source srcset="svelte-welcome.webp" type="image/webp" />
-				<img src="svelte-welcome.png" alt="Welcome" />
-			</picture>
-		</div>
+	<h1>Table Roller</h1>
+	<p>
+		Welcome to the table roller app, select a view (a subset of available tables) and begin rolling.
+	</p>
+	<p>For additional collections go to https://...</p>
 
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/index.svelte</strong>
-	</h2>
-
-	<Counter />
+	<h3>Views</h3>
+	<div class="flextable">
+		<Card href="/about" flex="0 1 35%"><p>All</p></Card>
+	</div>
 </section>
 
 <style>
@@ -42,18 +36,4 @@
 		width: 100%;
 	}
 
-	.welcome {
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
 </style>
