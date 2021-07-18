@@ -1,35 +1,31 @@
 <script context="module">
-	import { browser, dev } from '$app/env';
-
-	// we don't need any JS on this page, though we'll load
-	// it in dev so that we get hot module replacement...
-	export const hydrate = dev;
-
-	// ...but if the client-side router is already loaded
-	// (i.e. we came here from elsewhere in the app), use it
+	import { browser } from '$app/env';
 	export const router = browser;
-
-	// since there's no dynamic data here, we can prerender
-	// it so that it gets served as a static asset in prod
-	export const prerender = true;
 </script>
 
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import { STATUS } from '$lib/enums';
+	console.log('run tables script');
 
 	let status = STATUS.UNSTARTED;
-	let masterIndex: object;
+	let masterIndex = {};
+	let view = 'all';
 
-	CollectionBuilder.iniateBuild().then(function (newStatus) {
-		status = newStatus;
-		masterIndex = CollectionBuilder.getMasterIndex();
-		console.log('>->masterIndex', masterIndex);
+	onMount(async () => {
+		status = CollectionBuilder.getStatus();
+		if (status !== STATUS.BUILT) {
+			console.log('not built');
+		}
+		if (view === 'all') {
+			masterIndex = CollectionBuilder.getMasterIndex();
+		}
 	});
 </script>
 
 <svelte:head>
-	<title>About</title>
+	<title>Tables</title>
 </svelte:head>
 
 <div class="content">
@@ -42,7 +38,8 @@
 				<h4>{tablesGroupKey}</h4>
 				{#each masterIndex[collection].tablesData[tablesGroupKey].tablesList as tableName}
 					<button on:click={() => CollectionBuilder.getRoll(collection, tablesGroupKey, tableName)}
-						>{tableName}</button>
+						>{tableName}</button
+					>
 				{/each}
 			{/each}
 		{/each}

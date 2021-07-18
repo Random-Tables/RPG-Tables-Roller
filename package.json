@@ -12,6 +12,8 @@
 	},
 	"devDependencies": {
 		"@sveltejs/kit": "next",
+		"@tauri-apps/api": "^1.0.0-beta.1",
+		"@tauri-apps/cli": "^1.0.0-beta.2",
 		"@types/cookie": "^0.4.0",
 		"eslint": "^7.22.0",
 		"eslint-config-prettier": "^8.1.0",
@@ -20,11 +22,10 @@
 		"prettier-plugin-svelte": "^2.2.0",
 		"svelte": "^3.34.0",
 		"svelte-check": "^2.0.0",
+		"svelte-feather-icons": "^3.5.0",
 		"svelte-preprocess": "^4.0.0",
 		"tslib": "^2.0.0",
-		"typescript": "^4.0.0",
-		"@tauri-apps/api": "^1.0.0-beta.1",
-		"@tauri-apps/cli": "^1.0.0-beta.2"
+		"typescript": "^4.0.0"
 	},
 	"type": "module",
 	"dependencies": {

@@ -1,9 +1,16 @@
-<script context="module" lang="ts">
-	export const prerender = true;
-</script>
 
-<script lang="ts">
+<script>
+	import { onMount } from 'svelte';
 	import Card from '$lib/card/index.svelte';
+	import CollectionBuilder from '$lib/CollectionsBuilder';
+	import { STATUS } from '$lib/enums';
+	let status = STATUS.UNSTARTED;
+
+	onMount(async () => {
+		CollectionBuilder.iniateBuild().then(function (newStatus) {
+			status = newStatus;
+		});
+	});
 </script>
 
 <svelte:head>
@@ -19,7 +26,7 @@
 
 	<h3>Views</h3>
 	<div class="flextable">
-		<Card href="/about" flex="0 1 35%"><p>All</p></Card>
+		<Card href="/table" flex="0 1 35%"><p>All</p></Card>
 	</div>
 </section>
 
@@ -35,5 +42,4 @@
 	h1 {
 		width: 100%;
 	}
-
 </style>

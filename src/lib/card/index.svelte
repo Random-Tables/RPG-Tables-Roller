@@ -1,10 +1,12 @@
-<script>
-	export let flex;
-	export let href;
+<script lang="ts">
+	export let flex: string;
+	export let href: string;
 </script>
 
 {#if href}
-	<a sveltekit:prefetch {href} style="flex: {flex}" class="wrapper"><slot /></a>
+	<a sveltekit:prefetch {href} style="flex: {flex}" class="wrapper">
+		<slot />
+	</a>
 {:else}
 	<div class="wrapper" style="flex: {flex}"><slot /></div>
 {/if}
