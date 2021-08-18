@@ -1,4 +1,3 @@
-
 <script>
 	import { onMount } from 'svelte';
 	import Card from '$lib/card/index.svelte';
