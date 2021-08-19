@@ -10,7 +10,7 @@
 			},
 			{
 				"id": "castle-type",
-				"label": "Castle Type:",
+				"name": "Castle Type:",
 				"table": ["large wooden Castle", "Small hillfort"],
 				"type": "simple"
 			}

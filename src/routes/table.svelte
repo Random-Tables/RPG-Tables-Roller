@@ -24,14 +24,8 @@
 	function onClickTable(collection, tablesGroupKey, tableName) {
 		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString()).then((res) => {
 			// get options
-			choiceArray = [
-				...choiceArray,
-				{
-					values: ['a', 'b', 'c'],
-					// type: CHOICE_TYPE.string
-					type: 0
-				}
-			];
+			console.log('res', res);
+			choiceArray = [...choiceArray, res];
 		});
 	}
 </script>
@@ -60,7 +54,6 @@
 	</div>
 	<div class="main">
 		<h3>Views</h3>
-		<p>{choiceArray.length}</p>
 		<Viewer choices={choiceArray} />
 	</div>
 </div>
@@ -68,7 +61,6 @@
 <style>
 	.content {
 		width: 100%;
-		max-width: var(--column-width);
 		margin: var(--column-margin-top) auto 0 auto;
 		display: flex;
 	}

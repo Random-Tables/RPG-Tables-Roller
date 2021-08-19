@@ -39,8 +39,7 @@ type indexTableData = {
 };
 
 interface Choice {
-	values: Array<String>;
-	data?: object;
+	data: Array<Array<String>>;
 	type: CHOICE_TYPE;
 }
 

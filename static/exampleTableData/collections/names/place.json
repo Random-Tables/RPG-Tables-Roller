@@ -1,12 +1,18 @@
 {
 	"medieval": {
 		"tableSections": {
-			"Name": ["Wigville", "Tyrist", "Yeville"]
+			"id": "castle-name",
+			"name": "Castle Name:",
+			"table": ["Wigville", "Tyrist", "Yeville"],
+			"type": "simple"
 		}
 	},
 	"japan": {
 		"tableSections": {
-			"Name": ["Himejo", "Yurijo", "Kannoji"]
+			"id": "castle-name",
+			"name": "Castle Name:",
+			"table": ["Himejo", "Yurijo", "Kannoji"],
+			"type": "simple"
 		}
 	}
 }
