@@ -1,17 +1,15 @@
-<script context="module">
+<script lang="ts">
 	import { browser } from '$app/env';
 	export const router = browser;
-</script>
-
-<script lang="ts">
 	import { onMount } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import { STATUS } from '$lib/enums';
-	console.log('run tables script');
+	import Viewer from '$lib/Viewer/index.svelte';
 
 	let status = STATUS.UNSTARTED;
 	let masterIndex = {};
 	let view = 'all';
+	let choiceArray: Array<Choice> = [];
 
 	onMount(async () => {
 		status = CollectionBuilder.getStatus();
@@ -22,6 +20,21 @@
 			masterIndex = CollectionBuilder.getMasterIndex();
 		}
 	});
+
+	function onClickTable(collection, tablesGroupKey, tableName) {
+		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString()).then((res) => {
+			// get options
+			choiceArray = [
+				...choiceArray,
+				{
+					values: ['a', 'b', 'c'],
+					// type: CHOICE_TYPE.string
+					type: 0
+				}
+			];
+			console.log(choiceArray);
+		});
+	}
 </script>
 
 <svelte:head>
@@ -29,22 +42,28 @@
 </svelte:head>
 
 <div class="content">
-	<h3>Building indexes....</h3>
-	{#if status === STATUS.BUILT}
-		<div>Built</div>
-		{#each Object.keys(masterIndex) as collection}
-			<h3>Collection: {masterIndex[collection].collectionName}</h3>
-			{#each Object.keys(masterIndex[collection].tablesData) as tablesGroupKey}
-				<h4>{tablesGroupKey}</h4>
-				{#each masterIndex[collection].tablesData[tablesGroupKey].tablesList as tableName}
-					<button on:click={() => CollectionBuilder.getRoll(collection, tablesGroupKey, tableName)}
-						>{tableName}</button
-					>
+	<div class="aside">
+		<b>Building indexes....</b>
+		{#if status === STATUS.BUILT}
+			<span>Built</span><br />
+			{#each Object.keys(masterIndex) as collection}
+				<h3>Collection: {masterIndex[collection].collectionName}</h3>
+				{#each Object.keys(masterIndex[collection].tablesData) as tablesGroupKey}
+					<h4>{tablesGroupKey}</h4>
+					{#each masterIndex[collection].tablesData[tablesGroupKey].tablesList as tableName}
+						<button on:click={() => onClickTable(collection, tablesGroupKey, tableName.toString())}
+							>{tableName}</button
+						>
+					{/each}
 				{/each}
 			{/each}
-		{/each}
-	{/if}
-	<h3>Views</h3>
+		{/if}
+	</div>
+	<div class="main">
+		<h3>Views</h3>
+		<p>{choiceArray.length}</p>
+		<Viewer choices={choiceArray} />
+	</div>
 </div>
 
 <style>
@@ -52,5 +71,12 @@
 		width: 100%;
 		max-width: var(--column-width);
 		margin: var(--column-margin-top) auto 0 auto;
+		display: flex;
+	}
+	.aside {
+		width: 50%;
+	}
+	.main {
+		width: 50%;
 	}
 </style>

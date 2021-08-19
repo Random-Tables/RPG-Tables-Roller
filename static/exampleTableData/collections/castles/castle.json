@@ -1,13 +1,19 @@
 {
 	"medieval": {
 		"label": "Medieval European Castle",
-		"tableSections": {
-			"castle-name": {
+		"tableSections": [
+			{
 				"id": "castle-name",
 				"name": "Castle Name",
 				"table": ["[[name/place/medieval:Name]] Castle", "[[name/place/medieval:Name]] Redoubt"],
 				"type": "simple"
+			},
+			{
+				"id": "castle-type",
+				"label": "Castle Type:",
+				"table": ["large wooden Castle", "Small hillfort"],
+				"type": "simple"
 			}
-		}
+		]
 	}
 }

@@ -1,6 +1,12 @@
-const fs = window.__TAURI__.fs;
+var fs = undefined;
+if(window !== undefined) {
+	fs = window.__TAURI__.fs;
+}
 
 export default {
+	setup: ():void => {
+		fs = window.__TAURI__.fs;
+	},
 	getCollections: async (): Promise<FileEntry[]> => {
 		return new Promise((resolve, reject) => {
 			fs.readDir('Fantasy-Tables/Collections', {

@@ -1,8 +1,9 @@
 import Files from '$lib/FileSys/index';
-import { STATUS, DATA_MODE } from '$lib/enums';
+import { STATUS } from '$lib/enums';
+import FileSys from '$lib/FileSys/index';
 
 let status = STATUS.UNSTARTED;
-let dataMode = DATA_MODE.SLOW;
+// let dataMode = DATA_MODE.SLOW;
 const callRegex = /\{{([^|]+)\}}/g; // finds all text covered by {{example/roll:default}}
 const masterIndex = {};
 const errorResponse = ['Error: table not found', '', ''];
@@ -34,6 +35,7 @@ async function rollTable(tableResult: string) {
 
 export default {
 	iniateBuild(): Promise<STATUS> {
+		FileSys.setup();
 		return new Promise((resolve, reject) => {
 			if (status === STATUS.UNSTARTED) {
 				status = STATUS.STARTED;
@@ -52,20 +54,31 @@ export default {
 		return masterIndex;
 	},
 	async getRoll(collection: string, group: string, table: string): Promise<string[]> {
+		console.log('input', {
+			collection,
+			group,
+			table
+		});
 		return new Promise((resolve, reject) => {
 			const rootCollection = masterIndex[collection];
 			if (rootCollection) {
 				console.log('rootCollection', rootCollection);
-				const tableData: indexTableData = rootCollection.tablesData[group];
+				const tableData: indexTableData = rootCollection.tablesData[group] || {
+					data: null,
+					dataReady: false,
+					tableList: null
+				};
+				console.log('tableData', tableData);
 
 				if (tableData.dataReady) {
-					console.log('tableData dataReady');
-					resolve(tableData.data[table].tableSections[0].label);
+					console.log('tableData dataReady', tableData.data[table]);
+					resolve(tableData.data[table].tableSections);
 				} else {
 					Files.getFile(rootCollection.path + '/' + group).then(function (tableJSON) {
-						console.log('tableJSON', tableJSON);
 						tableData.data = tableJSON;
-						resolve(tableData.data[table].tableSections[0].label);
+						console.log('tableJSON - 1', tableData.data[table].tableSections);
+						
+						resolve(tableData.data[table].tableSections);
 					});
 				}
 			} else {

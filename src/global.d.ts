@@ -20,7 +20,7 @@ type tableIndex = {
 	tags?: string[];
 	tables?: object; // list of tableIds
 	description?: string;
-	path: string // root filepath
+	path: string; // root filepath
 };
 type tableItem = {
 	label: string;
@@ -37,3 +37,14 @@ type indexTableData = {
 	dataReady: boolean;
 	tableList: string[];
 };
+
+interface Choice {
+	values: Array<String>;
+	data?: object;
+	type: CHOICE_TYPE;
+}
+
+enum CHOICE_TYPE {
+	string,
+	npc
+}
