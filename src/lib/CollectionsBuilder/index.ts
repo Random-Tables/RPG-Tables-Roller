@@ -62,22 +62,20 @@ export default {
 		return new Promise((resolve, reject) => {
 			const rootCollection = masterIndex[collection];
 			if (rootCollection) {
-				console.log('rootCollection', rootCollection);
 				const tableData: indexTableData = rootCollection.tablesData[group] || {
 					data: null,
 					dataReady: false,
 					tableList: null
 				};
-				console.log('tableData', tableData);
 
 				if (tableData.dataReady) {
-					console.log('tableData dataReady', tableData.data[table]);
 					resolve(tableData.data[table].tableSections);
 				} else {
+					console.log('tableData not ready');
 					Files.getFile(rootCollection.path + '/' + group).then(function (tableJSON) {
 						tableData.data = tableJSON;
-						console.log('tableJSON - 1', tableData.data[table].tableSections);
-						
+						tableData.dataReady = true;
+
 						resolve(tableData.data[table].tableSections);
 					});
 				}
