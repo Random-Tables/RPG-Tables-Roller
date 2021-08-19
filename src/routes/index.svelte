@@ -1,12 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
 	import Card from '$lib/card/index.svelte';
-	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import { STATUS } from '$lib/enums';
 	let status = STATUS.UNSTARTED;
 
 	onMount(async () => {
-		CollectionBuilder.iniateBuild().then(function (newStatus) {
+		const CollectionBuilder = await import('$lib/CollectionsBuilder');
+		CollectionBuilder.default.iniateBuild().then(function (newStatus) {
 			status = newStatus;
 		});
 	});

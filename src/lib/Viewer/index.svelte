@@ -2,7 +2,6 @@
 	import ChoiceBox from './choicebox.svelte';
 
 	export let choices: Array<Choice>;
-	console.log('>>choices', choices);
 </script>
 
 <div class="viewer">

@@ -1,11 +1,12 @@
 <script lang="ts">
+	import type { Choice } from "src/global";
     export let choice: Choice;
     // export let key: string;
     // export let rerollFunc: (key: string, keep: Array<boolean>) => void;
 </script>
 
 <div class="choice">
-	{#if choice.type === CHOICE_TYPE.string}
+	{#if choice.type === 'string'}
 		<div class="string">
 			{#each choice.values as values}
 				<p>{values}</p>

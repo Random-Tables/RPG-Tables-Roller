@@ -45,6 +45,6 @@ interface Choice {
 }
 
 enum CHOICE_TYPE {
-	string,
+	string = 'string',
 	npc
 }

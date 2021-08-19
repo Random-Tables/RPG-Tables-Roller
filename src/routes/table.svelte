@@ -32,7 +32,6 @@
 					type: 0
 				}
 			];
-			console.log(choiceArray);
 		});
 	}
 </script>
