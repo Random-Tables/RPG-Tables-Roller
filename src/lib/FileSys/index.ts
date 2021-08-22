@@ -29,10 +29,13 @@ export default {
 					indexAsObject.path = collectionPath;
 					resolve(indexAsObject);
 				},
-				function () {
+				function (error) {
+					console.error(error);
 					reject({ collectionID: null, collectionName: 'error' });
 				}
-			);
+			).catch(err => {
+				console.error("ERR", err);
+			});
 		});
 	},
 	getFile: async (tablePath: string): Promise<tableItem> => {
@@ -42,7 +45,8 @@ export default {
 					const tableObject = JSON.parse(result);
 					resolve(tableObject);
 				},
-				function () {
+				function (error) {
+					console.error(error);
 					reject({ collectionID: null, collectionName: 'error' });
 				}
 			);

@@ -26,6 +26,11 @@ type tableItem = {
 	label: string;
 	tableSections: tableSection[];
 };
+type tableUtilityItem = {
+	id: string;
+	name: string;
+	table: string[];
+};
 type tableSection = {
 	id: string;
 	name: string;

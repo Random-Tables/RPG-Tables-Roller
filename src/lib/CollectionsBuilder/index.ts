@@ -8,7 +8,7 @@ let status = STATUS.UNSTARTED;
 const callRegex = /\{{([^|]+)\}}/g; // finds all text covered by {{example/roll:default}}
 const masterIndex = {};
 const errorResponse = {
-	data: [["Error", 'Error building table']],
+	data: [['Error', 'Error building table']],
 	type: 0
 };
 enum CHOICE_TYPE {
@@ -35,6 +35,13 @@ async function buildIndexData() {
 	}
 }
 
+function rollUtility(utility: tableUtilityItem): string {
+	console.log('utility', utility);
+	const choicesAvailable = utility.table.length;
+	const randomTable = Math.floor(Math.random() * choicesAvailable);
+	return utility.table[randomTable];
+}
+
 async function rollTable(
 	tableSections: tableSection[],
 	type: CHOICE_TYPE,
@@ -55,7 +62,6 @@ async function rollTable(
 						tableParts.push(section.table[randomTable]);
 					});
 					data.push(tableParts);
-					console.log('data', data);
 				}
 				resolve({
 					type,
@@ -65,7 +71,7 @@ async function rollTable(
 			default:
 				resolve({
 					type: CHOICE_TYPE.string,
-					data: [["Error", 'Unable to roll table']]
+					data: [['Error', 'Unable to roll table']]
 				});
 		}
 	});
@@ -82,6 +88,8 @@ async function getRoll(collection: string, group: string, table: string): Promis
 	});
 	return new Promise((resolve, reject) => {
 		const rootCollection = masterIndex[collection];
+		console.log('rootCollection', rootCollection);
+		const isUtility = rootCollection.isUtility;
 		if (rootCollection) {
 			const tableData: indexTableData = rootCollection.tablesData[group] || {
 				data: null,
@@ -89,19 +97,30 @@ async function getRoll(collection: string, group: string, table: string): Promis
 				tableList: null
 			};
 
+			const build = () => {
+				if (isUtility) {
+					const utility = rollUtility(tableData.data[table]);
+					console.log('rollUtility', utility);
+
+					resolve({
+						data: [['Utility:', utility]],
+						type: CHOICE_TYPE.string
+					});
+				} else {
+					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string).then((rollData) => {
+						resolve(rollData);
+					});
+				}
+			};
 			if (tableData.dataReady) {
-				rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string).then((rollData) => {
-					resolve(rollData);
-				});
+				build();
 			} else {
 				console.log('tableData not ready');
 				Files.getFile(rootCollection.path + '/' + group).then(function (tableJSON) {
 					tableData.data = tableJSON;
 					tableData.dataReady = true;
 
-					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string).then((rollData) => {
-						resolve(rollData);
-					});
+					build();
 				});
 			}
 		} else {
@@ -125,6 +144,7 @@ export default {
 		});
 	},
 	rollTable,
+	rollUtility,
 	getRoll,
 	getStatus(): STATUS {
 		return status;

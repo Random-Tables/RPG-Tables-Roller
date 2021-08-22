@@ -26,6 +26,7 @@
 			// get options
 			console.log('res', res);
 			choiceArray = [...choiceArray, res];
+			console.dir('choiceArray', choiceArray);
 		});
 	}
 </script>
