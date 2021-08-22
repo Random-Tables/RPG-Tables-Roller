@@ -1,8 +1,12 @@
-[
-    {
-        "tableID": "place/medieval",
-        "tableSections": {
-            "Name": ["Wigville", "Tyrist"]
-        }
-    }
-]
+{
+	"medieval": {
+		"id": "castle-name",
+		"name": "Castle Name:",
+		"table": ["Wigville", "Tyrist", "Yeville"]
+	},
+	"japan": {
+		"id": "castle-name",
+		"name": "Castle Name:",
+		"table": ["Himejo", "Yurijo", "Kannoji"]
+	}
+}
