@@ -5,17 +5,17 @@
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import { STATUS } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
+	import { viewsBuilt } from '$lib/stores';
 
 	let status = STATUS.UNSTARTED;
 	let masterIndex = {};
 	let view = 'all';
 	let choiceArray: Array<Choice> = [];
+	viewsBuilt.subscribe((value) => {
+		status = value;
+	});
 
 	onMount(async () => {
-		status = CollectionBuilder.getStatus();
-		if (status !== STATUS.BUILT) {
-			console.log('not built');
-		}
 		if (view === 'all') {
 			masterIndex = CollectionBuilder.getMasterIndex();
 		}
@@ -37,7 +37,6 @@
 
 <div class="content">
 	<div class="aside">
-		<b>Building indexes....</b>
 		{#if status === STATUS.BUILT}
 			<span>Built</span><br />
 			{#each Object.keys(masterIndex) as collection}
@@ -46,11 +45,12 @@
 					<h4>{tablesGroupKey}</h4>
 					{#each masterIndex[collection].tablesData[tablesGroupKey].tablesList as tableName}
 						<button on:click={() => onClickTable(collection, tablesGroupKey, tableName.toString())}
-							>{tableName}</button
-						>
+							>{tableName}</button>
 					{/each}
 				{/each}
 			{/each}
+		{:else}
+			<b>Building indexes....</b>
 		{/if}
 	</div>
 	<div class="main">

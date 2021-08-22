@@ -22,22 +22,35 @@ async function asyncForEach(array, callback) {
 }
 
 async function buildIndexData() {
-	const collections: FileEntry[] = await Files.getCollections();
-	if (collections) {
-		collections.forEach(async (element) => {
-			const tableIndexData: tableIndex = await Files.getCollectionIndex(element.path);
-			masterIndex[tableIndexData.collectionID] = tableIndexData;
-			masterIndex[tableIndexData.collectionID].tablesData = {};
-			Object.keys(tableIndexData.tables).forEach(function (key: string) {
-				masterIndex[tableIndexData.collectionID].tablesData[key] = {
-					dataReady: false,
-					data: null,
-					tablesList: tableIndexData.tables[key]
-				};
-			});
-			status = STATUS.BUILT;
-		});
-	}
+	return new Promise((resolve, reject) => {
+		(async () => {
+			try {
+				const collections: FileEntry[] = await Files.getCollections();
+				if (collections) {
+					await collections.forEach(async (element, index) => {
+						const tableIndexData: tableIndex = await Files.getCollectionIndex(element.path);
+						masterIndex[tableIndexData.collectionID] = tableIndexData;
+						masterIndex[tableIndexData.collectionID].tablesData = {};
+						Object.keys(tableIndexData.tables).forEach(function (key: string) {
+							masterIndex[tableIndexData.collectionID].tablesData[key] = {
+								dataReady: false,
+								data: null,
+								tablesList: tableIndexData.tables[key]
+							};
+						});
+					});
+					status = STATUS.BUILT;
+					resolve();
+				} else {
+					console.error('Unable to find files');
+					reject();
+				}
+			} catch (err) {
+				console.error('Unable to find files;', err);
+				reject(err);
+			}
+		})();
+	});
 }
 async function checkString(resultString: string): Promise<string> {
 	const found = resultString.match(callRegex);
@@ -47,7 +60,6 @@ async function checkString(resultString: string): Promise<string> {
 				const collectionCall = item.substring(2, item.length - 2).split(':')[0]; // removes {{}} & backup option
 				const tableAddress = collectionCall.split('/');
 				getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
-					console.log('response', response);
 					res(response);
 				});
 			});
@@ -55,7 +67,6 @@ async function checkString(resultString: string): Promise<string> {
 
 		const allCalls = Promise.all(found.map(getStringRandom));
 		const stringReplacements = await allCalls;
-		console.log('stringReplacements', stringReplacements);
 		var iter = 0;
 		function myReplace(a): string {
 			const val = iter;
@@ -64,7 +75,7 @@ async function checkString(resultString: string): Promise<string> {
 		}
 
 		var newString = resultString;
-		return newString.replace(callRegex, myReplace);;
+		return newString.replace(callRegex, myReplace);
 	} else {
 		return resultString;
 	}
@@ -75,13 +86,6 @@ function rollUtility(utility: tableUtilityItem): string {
 	const randomTable = Math.floor(Math.random() * choicesAvailable);
 	return utility.table[randomTable];
 }
-// const start = async () => {
-// 	await asyncForEach([1, 2, 3], async (num) => {
-// 	  await waitFor(50);
-// 	  console.log(num);
-// 	});
-// 	console.log('Done');
-//   }
 async function rollTable(
 	tableSections: tableSection[],
 	type: CHOICE_TYPE,
@@ -174,7 +178,6 @@ async function getRoll(
 			if (tableData.dataReady) {
 				build();
 			} else {
-				console.log('tableData not ready');
 				Files.getFile(rootCollection.path + '/' + group).then(function (tableJSON) {
 					tableData.data = tableJSON;
 					tableData.dataReady = true;

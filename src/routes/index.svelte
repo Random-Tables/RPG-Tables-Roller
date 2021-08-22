@@ -1,13 +1,17 @@
 <script>
 	import { onMount } from 'svelte';
+	import { viewsBuilt } from '$lib/stores';
 	import Card from '$lib/card/index.svelte';
 	import { STATUS } from '$lib/enums';
-	let status = STATUS.UNSTARTED;
 
+	let status = STATUS.UNSTARTED;
+	viewsBuilt.subscribe((value) => {
+		status = value;
+	});
 	onMount(async () => {
 		const CollectionBuilder = await import('$lib/CollectionsBuilder');
 		CollectionBuilder.default.iniateBuild().then(function (newStatus) {
-			status = newStatus;
+			viewsBuilt.update(() => newStatus);
 		});
 	});
 </script>
@@ -25,7 +29,7 @@
 
 	<h3>Views</h3>
 	<div class="flextable">
-		<Card href="/table" flex="0 1 35%"><p>All</p></Card>
+		<Card hrefLink="/table" flex="0 1 35%"><p>All</p></Card>
 	</div>
 </section>
 
