@@ -5,7 +5,7 @@
 			{
 				"id": "castle-name",
 				"name": "Castle Name:",
-				"table": ["[[name/place/japan:Name]] Castle", "[[name/place/japan:Name]] Fort"],
+				"table": ["{{name/place/japan:Name}} Castle", "{{name/place/japan:Name}} Fort"],
 				"type": "simple"
 			},
 			{

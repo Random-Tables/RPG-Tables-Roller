@@ -5,7 +5,7 @@ import FileSys from '$lib/FileSys/index';
 const stringReturnedValues = 3;
 let status = STATUS.UNSTARTED;
 // let dataMode = DATA_MODE.SLOW;
-const callRegex = /\{{([^|]+)\}}/g; // finds all text covered by {{example/roll:default}}
+const callRegex = /\{{(.*?)\}}/g; // finds all text covered by {{example/roll:default}}
 const masterIndex = {};
 const errorResponse = {
 	data: [['Error', 'Error building table']],
@@ -14,6 +14,11 @@ const errorResponse = {
 enum CHOICE_TYPE {
 	string = 'string',
 	npc = 'npc'
+}
+async function asyncForEach(array, callback) {
+	for (let index = 0; index < array.length; index++) {
+		await callback(array[index], index, array);
+	}
 }
 
 async function buildIndexData() {
@@ -34,14 +39,49 @@ async function buildIndexData() {
 		});
 	}
 }
+async function checkString(resultString: string): Promise<string> {
+	const found = resultString.match(callRegex);
+	if (found) {
+		function getStringRandom(item) {
+			return new Promise((res, rej) => {
+				const collectionCall = item.substring(2, item.length - 2).split(':')[0]; // removes {{}} & backup option
+				const tableAddress = collectionCall.split('/');
+				getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
+					console.log('response', response);
+					res(response);
+				});
+			});
+		}
+
+		const allCalls = Promise.all(found.map(getStringRandom));
+		const stringReplacements = await allCalls;
+		console.log('stringReplacements', stringReplacements);
+		var iter = 0;
+		function myReplace(a): string {
+			const val = iter;
+			iter++;
+			return stringReplacements[val] + '';
+		}
+
+		var newString = resultString;
+		return newString.replace(callRegex, myReplace);;
+	} else {
+		return resultString;
+	}
+}
 
 function rollUtility(utility: tableUtilityItem): string {
-	console.log('utility', utility);
 	const choicesAvailable = utility.table.length;
 	const randomTable = Math.floor(Math.random() * choicesAvailable);
 	return utility.table[randomTable];
 }
-
+// const start = async () => {
+// 	await asyncForEach([1, 2, 3], async (num) => {
+// 	  await waitFor(50);
+// 	  console.log(num);
+// 	});
+// 	console.log('Done');
+//   }
 async function rollTable(
 	tableSections: tableSection[],
 	type: CHOICE_TYPE,
@@ -49,47 +89,64 @@ async function rollTable(
 ): Promise<Choice> {
 	const returnNum = resultsNum || stringReturnedValues;
 	return new Promise((resolve, reject) => {
-		switch (type) {
-			case CHOICE_TYPE.string:
-				const data = [];
-				for (let i = 0; i < returnNum; i++) {
-					const tableParts = [];
-					tableSections.forEach((section) => {
-						tableParts.push(section.name);
+		(async () => {
+			try {
+				switch (type) {
+					case CHOICE_TYPE.string:
+						const data = [];
+						for (let i = 0; i < returnNum; i++) {
+							const tableParts = [];
+							await asyncForEach(tableSections, async (section) => {
+								tableParts.push(section.name);
 
-						const choicesAvailable = section.table.length;
-						const randomTable = Math.floor(Math.random() * choicesAvailable);
-						tableParts.push(section.table[randomTable]);
-					});
-					data.push(tableParts);
+								const choicesAvailable = section.table.length;
+								const randomTable = Math.floor(Math.random() * choicesAvailable);
+								const checkedResult = await checkString(section.table[randomTable]);
+								tableParts.push(checkedResult);
+							});
+							// tableSections.forEach(async (section) => {
+							// 	tableParts.push(section.name);
+
+							// 	const choicesAvailable = section.table.length;
+							// 	const randomTable = Math.floor(Math.random() * choicesAvailable);
+							// 	const checkedResult = await checkString(section.table[randomTable]);
+							// 	tableParts.push(checkedResult);
+							// });
+							data.push(tableParts);
+						}
+						resolve({
+							type,
+							data
+						});
+						break;
+					default:
+						resolve({
+							type: CHOICE_TYPE.string,
+							data: [['Error', 'Unable to roll table']]
+						});
 				}
-				resolve({
-					type,
-					data
-				});
-				break;
-			default:
-				resolve({
-					type: CHOICE_TYPE.string,
-					data: [['Error', 'Unable to roll table']]
-				});
-		}
+			} catch (err) {
+				reject(err);
+			}
+		})();
 	});
 	// const found: string[] = tableResult.match(callRegex);
 	// use call name to replace, or use default
 	//
 }
 
-async function getRoll(collection: string, group: string, table: string): Promise<Choice> {
-	console.log('input', {
-		collection,
-		group,
-		table
-	});
+async function getRoll(
+	collection: string,
+	group: string,
+	table: string,
+	requireUtility: boolean = false
+): Promise<Choice | string> {
 	return new Promise((resolve, reject) => {
 		const rootCollection = masterIndex[collection];
-		console.log('rootCollection', rootCollection);
 		const isUtility = rootCollection.isUtility;
+		if (requireUtility && !isUtility) {
+			resolve(errorResponse);
+		}
 		if (rootCollection) {
 			const tableData: indexTableData = rootCollection.tablesData[group] || {
 				data: null,
@@ -100,8 +157,10 @@ async function getRoll(collection: string, group: string, table: string): Promis
 			const build = () => {
 				if (isUtility) {
 					const utility = rollUtility(tableData.data[table]);
-					console.log('rollUtility', utility);
 
+					if (requireUtility) {
+						resolve(utility);
+					}
 					resolve({
 						data: [['Utility:', utility]],
 						type: CHOICE_TYPE.string

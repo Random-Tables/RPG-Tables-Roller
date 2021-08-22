@@ -5,13 +5,35 @@
 			{
 				"id": "castle-name",
 				"name": "Castle Name",
-				"table": ["[[name/place/medieval:Name]] Castle", "[[name/place/medieval:Name]] Redoubt"],
+				"table": ["{{name/place/medieval:Name}} Castle", "{{name/place/medieval:Name}} Redoubt"],
 				"type": "simple"
 			},
 			{
 				"id": "castle-type",
 				"name": "Castle Type:",
 				"table": ["large wooden Castle", "Small hillfort"],
+				"type": "simple"
+			}
+		]
+	},
+	"test": {
+		"label": "Test multiname packet",
+		"tableSections": [
+			{
+				"id": "castle-name",
+				"name": "Castle Name",
+				"table": ["{{name/place/medieval:Name}}-{{name/place/japan:Name}} Castle"],
+				"type": "simple"
+			}
+		]
+	},
+	"testDefault": {
+		"label": "Test No collection & backup call value",
+		"tableSections": [
+			{
+				"id": "castle-name",
+				"name": "Castle Name",
+				"table": ["{{name/place/SDFD:Name}} Castle"],
 				"type": "simple"
 			}
 		]
