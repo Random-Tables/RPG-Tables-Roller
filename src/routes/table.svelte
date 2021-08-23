@@ -6,11 +6,13 @@
 	import { STATUS } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
 	import { viewsBuilt } from '$lib/stores';
+	import CollectionBar from '$lib/CollectionsBar/index.svelte';
+	import CollectionExpansion from '$lib/CollectionsBar/expansion.svelte';
 
 	let status = STATUS.UNSTARTED;
 	let masterIndex = {};
 	let view = 'all';
-	let choiceArray: Array<Choice> = [];
+	let choiceArray: Array<Choice | string> = [];
 	viewsBuilt.subscribe((value) => {
 		status = value;
 	});
@@ -23,10 +25,7 @@
 
 	function onClickTable(collection, tablesGroupKey, tableName) {
 		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString()).then((res) => {
-			// get options
-			console.log('res', res);
 			choiceArray = [...choiceArray, res];
-			console.dir('choiceArray', choiceArray);
 		});
 	}
 </script>
@@ -38,17 +37,15 @@
 <div class="content">
 	<div class="aside">
 		{#if status === STATUS.BUILT}
-			<span>Built</span><br />
-			{#each Object.keys(masterIndex) as collection}
-				<h3>Collection: {masterIndex[collection].collectionName}</h3>
-				{#each Object.keys(masterIndex[collection].tablesData) as tablesGroupKey}
-					<h4>{tablesGroupKey}</h4>
-					{#each masterIndex[collection].tablesData[tablesGroupKey].tablesList as tableName}
-						<button on:click={() => onClickTable(collection, tablesGroupKey, tableName.toString())}
-							>{tableName}</button>
-					{/each}
+			<CollectionBar>
+				{#each Object.keys(masterIndex) as collection}
+					<CollectionExpansion
+						title={masterIndex[collection].collectionName}
+						choices={masterIndex[collection].tablesData}
+						onClick={(groupkey, tableName) => onClickTable(collection, groupkey, tableName)}
+					/>
 				{/each}
-			{/each}
+			</CollectionBar>
 		{:else}
 			<b>Building indexes....</b>
 		{/if}

@@ -7,5 +7,7 @@
 		overflow: scroll;
 		display: flex;
 		flex-direction: column;
+		overflow-x: scroll;
+		overflow-y: hidden;
 	}
 </style>
