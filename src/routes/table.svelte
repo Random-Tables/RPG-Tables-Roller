@@ -35,7 +35,7 @@
 </svelte:head>
 
 <div class="content">
-	<div class="aside">
+	<div class="collections">
 		{#if status === STATUS.BUILT}
 			<CollectionBar>
 				{#each Object.keys(masterIndex) as collection}
@@ -50,8 +50,7 @@
 			<b>Building indexes....</b>
 		{/if}
 	</div>
-	<div class="main">
-		<h3>Views</h3>
+	<div class="viewer">
 		<Viewer choices={choiceArray} />
 	</div>
 </div>
@@ -62,10 +61,10 @@
 		margin: var(--column-margin-top) auto 0 auto;
 		display: flex;
 	}
-	.aside {
-		width: 50%;
+	.collections {
+		flex: 1 0 200px;
 	}
-	.main {
-		width: 50%;
+	.viewer {
+		flex: 3 1 50%;
 	}
 </style>

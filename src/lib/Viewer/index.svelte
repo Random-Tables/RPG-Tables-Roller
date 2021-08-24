@@ -18,7 +18,9 @@
 	.viewer {
 		border: 1px solid black;
 		padding: 10px;
-		margin: 10px;
-		width: calc(100% - 20px);
+		margin: 0 1rem;
+		border-radius: 5px;
+		max-height: calc(100vh - 200px);
+		overflow-x: scroll;
 	}
 </style>
