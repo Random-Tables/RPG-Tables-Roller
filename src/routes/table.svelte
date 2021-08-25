@@ -3,15 +3,19 @@
 	export const router = browser;
 	import { onMount } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
-	import { STATUS } from '$lib/enums';
+	import { STATUS, CHOICE_TYPE } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
 	import { viewsBuilt } from '$lib/stores';
 	import CollectionBar from '$lib/CollectionsBar/index.svelte';
 	import CollectionExpansion from '$lib/CollectionsBar/expansion.svelte';
+	import CategoryBar from '$lib/CategoryBar/index.svelte';
 
 	let status = STATUS.UNSTARTED;
-	let masterIndex = {};
+	let generalIndex;
+	let index;
+	let categoryList = [];
 	let view = 'all';
+	let category = 'all';
 	let choiceArray: Array<Choice | string> = [];
 	viewsBuilt.subscribe((value) => {
 		status = value;
@@ -19,14 +23,37 @@
 
 	onMount(async () => {
 		if (view === 'all') {
-			masterIndex = CollectionBuilder.getMasterIndex();
+			generalIndex = CollectionBuilder.getMGeneralIndex();
+			index = generalIndex.categories[category];
+			categoryList = Object.keys(generalIndex.categories);
 		}
 	});
 
 	function onClickTable(collection, tablesGroupKey, tableName) {
-		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString()).then((res) => {
-			choiceArray = [...choiceArray, res];
+		const isUtility = category === 'utility';
+		console.log("isUtility", isUtility);
+		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString(), isUtility).then((res) => {
+			console.log("res", res)
+			if (isUtility) {
+				choiceArray = [
+					...choiceArray,
+					{
+						data: [['Utility:', res.toString()]],
+						type: CHOICE_TYPE.string
+					}
+				];
+				console.log("1", {
+						data: [['Utility:', res.toString()]],
+						type: CHOICE_TYPE.string
+					})
+			} else {
+				choiceArray = [...choiceArray, res];
+			}
 		});
+	}
+	function onClickCategory(newCategory) {
+		category = newCategory;
+		index = generalIndex.categories[category];
 	}
 </script>
 
@@ -34,14 +61,15 @@
 	<title>Tables</title>
 </svelte:head>
 
+<CategoryBar currentCategory={category} {categoryList} onSelect={onClickCategory} />
 <div class="content">
 	<div class="collections">
-		{#if status === STATUS.BUILT}
+		{#if status === STATUS.BUILT && index}
 			<CollectionBar>
-				{#each Object.keys(masterIndex) as collection}
+				{#each Object.keys(index) as collection}
 					<CollectionExpansion
-						title={masterIndex[collection].collectionName}
-						choices={masterIndex[collection].tablesData}
+						title={index[collection].collectionName}
+						choices={index[collection].tablesData}
 						onClick={(groupkey, tableName) => onClickTable(collection, groupkey, tableName)}
 					/>
 				{/each}

@@ -9,3 +9,7 @@ export enum DATA_MODE {
 	SLOW,
 	ON_REQUEST
 }
+export enum CHOICE_TYPE {
+	string = 'string',
+	npc = 'npc'
+}

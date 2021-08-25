@@ -6,7 +6,12 @@ const stringReturnedValues = 3;
 let status = STATUS.UNSTARTED;
 // let dataMode = DATA_MODE.SLOW;
 const callRegex = /\{{(.*?)\}}/g; // finds all text covered by {{example/roll:default}}
-const masterIndex = {};
+const generalIndex = {
+	categories: {
+		all: {},
+		utility: {}
+	}
+};
 const errorResponse = {
 	data: [['Error', 'Error building table']],
 	type: 0
@@ -29,10 +34,18 @@ async function buildIndexData() {
 				if (collections) {
 					await collections.forEach(async (element, index) => {
 						const tableIndexData: tableIndex = await Files.getCollectionIndex(element.path);
-						masterIndex[tableIndexData.collectionID] = tableIndexData;
-						masterIndex[tableIndexData.collectionID].tablesData = {};
+						// add to category
+						const category = tableIndexData.category.toLowerCase();
+						if (category !== 'utility') {
+							generalIndex.categories.all[tableIndexData.collectionID] = tableIndexData;
+						}
+						if (!generalIndex.categories[category]) {
+							generalIndex.categories[category] = {};
+						}
+						generalIndex.categories[category][tableIndexData.collectionID] = tableIndexData;
+						generalIndex.categories[category][tableIndexData.collectionID].tablesData = {};
 						Object.keys(tableIndexData.tables).forEach(function (key: string) {
-							masterIndex[tableIndexData.collectionID].tablesData[key] = {
+							generalIndex.categories[category][tableIndexData.collectionID].tablesData[key] = {
 								dataReady: false,
 								data: null,
 								tablesList: tableIndexData.tables[key]
@@ -143,13 +156,14 @@ async function getRoll(
 	collection: string,
 	group: string,
 	table: string,
-	requireUtility: boolean = false
+	isUtility: boolean = false
 ): Promise<Choice | string> {
 	return new Promise((resolve, reject) => {
-		const rootCollection = masterIndex[collection];
-		const isUtility = rootCollection.isUtility;
-		if (requireUtility && !isUtility) {
-			resolve(errorResponse);
+		let rootCollection;
+		if (isUtility) {
+			rootCollection = generalIndex.categories.utility[collection];
+		} else {
+			rootCollection = generalIndex.categories.all[collection];
 		}
 		if (rootCollection) {
 			const tableData: indexTableData = rootCollection.tablesData[group] || {
@@ -161,14 +175,7 @@ async function getRoll(
 			const build = () => {
 				if (isUtility) {
 					const utility = rollUtility(tableData.data[table]);
-
-					if (requireUtility) {
-						resolve(utility);
-					}
-					resolve({
-						data: [['Utility:', utility]],
-						type: CHOICE_TYPE.string
-					});
+					resolve(utility);
 				} else {
 					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string).then((rollData) => {
 						resolve(rollData);
@@ -211,7 +218,7 @@ export default {
 	getStatus(): STATUS {
 		return status;
 	},
-	getMasterIndex(): object {
-		return masterIndex;
+	getMGeneralIndex(): object {
+		return generalIndex;
 	}
 };
