@@ -70,10 +70,16 @@ async function checkString(resultString: string): Promise<string> {
 	if (found) {
 		function getStringRandom(item) {
 			return new Promise((res, rej) => {
-				const collectionCall = item.substring(2, item.length - 2).split(':')[0]; // removes {{}} & backup option
+				const collectionString = item.substring(2, item.length - 2).split(':');
+				const collectionCall = collectionString[0]; // removes {{}} & backup option
 				const tableAddress = collectionCall.split('/');
+
 				getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
-					res(response);
+					if(response === "") {
+						res(collectionString[1]);
+					} else {
+						res(response);
+					}
 				});
 			});
 		}
@@ -182,7 +188,11 @@ async function getRoll(
 				});
 			}
 		} else {
-			resolve(errorResponse);
+			if(isUtility) {
+				resolve("");
+			} else {
+				resolve(errorResponse);
+			}
 		}
 	});
 }

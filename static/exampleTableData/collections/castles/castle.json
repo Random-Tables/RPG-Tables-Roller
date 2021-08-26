@@ -5,7 +5,7 @@
 			{
 				"id": "castle-name",
 				"name": "Castle Name",
-				"table": ["{{name/place/medieval:Name}} Castle", "{{name/place/medieval:Name}} Redoubt"],
+				"table": ["{{name/place/medieval:A}} Castle", "{{name/place/medieval:A}} Redoubt"],
 				"type": "simple"
 			},
 			{
@@ -22,7 +22,7 @@
 			{
 				"id": "castle-name",
 				"name": "Castle Name",
-				"table": ["{{name/place/medieval:Name}}-{{name/place/japan:Name}} Castle"],
+				"table": ["{{name/place/medieval:Unknown}}-{{name/place/japan:Some sort of}} Castle"],
 				"type": "simple"
 			}
 		]
