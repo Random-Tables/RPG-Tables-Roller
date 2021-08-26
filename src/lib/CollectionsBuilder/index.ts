@@ -121,14 +121,6 @@ async function rollTable(
 								const checkedResult = await checkString(section.table[randomTable]);
 								tableParts.push(checkedResult);
 							});
-							// tableSections.forEach(async (section) => {
-							// 	tableParts.push(section.name);
-
-							// 	const choicesAvailable = section.table.length;
-							// 	const randomTable = Math.floor(Math.random() * choicesAvailable);
-							// 	const checkedResult = await checkString(section.table[randomTable]);
-							// 	tableParts.push(checkedResult);
-							// });
 							data.push(tableParts);
 						}
 						resolve({
@@ -147,9 +139,6 @@ async function rollTable(
 			}
 		})();
 	});
-	// const found: string[] = tableResult.match(callRegex);
-	// use call name to replace, or use default
-	//
 }
 
 async function getRoll(
@@ -204,9 +193,14 @@ export default {
 		return new Promise((resolve, reject) => {
 			if (status === STATUS.UNSTARTED) {
 				status = STATUS.STARTED;
-				buildIndexData().then(function () {
-					resolve(status);
-				});
+
+				(async () => {
+					await FileSys.initRootDir();
+					await FileSys.initRootFiles();
+					buildIndexData().then(function () {
+						resolve(status);
+					});
+				})();
 			} else {
 				resolve(status);
 			}

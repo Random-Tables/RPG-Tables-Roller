@@ -31,9 +31,7 @@
 
 	function onClickTable(collection, tablesGroupKey, tableName) {
 		const isUtility = category === 'utility';
-		console.log("isUtility", isUtility);
 		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString(), isUtility).then((res) => {
-			console.log("res", res)
 			if (isUtility) {
 				choiceArray = [
 					...choiceArray,
@@ -42,10 +40,6 @@
 						type: CHOICE_TYPE.string
 					}
 				];
-				console.log("1", {
-						data: [['Utility:', res.toString()]],
-						type: CHOICE_TYPE.string
-					})
 			} else {
 				choiceArray = [...choiceArray, res];
 			}

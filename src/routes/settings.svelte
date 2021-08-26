@@ -8,10 +8,8 @@
 	function onUpdateInput(key, newValue) {
 		const newObj = Object.assign(settingsStatuslocal, {});
 		newObj[key] = newValue;
-		console.log('newObj', newObj);
 		settingsStatus.update(() => newObj);
 	}
-	console.log('settingsStatuslocal', settingsStatuslocal);
 </script>
 
 <div>
