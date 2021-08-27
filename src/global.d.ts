@@ -48,7 +48,8 @@ interface ChoiceCall {
 	tableName: string;
 }
 interface Choice {
-	data: Array<Array<String>>;
+	data?: Array<Array<string>>;
+	utility?: string;
 	type: CHOICE_TYPE;
 	call: ChoiceCall;
 }

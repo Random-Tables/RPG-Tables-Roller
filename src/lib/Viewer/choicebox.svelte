@@ -29,10 +29,12 @@
 			{/each}
 		</div>
 	{/if}
-	<div class="roll-options">
-		<button on:click={() => clearChoiceItem(index)}>X</button>
-		<button  on:click={() => newChoiceRoll(false, choice.call, index)}>+</button>
-	</div>
+	{#if choice.data.length > 1}
+		<div class="roll-options">
+			<button on:click={() => clearChoiceItem(index)}>X</button>
+			<button on:click={() => newChoiceRoll(false, choice.call, index)}>+</button>
+		</div>
+	{/if}
 </div>
 
 <style>

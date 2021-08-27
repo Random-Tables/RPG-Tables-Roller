@@ -37,7 +37,7 @@
 					choiceArray = [
 						...choiceArray,
 						{
-							data: [['Utility:', res.toString()]],
+							data: [['Utility:', res.utility]],
 							call: {
 								collection,
 								tablesGroupKey,

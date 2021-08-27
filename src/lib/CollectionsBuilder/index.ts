@@ -76,10 +76,10 @@ async function checkString(resultString: string): Promise<string> {
 				const tableAddress = collectionCall.split('/');
 
 				getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
-					if (response === '') {
+					if (response.utility === '') {
 						res(collectionString[1]);
 					} else {
-						res(response);
+						res(response.utility);
 					}
 				});
 			});
@@ -158,6 +158,11 @@ async function getRoll(
 	isUtility: boolean = false,
 	resultsNum?: number
 ): Promise<Choice> {
+	const call = {
+		collection,
+		tablesGroupKey: group,
+		tableName: table
+	};
 	return new Promise((resolve, reject) => {
 		let rootCollection;
 		if (isUtility) {
@@ -175,15 +180,17 @@ async function getRoll(
 			const build = () => {
 				if (isUtility) {
 					const utility = rollUtility(tableData.data[table]);
-					resolve(utility);
-				} else {
-					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string, {
-						collection,
-						tablesGroupKey: group,
-						tableName: table
-					}, resultsNum).then((rollData) => {
-						resolve(rollData);
+					resolve({
+						utility: utility,
+						type: CHOICE_TYPE.string,
+						call
 					});
+				} else {
+					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string, call, resultsNum).then(
+						(rollData) => {
+							resolve(rollData);
+						}
+					);
 				}
 			};
 			if (tableData.dataReady) {
@@ -198,7 +205,11 @@ async function getRoll(
 			}
 		} else {
 			if (isUtility) {
-				resolve('');
+				resolve({
+					utility: '',
+					type: CHOICE_TYPE.string,
+					call
+				});
 			} else {
 				resolve(errorResponse);
 			}
