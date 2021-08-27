@@ -5,8 +5,6 @@
 	export let title: string;
 	export let choices;
 	export let onClick: Function;
-
-	console.log('>>choices', choices);
 </script>
 
 <div class="title"><h2>{title}</h2></div>

@@ -14,6 +14,7 @@ const generalIndex = {
 };
 const errorResponse = {
 	data: [['Error', 'Error building table']],
+	call: { collection: '', tablesGroupKey: '', tableName: '' },
 	type: 0
 };
 enum CHOICE_TYPE {
@@ -75,7 +76,7 @@ async function checkString(resultString: string): Promise<string> {
 				const tableAddress = collectionCall.split('/');
 
 				getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
-					if(response === "") {
+					if (response === '') {
 						res(collectionString[1]);
 					} else {
 						res(response);
@@ -87,7 +88,7 @@ async function checkString(resultString: string): Promise<string> {
 		const allCalls = Promise.all(found.map(getStringRandom));
 		const stringReplacements = await allCalls;
 		var iter = 0;
-		function myReplace(a): string {
+		function myReplace(): string {
 			const val = iter;
 			iter++;
 			return stringReplacements[val] + '';
@@ -108,6 +109,7 @@ function rollUtility(utility: tableUtilityItem): string {
 async function rollTable(
 	tableSections: tableSection[],
 	type: CHOICE_TYPE,
+	call: ChoiceCall,
 	resultsNum?: number
 ): Promise<Choice> {
 	const returnNum = resultsNum || stringReturnedValues;
@@ -131,12 +133,14 @@ async function rollTable(
 						}
 						resolve({
 							type,
+							call,
 							data
 						});
 						break;
 					default:
 						resolve({
 							type: CHOICE_TYPE.string,
+							call: errorResponse.call,
 							data: [['Error', 'Unable to roll table']]
 						});
 				}
@@ -151,8 +155,9 @@ async function getRoll(
 	collection: string,
 	group: string,
 	table: string,
-	isUtility: boolean = false
-): Promise<Choice | string> {
+	isUtility: boolean = false,
+	resultsNum?: number
+): Promise<Choice> {
 	return new Promise((resolve, reject) => {
 		let rootCollection;
 		if (isUtility) {
@@ -172,7 +177,11 @@ async function getRoll(
 					const utility = rollUtility(tableData.data[table]);
 					resolve(utility);
 				} else {
-					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string).then((rollData) => {
+					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string, {
+						collection,
+						tablesGroupKey: group,
+						tableName: table
+					}, resultsNum).then((rollData) => {
 						resolve(rollData);
 					});
 				}
@@ -188,13 +197,16 @@ async function getRoll(
 				});
 			}
 		} else {
-			if(isUtility) {
-				resolve("");
+			if (isUtility) {
+				resolve('');
 			} else {
 				resolve(errorResponse);
 			}
 		}
 	});
+}
+async function getRollWithCall(call: ChoiceCall, isUtility: boolean, resultsNum?: number) {
+	return getRoll(call.collection, call.tablesGroupKey, call.tableName, isUtility, resultsNum);
 }
 
 export default {
@@ -219,6 +231,7 @@ export default {
 	rollTable,
 	rollUtility,
 	getRoll,
+	getRollWithCall,
 	getStatus(): STATUS {
 		return status;
 	},

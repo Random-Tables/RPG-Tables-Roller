@@ -2,17 +2,20 @@
 	import ChoiceBox from './choicebox.svelte';
 
 	export let choices: Array<Choice>;
+	export let clearChoices;
+	export let clearChoiceItem;
+	export let removeChoiceRoll;
+	export let newChoiceRoll;
 </script>
 
 <div class="viewer">
-	{#each choices as choice}
-		<ChoiceBox {choice} />
+	{#each choices as choice, index}
+		<ChoiceBox {choice} {index} {clearChoiceItem} {removeChoiceRoll} {newChoiceRoll} />
 	{/each}
-
-	{#if choices.length > 1}
-		<button>Clear All</button>
-	{/if}
 </div>
+{#if choices.length > 1}
+	<button on:click={clearChoices}>Clear All</button>
+{/if}
 
 <style>
 	.viewer {

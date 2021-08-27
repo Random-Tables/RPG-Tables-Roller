@@ -16,7 +16,7 @@
 	let categoryList = [];
 	let view = 'all';
 	let category = 'all';
-	let choiceArray: Array<Choice | string> = [];
+	let choiceArray: Array<Choice> = [];
 	viewsBuilt.subscribe((value) => {
 		status = value;
 	});
@@ -31,24 +31,53 @@
 
 	function onClickTable(collection, tablesGroupKey, tableName) {
 		const isUtility = category === 'utility';
-		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString(), isUtility).then((res) => {
-			if (isUtility) {
-				choiceArray = [
-					...choiceArray,
-					{
-						data: [['Utility:', res.toString()]],
-						type: CHOICE_TYPE.string
-					}
-				];
-			} else {
-				choiceArray = [...choiceArray, res];
+		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString(), isUtility).then(
+			(res) => {
+				if (isUtility) {
+					choiceArray = [
+						...choiceArray,
+						{
+							data: [['Utility:', res.toString()]],
+							call: {
+								collection,
+								tablesGroupKey,
+								tableName
+							},
+							type: CHOICE_TYPE.string
+						}
+					];
+				} else {
+					choiceArray = [...choiceArray, res];
+				}
 			}
-		});
+		);
 	}
 	function onClickCategory(newCategory) {
 		category = newCategory;
 		index = generalIndex.categories[category];
 	}
+	const clearChoices = () => {
+		choiceArray = [];
+	};
+	const clearChoiceItem = (index) => {
+		choiceArray = choiceArray.filter((item, i) => i !== index);
+	};
+	const removeChoiceRoll = (itemIndex, subItemIndex) => {
+		const newChoiceArray = choiceArray.slice();
+		newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
+		choiceArray = newChoiceArray;
+	};
+	const newChoiceRoll = (isReRoll, call: ChoiceCall, itemIndex, subItemIndex?) => {
+		const newChoiceArray = choiceArray.slice();
+		CollectionBuilder.getRollWithCall(call, false, 1).then((res) => {
+			if (isReRoll) {
+				newChoiceArray[itemIndex].data[subItemIndex] = res.data[0];
+			} else {
+				newChoiceArray[itemIndex].data.push(res.data[0]);
+			}
+			choiceArray = newChoiceArray;
+		});
+	};
 </script>
 
 <svelte:head>
@@ -73,7 +102,13 @@
 		{/if}
 	</div>
 	<div class="viewer">
-		<Viewer choices={choiceArray} />
+		<Viewer
+			choices={choiceArray}
+			{clearChoices}
+			{clearChoiceItem}
+			{removeChoiceRoll}
+			{newChoiceRoll}
+		/>
 	</div>
 </div>
 

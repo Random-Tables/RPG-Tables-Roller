@@ -42,10 +42,15 @@ type indexTableData = {
 	dataReady: boolean;
 	tableList: string[];
 };
-
+interface ChoiceCall {
+	collection: string;
+	tablesGroupKey: string;
+	tableName: string;
+}
 interface Choice {
 	data: Array<Array<String>>;
 	type: CHOICE_TYPE;
+	call: ChoiceCall;
 }
 
 enum CHOICE_TYPE {
