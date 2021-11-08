@@ -63,9 +63,13 @@
 		choiceArray = choiceArray.filter((item, i) => i !== index);
 	};
 	const removeChoiceRoll = (itemIndex, subItemIndex) => {
-		const newChoiceArray = choiceArray.slice();
-		newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
-		choiceArray = newChoiceArray;
+		if (choiceArray[itemIndex].data.length === 1) {
+			clearChoiceItem(itemIndex);
+		} else {
+			const newChoiceArray = choiceArray.slice();
+			newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
+			choiceArray = newChoiceArray;
+		}
 	};
 	const newChoiceRoll = (isReRoll, call: ChoiceCall, itemIndex, subItemIndex?) => {
 		const newChoiceArray = choiceArray.slice();

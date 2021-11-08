@@ -67,8 +67,8 @@ async function buildIndexData() {
 	});
 }
 async function checkString(resultString: string): Promise<string> {
-	const found = resultString.match(callRegex);
-	if (found) {
+	const externalCallFound = resultString.match(callRegex);
+	if (externalCallFound) {
 		function getStringRandom(item) {
 			return new Promise((res, rej) => {
 				const collectionString = item.substring(2, item.length - 2).split(':');
@@ -85,7 +85,7 @@ async function checkString(resultString: string): Promise<string> {
 			});
 		}
 
-		const allCalls = Promise.all(found.map(getStringRandom));
+		const allCalls = Promise.all(externalCallFound.map(getStringRandom));
 		const stringReplacements = await allCalls;
 		var iter = 0;
 		function myReplace(): string {
@@ -109,32 +109,27 @@ function rollUtility(utility: tableUtilityItem): string {
 async function rollTable(
 	tableSections: tableSection[],
 	type: CHOICE_TYPE,
-	call: ChoiceCall,
-	resultsNum?: number
+	call: ChoiceCall
 ): Promise<Choice> {
-	const returnNum = resultsNum || stringReturnedValues;
+	// const returnNum = resultsNum || stringReturnedValues;
 	return new Promise((resolve, reject) => {
 		(async () => {
 			try {
 				switch (type) {
 					case CHOICE_TYPE.string:
-						const data = [];
-						for (let i = 0; i < returnNum; i++) {
-							const tableParts = [];
-							await asyncForEach(tableSections, async (section) => {
-								tableParts.push(section.name);
+						const result = [];
+						await asyncForEach(tableSections, async (section) => {
+							result.push(section.name);
 
-								const choicesAvailable = section.table.length;
-								const randomTable = Math.floor(Math.random() * choicesAvailable);
-								const checkedResult = await checkString(section.table[randomTable]);
-								tableParts.push(checkedResult);
-							});
-							data.push(tableParts);
-						}
+							const choicesAvailable = section.table.length;
+							const randomTable = Math.floor(Math.random() * choicesAvailable);
+							const checkedResult = await checkString(section.table[randomTable]);
+							result.push(checkedResult);
+						});
 						resolve({
 							type,
 							call,
-							data
+							data: [result]
 						});
 						break;
 					default:
@@ -155,8 +150,7 @@ async function getRoll(
 	collection: string,
 	group: string,
 	table: string,
-	isUtility: boolean = false,
-	resultsNum?: number
+	isUtility: boolean = false
 ): Promise<Choice> {
 	const call = {
 		collection,
@@ -186,7 +180,7 @@ async function getRoll(
 						call
 					});
 				} else {
-					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string, call, resultsNum).then(
+					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string, call).then(
 						(rollData) => {
 							resolve(rollData);
 						}
@@ -216,29 +210,33 @@ async function getRoll(
 		}
 	});
 }
-async function getRollWithCall(call: ChoiceCall, isUtility: boolean, resultsNum?: number) {
-	return getRoll(call.collection, call.tablesGroupKey, call.tableName, isUtility, resultsNum);
+async function getRollWithCall(call: ChoiceCall, isUtility: boolean) {
+	return getRoll(call.collection, call.tablesGroupKey, call.tableName, isUtility);
 }
 
-export default {
-	iniateBuild(): Promise<STATUS> {
-		FileSys.setup();
-		return new Promise((resolve, reject) => {
-			if (status === STATUS.UNSTARTED) {
-				status = STATUS.STARTED;
+async function iniateBuild(): Promise<STATUS> {
+	FileSys.setup();
+	return new Promise((resolve, reject) => {
+		if (status === STATUS.UNSTARTED) {
+			status = STATUS.STARTED;
 
-				(async () => {
-					await FileSys.initRootDir();
-					await FileSys.initRootFiles();
-					buildIndexData().then(function () {
-						resolve(status);
-					});
-				})();
-			} else {
-				resolve(status);
-			}
-		});
-	},
+			(async () => {
+				await FileSys.initRootDir();
+				await FileSys.initRootFiles();
+				buildIndexData().then(function () {
+					resolve(status);
+				});
+			})();
+		} else {
+			resolve(status);
+		}
+	});
+}
+
+// EXPORT FUNCTIONS
+
+export default {
+	iniateBuild,
 	rollTable,
 	rollUtility,
 	getRoll,

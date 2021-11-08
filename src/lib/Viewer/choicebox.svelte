@@ -8,6 +8,7 @@
 
 <div class="choice">
 	{#if choice.type === 'string'}
+		{@debug choice}
 		<div class="string-wrap">
 			{#each choice.data as values, rollIndex}
 				<div class="string">
@@ -29,12 +30,12 @@
 			{/each}
 		</div>
 	{/if}
-	{#if choice.data.length > 1}
-		<div class="roll-options">
+	<div class="roll-options">
+		<button on:click={() => newChoiceRoll(false, choice.call, index)}>+</button>
+		{#if choice.data.length > 1}
 			<button on:click={() => clearChoiceItem(index)}>X</button>
-			<button on:click={() => newChoiceRoll(false, choice.call, index)}>+</button>
-		</div>
-	{/if}
+		{/if}
+	</div>
 </div>
 
 <style>
