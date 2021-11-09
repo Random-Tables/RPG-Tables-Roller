@@ -8,7 +8,6 @@
 
 <div class="choice">
 	{#if choice.type === 'string'}
-		{@debug choice}
 		<div class="string-wrap">
 			{#each choice.data as values, rollIndex}
 				<div class="string">

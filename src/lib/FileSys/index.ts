@@ -9,9 +9,29 @@ const collectionsFolder = 'Collections';
 const readmePath = '/README.txt';
 const castlesIndex = '/Collections/castles';
 
+function waitforme(milisec) {
+    return new Promise(resolve => {
+        setTimeout(() => { resolve('') }, milisec);
+    })
+}
+
 export default {
-	setup: (): void => {
-		fs = window.__TAURI__.fs;
+	setup: async (): Promise<void>  => {
+		console.log("window");
+		if(window) {
+			fs = window.__TAURI__.fs;
+			return;
+		}
+		let windowSet = false;
+		while(!windowSet) {
+			if(window) {
+				fs = window.__TAURI__.fs;
+				return;
+			} else {
+				await waitforme(500);
+				windowSet = true;
+			}
+		}
 	},
 	initRootFiles: async (): Promise<void> => {
 		return new Promise((resolve, reject) => {
