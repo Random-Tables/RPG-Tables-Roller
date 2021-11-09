@@ -4,5 +4,6 @@
 	"category": "Place",
 	"isUtility": false,
 	"tags": ["place", "medieval", "low-fantasy"],
-	"tables": { "castle": ["medieval"], "castle-japan": ["japanese"] }
+	"tables": { "castle": ["medieval", "test", "testDefault"], "castle-japan": ["japanese"] },
+	"utilityTables": { "castle-name": ["medieval"] }
 }

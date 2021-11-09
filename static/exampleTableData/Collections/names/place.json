@@ -8,5 +8,10 @@
 		"id": "castle-name",
 		"name": "Castle Name:",
 		"table": ["Himejo", "Yurijo", "Kannoji"]
+	},
+	"nest": {
+		"id": "nest-name",
+		"name": "Castle Name:",
+		"table": ["{{name/place/japan:A}}-{{name/place/medieval:B}}", "Yurijo", "Kannoji"]
 	}
 }

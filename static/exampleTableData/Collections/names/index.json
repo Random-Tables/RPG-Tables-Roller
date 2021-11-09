@@ -4,5 +4,5 @@
 	"category": "Utility",
 	"isUtility": true,
 	"tags": ["names", "medieval", "low-fantasy"],
-	"tables": { "place": ["medieval", "japan"] }
+	"tables": { "place": ["medieval", "japan", "nest"] }
 }
