@@ -1,7 +1,7 @@
 import stringData from './defaultData';
 
 var fs = undefined;
-if (window !== undefined) {
+if (typeof window !== undefined) {
 	fs = window.__TAURI__.fs;
 }
 const rootFolder = 'Fantasy-Tables';
@@ -17,8 +17,7 @@ function waitforme(milisec) {
 
 export default {
 	setup: async (): Promise<void>  => {
-		console.log("window");
-		if(window) {
+		if(typeof window !== undefined) {
 			fs = window.__TAURI__.fs;
 			return;
 		}

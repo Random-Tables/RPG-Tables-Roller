@@ -1,6 +1,7 @@
 import Files from '$lib/FileSys/index';
 import { STATUS } from '$lib/enums';
 import FileSys from '$lib/FileSys/index';
+let debug = true;
 
 const stringReturnedValues = 3;
 let status = STATUS.UNSTARTED;
@@ -53,6 +54,7 @@ async function buildIndexData() {
 							};
 						});
 					});
+					if (debug) console.log('generalIndex', generalIndex);
 					status = STATUS.BUILT;
 					resolve();
 				} else {
@@ -68,14 +70,17 @@ async function buildIndexData() {
 }
 async function checkString(resultString: string): Promise<string> {
 	const externalCallFound = resultString.match(callRegex);
+	if (debug) console.log('checkString--externalCallFound', externalCallFound);
 	if (externalCallFound) {
 		function getStringRandom(item) {
 			return new Promise((res, rej) => {
 				const collectionString = item.substring(2, item.length - 2).split(':');
 				const collectionCall = collectionString[0]; // removes {{}} & backup option
 				const tableAddress = collectionCall.split('/');
+				if (debug) console.log('checkString--tableAddress', tableAddress);
 
 				getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
+					if (debug) console.log('checkString--getRoll-response', response);
 					if (response.utility === '') {
 						res(collectionString[1]);
 					} else {
@@ -93,6 +98,7 @@ async function checkString(resultString: string): Promise<string> {
 			iter++;
 			return stringReplacements[val] + '';
 		}
+		if (debug) console.log('stringReplacements', stringReplacements);
 
 		var newString = resultString;
 		return newString.replace(callRegex, myReplace);
@@ -101,10 +107,16 @@ async function checkString(resultString: string): Promise<string> {
 	}
 }
 
-function rollUtility(utility: tableUtilityItem): string {
-	const choicesAvailable = utility.table.length;
-	const randomTable = Math.floor(Math.random() * choicesAvailable);
-	return utility.table[randomTable];
+function rollUtility(utility: tableUtilityItem): Promise<string> {
+	return new Promise((resolve, reject) => {
+		(async () => {
+			const choicesAvailable = utility.table.length;
+			const randomTable = Math.floor(Math.random() * choicesAvailable);
+			const checkedResult = await checkString(utility.table[randomTable]);
+			// return checkedResult;
+			resolve(checkedResult);
+		})();
+	});
 }
 async function rollTable(
 	tableSections: tableSection[],
@@ -152,6 +164,7 @@ async function getRoll(
 	table: string,
 	isUtility: boolean = false
 ): Promise<Choice> {
+	if (debug) console.log('getRoll--isUtility', isUtility);
 	const call = {
 		collection,
 		tablesGroupKey: group,
@@ -164,24 +177,31 @@ async function getRoll(
 		} else {
 			rootCollection = generalIndex.categories.all[collection];
 		}
+		if (debug) console.log('getRoll--rootCollection', rootCollection);
 		if (rootCollection) {
 			const tableData: indexTableData = rootCollection.tablesData[group] || {
 				data: null,
 				dataReady: false,
 				tableList: null
 			};
+			if (debug) console.log('getRoll--tableData', tableData);
 
 			const build = () => {
 				if (isUtility) {
-					const utility = rollUtility(tableData.data[table]);
-					resolve({
-						utility: utility,
-						type: CHOICE_TYPE.string,
-						call
-					});
+					rollUtility(tableData.data[table])
+						.then((rollResult) => {
+							if (debug) console.log('rollUtility-res', rollResult);
+							resolve({
+								utility: rollResult,
+								type: CHOICE_TYPE.string,
+								call
+							});
+						})
+						.catch((err) => console.error(err));
 				} else {
 					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string, call).then(
 						(rollData) => {
+							if (debug) console.log('rollData', rollData);
 							resolve(rollData);
 						}
 					);
@@ -198,6 +218,7 @@ async function getRoll(
 				});
 			}
 		} else {
+			if (debug) console.log('getRoll--root collection not found');
 			if (isUtility) {
 				resolve({
 					utility: '',
@@ -215,7 +236,7 @@ async function getRollWithCall(call: ChoiceCall, isUtility: boolean) {
 }
 
 async function iniateBuild(): Promise<STATUS> {
-	FileSys.setup();
+	await FileSys.setup();
 	return new Promise((resolve, reject) => {
 		if (status === STATUS.UNSTARTED) {
 			status = STATUS.STARTED;

@@ -72,12 +72,21 @@
 		}
 	};
 	const newChoiceRoll = (isReRoll, call: ChoiceCall, itemIndex, subItemIndex?) => {
+		const isUtility = category === 'utility';
 		const newChoiceArray = choiceArray.slice();
-		CollectionBuilder.getRollWithCall(call, false, 1).then((res) => {
+		CollectionBuilder.getRollWithCall(call, isUtility).then((res) => {
 			if (isReRoll) {
-				newChoiceArray[itemIndex].data[subItemIndex] = res.data[0];
+				if (isUtility) {
+					newChoiceArray[itemIndex].data[subItemIndex] = ['Utility:', res.utility];
+				} else {
+					newChoiceArray[itemIndex].data[subItemIndex] = res.data[0];
+				}
 			} else {
-				newChoiceArray[itemIndex].data.push(res.data[0]);
+				if (isUtility) {
+					newChoiceArray[itemIndex].data.push(['Utility:', res.utility]);
+				} else {
+					newChoiceArray[itemIndex].data.push(res.data[0]);
+				}
 			}
 			choiceArray = newChoiceArray;
 		});
