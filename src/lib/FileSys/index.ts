@@ -2,28 +2,33 @@ import stringData from './defaultData';
 
 var fs = undefined;
 if (typeof window !== undefined) {
+	console.log('window', window);
 	fs = window.__TAURI__.fs;
 }
+const TauriDocumentKey = 'Document';
 const rootFolder = 'Fantasy-Tables';
 const collectionsFolder = 'Collections';
+const projectsFolder = 'Projects';
 const readmePath = '/README.txt';
 const castlesIndex = '/Collections/castles';
 
 function waitforme(milisec) {
-    return new Promise(resolve => {
-        setTimeout(() => { resolve('') }, milisec);
-    })
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve('');
+		}, milisec);
+	});
 }
 
 export default {
-	setup: async (): Promise<void>  => {
-		if(typeof window !== undefined) {
+	setup: async (): Promise<void> => {
+		if (typeof window !== undefined) {
 			fs = window.__TAURI__.fs;
 			return;
 		}
 		let windowSet = false;
-		while(!windowSet) {
-			if(window) {
+		while (!windowSet) {
+			if (window) {
 				fs = window.__TAURI__.fs;
 				return;
 			} else {
@@ -38,7 +43,7 @@ export default {
 				const fileChecks = Promise.all([
 					fs
 						.readTextFile(rootFolder + readmePath, {
-							dir: window.__TAURI__.fs.BaseDirectory['Document']
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 						})
 						.then(
 							function hasFolder() {
@@ -50,7 +55,19 @@ export default {
 						),
 					fs
 						.readDir(rootFolder + '/' + collectionsFolder, {
-							dir: window.__TAURI__.fs.BaseDirectory['Document']
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+						})
+						.then(
+							function hasFolder() {
+								return true;
+							},
+							function folderMissing() {
+								return false;
+							}
+						),
+					fs
+						.readDir(rootFolder + '/' + projectsFolder, {
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 						})
 						.then(
 							function hasFolder() {
@@ -65,6 +82,7 @@ export default {
 				// Check missing readme & collections folder and add if not yet created
 				const ReadMeExists = fileCheckResults[0];
 				const CollectionsExists = fileCheckResults[1];
+				const projectsExists = fileCheckResults[2];
 				const fixDirectory = Promise.all([
 					ReadMeExists ||
 						fs
@@ -74,7 +92,7 @@ export default {
 									contents: stringData.Readme
 								},
 								{
-									dir: window.__TAURI__.fs.BaseDirectory['Document']
+									dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 								}
 							)
 							.then(
@@ -85,13 +103,26 @@ export default {
 									return false;
 								}
 							),
-					CollectionsExists[1] === false &&
+					CollectionsExists ||
 						fs
 							.createDir(rootFolder + '/' + collectionsFolder, {
-								dir: window.__TAURI__.fs.BaseDirectory['Document']
+								dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 							})
 							.then(
 								function createdCollections(result) {
+									return true;
+								},
+								function createCollectionsFailed() {
+									return false;
+								}
+							),
+					projectsExists ||
+						fs
+							.createDir(rootFolder + '/' + projectsFolder, {
+								dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+							})
+							.then(
+								function createdCollections() {
 									return true;
 								},
 								function createCollectionsFailed() {
@@ -103,7 +134,7 @@ export default {
 				if (fileCheckResults[1] === false) {
 					// If no collections folder add in some example data
 					await fs.createDir(rootFolder + castlesIndex, {
-						dir: window.__TAURI__.fs.BaseDirectory['Document']
+						dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 					});
 					await fs.writeFile(
 						{
@@ -111,7 +142,7 @@ export default {
 							contents: stringData.castlesIndex
 						},
 						{
-							dir: window.__TAURI__.fs.BaseDirectory['Document']
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 						}
 					);
 					await fs.writeFile(
@@ -120,7 +151,7 @@ export default {
 							contents: stringData.castlesMain
 						},
 						{
-							dir: window.__TAURI__.fs.BaseDirectory['Document']
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 						}
 					);
 
@@ -130,7 +161,7 @@ export default {
 							contents: stringData.castlesJapan
 						},
 						{
-							dir: window.__TAURI__.fs.BaseDirectory['Document']
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 						}
 					);
 				}
@@ -141,14 +172,14 @@ export default {
 	initRootDir: async (): Promise<void> => {
 		return new Promise((resolve, reject) => {
 			fs.readDir(rootFolder, {
-				dir: window.__TAURI__.fs.BaseDirectory['Document']
+				dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 			}).then(
 				function (result) {
 					resolve();
 				},
 				function (err) {
 					fs.createDir(rootFolder, {
-						dir: window.__TAURI__.fs.BaseDirectory['Document']
+						dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 					});
 					reject();
 				}
@@ -158,7 +189,7 @@ export default {
 	getCollections: async (): Promise<FileEntry[]> => {
 		return new Promise((resolve, reject) => {
 			fs.readDir(rootFolder + '/' + collectionsFolder, {
-				dir: window.__TAURI__.fs.BaseDirectory['Document']
+				dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 			}).then(
 				function (result) {
 					resolve(result);
