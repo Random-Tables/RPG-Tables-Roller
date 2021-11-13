@@ -12,6 +12,6 @@
 	"nest": {
 		"id": "nest-name",
 		"name": "Castle Name:",
-		"table": ["{{name/place/japan:A}}-{{name/place/medieval:B}}", "Yurijo", "Kannoji"]
+		"table": ["{{names/place/japan:A}}-{{names/place/medieval:B}}", "Yurijo", "Kannoji"]
 	}
 }

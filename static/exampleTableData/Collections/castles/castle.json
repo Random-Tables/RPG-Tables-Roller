@@ -5,7 +5,7 @@
 			{
 				"id": "castle-name",
 				"name": "Castle Name",
-				"table": ["{{name/place/medieval:A}} Castle", "{{name/place/medieval:A}} Redoubt"],
+				"table": ["{{names/place/medieval:A}} Castle", "{{names/place/medieval:A}} Redoubt"],
 				"type": "simple"
 			},
 			{
@@ -22,18 +22,29 @@
 			{
 				"id": "castle-name",
 				"name": "Castle Name",
-				"table": ["{{name/place/medieval:Unknown}}-{{name/place/japan:Some sort of}} Castle"],
+				"table": ["{{names/place/medieval:Unknown}}-{{names/place/japan:Some sort of}} Castle"],
 				"type": "simple"
 			}
 		]
 	},
-	"testDefault": {
+	"testMultiUtil": {
+		"label": "Test multiutil packet",
+		"tableSections": [
+			{
+				"id": "castle-name",
+				"name": "Castle Name",
+				"table": ["{{names/place/nest:failed}} Multiutil"],
+				"type": "simple"
+			}
+		]
+	},
+	"testBroken": {
 		"label": "Test No collection & backup call value",
 		"tableSections": [
 			{
 				"id": "castle-name",
 				"name": "Castle Name",
-				"table": ["{{name/place/SDFD:Name}} Castle"],
+				"table": ["{{names/place/SDFD:Success}}"],
 				"type": "simple"
 			}
 		]
