@@ -41,10 +41,10 @@ export default {
 							dir: window.__TAURI__.fs.BaseDirectory['Document']
 						})
 						.then(
-							function (result) {
+							function hasFolder() {
 								return true;
 							},
-							function () {
+							function folderMissing() {
 								return false;
 							}
 						),
@@ -53,18 +53,20 @@ export default {
 							dir: window.__TAURI__.fs.BaseDirectory['Document']
 						})
 						.then(
-							function (result) {
+							function hasFolder() {
 								return true;
 							},
-							function () {
+							function folderMissing() {
 								return false;
 							}
 						)
 				]);
 				const fileCheckResults = await fileChecks;
 				// Check missing readme & collections folder and add if not yet created
-				const addfiles = Promise.all([
-					fileCheckResults[0] ||
+				const ReadMeExists = fileCheckResults[0];
+				const CollectionsExists = fileCheckResults[1];
+				const fixDirectory = Promise.all([
+					ReadMeExists ||
 						fs
 							.writeFile(
 								{
@@ -76,28 +78,28 @@ export default {
 								}
 							)
 							.then(
-								function (result) {
+								function createdReadme() {
 									return true;
 								},
-								function (err) {
+								function createReadmeFailed() {
 									return false;
 								}
 							),
-					fileCheckResults[1] === false &&
+					CollectionsExists[1] === false &&
 						fs
 							.createDir(rootFolder + '/' + collectionsFolder, {
 								dir: window.__TAURI__.fs.BaseDirectory['Document']
 							})
 							.then(
-								function (result) {
+								function createdCollections(result) {
 									return true;
 								},
-								function () {
+								function createCollectionsFailed() {
 									return false;
 								}
 							)
 				]);
-				await addfiles;
+				await fixDirectory;
 				if (fileCheckResults[1] === false) {
 					// If no collections folder add in some example data
 					await fs.createDir(rootFolder + castlesIndex, {
