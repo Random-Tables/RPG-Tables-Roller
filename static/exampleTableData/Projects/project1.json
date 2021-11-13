@@ -1,0 +1,40 @@
+{
+	"name": "Campaign 1",
+	"lastEdit": "12/12/2020 19:45",
+	"folders": [
+		{
+			"name": "NPC's",
+			"data": [
+				{
+					"callid": "castle/castle-japan/japanese",
+					"data": [
+						["Castle Name:", "Example", "Castle Type:", "Example Type"],
+						["Castle Name:", "Example2", "Castle Type:", "Example2 Type"]
+					],
+					"type": ["simple", "simple"]
+				}
+			],
+			"folders": [
+				{
+					"name": "Home",
+					"data": [
+						{
+							"callid": "castle/castle/medieval",
+							"call": {
+								"collection": "castle",
+								"tablesGroupKey": "castle",
+								"tableName": "medieval"
+							},
+							"data": [
+								["Castle Name", "Tyrist Castle", "Castle Type:", "Small hillfort"],
+								["Castle Name", "Tyrist Redoubt", "Castle Type:", "Small hillfort"],
+								["Castle Name", "Wigville Castle", "Castle Type:", "Small hillfort"]
+							],
+							"type": "string"
+						}
+					]
+				}
+			]
+		}
+	]
+}

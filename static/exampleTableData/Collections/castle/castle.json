@@ -20,8 +20,8 @@
 		"label": "Test multiname packet",
 		"tableSections": [
 			{
-				"id": "castle-name",
-				"name": "Castle Name",
+				"id": "multi-call",
+				"name": "Multi Call",
 				"table": ["{{names/place/medieval:Unknown}}-{{names/place/japan:Some sort of}} Castle"],
 				"type": "simple"
 			}
@@ -31,8 +31,8 @@
 		"label": "Test multiutil packet",
 		"tableSections": [
 			{
-				"id": "castle-name",
-				"name": "Castle Name",
+				"id": "multinest-util",
+				"name": "multinest util",
 				"table": ["{{names/place/nest:failed}} Multiutil"],
 				"type": "simple"
 			}
