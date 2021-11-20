@@ -1,10 +1,10 @@
-import Files from '$lib/FileSys/index';
 import { STATUS } from '$lib/enums';
 import FileSys from '$lib/FileSys/index';
 let debug = true;
 
 const stringReturnedValues = 3;
 let status = STATUS.UNSTARTED;
+let projects: projList;
 // let dataMode = DATA_MODE.SLOW;
 const callRegex = /\{{(.*?)\}}/g; // finds all text covered by {{example/roll:default}}
 const generalIndex = {
@@ -32,10 +32,10 @@ async function buildIndexData() {
 	return new Promise((resolve, reject) => {
 		(async () => {
 			try {
-				const collections: FileEntry[] = await Files.getCollections();
+				const collections: FileEntry[] = await FileSys.getCollections();
 				if (collections) {
 					await collections.forEach(async (element, index) => {
-						const tableIndexData: tableIndex = await Files.getCollectionIndex(element.path);
+						const tableIndexData: tableIndex = await FileSys.getCollectionIndex(element.path);
 						// add to category
 						const category = tableIndexData.category.toLowerCase();
 						if (category !== 'utility') {
@@ -210,7 +210,7 @@ async function getRoll(
 			if (tableData.dataReady) {
 				build();
 			} else {
-				Files.getFile(rootCollection.path + '/' + group).then(function (tableJSON) {
+				FileSys.getFile(rootCollection.path + '/' + group).then(function (tableJSON) {
 					tableData.data = tableJSON;
 					tableData.dataReady = true;
 
@@ -244,6 +244,7 @@ async function iniateBuild(): Promise<STATUS> {
 			(async () => {
 				await FileSys.initRootDir();
 				await FileSys.initRootFiles();
+				projects = await FileSys.getProjectsData();
 				buildIndexData().then(function () {
 					resolve(status);
 				});
@@ -267,5 +268,8 @@ export default {
 	},
 	getMGeneralIndex(): object {
 		return generalIndex;
+	},
+	getProjects(): projList {
+		return projects;
 	}
 };

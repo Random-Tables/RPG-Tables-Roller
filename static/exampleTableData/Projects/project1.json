@@ -14,7 +14,7 @@
 					"type": ["simple", "simple"]
 				}
 			],
-			"folders": [
+			"subfolders": [
 				{
 					"name": "Home",
 					"data": [
@@ -33,6 +33,19 @@
 							"type": "string"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "places's",
+			"data": [
+				{
+					"callid": "castle/castle-japan/japanese",
+					"data": [
+						["Castle Name:", "Place", "Castle Type:", "Place Type"],
+						["Castle Name:", "Place2", "Castle Type:", "Place2 Type"]
+					],
+					"type": ["simple", "simple"]
 				}
 			]
 		}

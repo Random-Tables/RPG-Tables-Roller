@@ -10,7 +10,7 @@ const rootFolder = 'Fantasy-Tables';
 const collectionsFolder = 'Collections';
 const projectsFolder = 'Projects';
 const readmePath = '/README.txt';
-const castlesIndex = '/Collections/castles';
+const castlesIndex = '/Collections/castle';
 
 function waitforme(milisec) {
 	return new Promise((resolve) => {
@@ -219,9 +219,34 @@ export default {
 				});
 		});
 	},
-	getFile: async (tablePath: string): Promise<tableItem> => {
+	getProjectsData: async (): Promise<projList> => {
 		return new Promise((resolve, reject) => {
-			fs.readTextFile(tablePath + '.json').then(
+			fs.readDir(rootFolder + '/' + projectsFolder, {
+				dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+			}).then(
+				function folderFiles(result) {
+					const projects = [];
+					result.forEach((element, index) => {
+						const name = element.name;
+						const length = element.name.length;
+						if (name.substring(length - 5, length) === '.json') {
+							projects.push(result[index]);
+						}
+					});
+					resolve(projects);
+				},
+				function folderMissing() {
+					reject();
+				}
+			);
+		});
+	},
+	getFile: async (path: string): Promise<tableItem> => {
+		const length = path.length;
+		const append = path.substring(length - 5, length) === '.json' ? '' : '.json';
+
+		return new Promise((resolve, reject) => {
+			fs.readTextFile(path + append).then(
 				function (result) {
 					const tableObject = JSON.parse(result);
 					resolve(tableObject);

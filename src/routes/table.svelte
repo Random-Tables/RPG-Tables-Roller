@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/env';
-	export const router = browser;
 	import { onMount } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import { STATUS, CHOICE_TYPE } from '$lib/enums';

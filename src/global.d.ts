@@ -16,9 +16,11 @@ type tableIndex = {
 	collectionID: string; // used as address
 	collectionName: string; // Readable Name
 	category?: string; // preferred category
+	isUtility?: boolean; // If true not shown in main list, but used in background
 	isUtility?: boolean; // If true not shown, but used in background
 	tags?: string[];
 	tables?: object; // list of tableIds
+	tables?: object; // list of Utility tableIds if whole collection not utility
 	description?: string;
 	path: string; // root filepath
 };
@@ -42,6 +44,26 @@ type indexTableData = {
 	dataReady: boolean;
 	tableList: string[];
 };
+type fileData = {
+	name: string;
+	path: string;
+};
+type projList = fileData[];
+type projSubfolders = {
+	name: string;
+	data: Array<Object>;
+};
+type projFolder = {
+	name: string;
+	data: Array<Object>;
+	subfolders?: Array<projSubfolders>;
+};
+type projData = {
+	name: string;
+	lastEdit: string;
+	folders: Array<projFolder>;
+};
+
 interface ChoiceCall {
 	collection: string;
 	tablesGroupKey: string;
@@ -57,4 +79,12 @@ interface Choice {
 enum CHOICE_TYPE {
 	string = 'string',
 	npc
+}
+
+// Project Interfaces
+
+interface subfolder {
+	name: string;
+	expanded: boolean;
+	data: Array<Choice>;
 }
