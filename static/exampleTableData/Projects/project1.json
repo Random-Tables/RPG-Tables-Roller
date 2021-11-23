@@ -6,12 +6,12 @@
 			"name": "NPC's",
 			"data": [
 				{
-					"callid": "castle/castle-japan/japanese",
+					"call": { "collection": "castle", "tablesGroupKey": "castle", "tableName": "medieval" },
 					"data": [
 						["Castle Name:", "Example", "Castle Type:", "Example Type"],
 						["Castle Name:", "Example2", "Castle Type:", "Example2 Type"]
 					],
-					"type": ["simple", "simple"]
+					"type": "string"
 				}
 			],
 			"subfolders": [
@@ -19,7 +19,6 @@
 					"name": "Home",
 					"data": [
 						{
-							"callid": "castle/castle/medieval",
 							"call": {
 								"collection": "castle",
 								"tablesGroupKey": "castle",
@@ -40,12 +39,16 @@
 			"name": "places's",
 			"data": [
 				{
-					"callid": "castle/castle-japan/japanese",
+					"call": {
+						"collection": "castle",
+						"tablesGroupKey": "castle-japan",
+						"tableName": "japanese"
+					},
 					"data": [
 						["Castle Name:", "Place", "Castle Type:", "Place Type"],
 						["Castle Name:", "Place2", "Castle Type:", "Place2 Type"]
 					],
-					"type": ["simple", "simple"]
+					"type": "string"
 				}
 			]
 		}

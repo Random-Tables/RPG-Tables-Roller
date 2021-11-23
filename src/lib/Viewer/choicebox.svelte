@@ -21,8 +21,11 @@
 						{/each}
 					</p>
 					<div class="options">
-						<button on:click={() => newChoiceRoll(true, choice.call, index, rollIndex)}>RR</button>
-						<button>Save</button>
+						{#if newChoiceRoll}
+							<button on:click={() => newChoiceRoll(true, choice.call, index, rollIndex)}>RR</button
+							>
+							<button>Save</button>
+						{/if}
 						<button on:click={() => removeChoiceRoll(index, rollIndex)}>X</button>
 					</div>
 				</div>
@@ -30,8 +33,10 @@
 		</div>
 	{/if}
 	<div class="roll-options">
-		<button on:click={() => newChoiceRoll(false, choice.call, index)}>+</button>
-		{#if choice.data.length > 1}
+		{#if newChoiceRoll}
+			<button on:click={() => newChoiceRoll(false, choice.call, index)}>+</button>
+		{/if}
+		{#if choice.data.length > 1 && clearChoiceItem}
 			<button on:click={() => clearChoiceItem(index)}>X</button>
 		{/if}
 	</div>

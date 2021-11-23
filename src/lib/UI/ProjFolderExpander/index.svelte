@@ -17,7 +17,7 @@
 				onClickFolder(folder.name);
 			}}
 		>
-			<h5>{folder.name}</h5>
+			<b>{folder.name}</b>
 		</div>
 		<div>
 			{#if folder.subfolders}
@@ -28,13 +28,13 @@
 	</div>
 	{#if folder.subfolders && subfoldersOpen}
 		{#each folder.subfolders as subfolder}
-			<div>
+			<div class="subfolder-header">
 				<div
 					on:click={() => {
 						onClickFolder(folder.name + ProjectBuilder.SEPERATOR + subfolder.name);
 					}}
 				>
-					<h5>{subfolder.name}</h5>
+					<b>{subfolder.name}</b>
 				</div>
 				<button class="dropdown">:</button>
 			</div>{/each}
@@ -46,5 +46,14 @@
 	.folder-header {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		padding: 5px;
+	}
+	.subfolder-header b,
+	.folder-header b {
+		cursor: pointer;
+	}
+	.folder-header {
+		background: rgba(92, 138, 163, 0.35);
 	}
 </style>

@@ -1,11 +1,32 @@
 import FileSys from '$lib/FileSys/index';
 import { STATUS } from '$lib/enums';
 
-const seperator = "-!-";
+const seperator = '-!-';
 let projects: projList;
-let currentProjData;
+let currentProjData: projData;
 let currentProjPath;
+let currentProjKeys;
 let projLoaded: STATUS;
+
+function buildCurrentProjKeys() {
+	const keysList = {};
+	if (currentProjData.folders) {
+		currentProjData.folders.forEach(function (folder) {
+			keysList[folder.name] = {
+				data: folder.data
+			};
+
+			if (folder.subfolders) {
+				folder.subfolders.forEach(function (subfolder) {
+					keysList[folder.name].subfolderKeys = {
+						[subfolder.name]: subfolder.data
+					};
+				});
+			}
+		});
+	}
+	currentProjKeys = keysList;
+}
 
 export default {
 	setProjist: function (newList: projList) {
@@ -21,7 +42,8 @@ export default {
 
 			FileSys.getFile(currentProjPath)
 				.then(function (projJSON) {
-					currentProjData = projJSON;
+					currentProjData = (projJSON as unknown) as projData;
+					buildCurrentProjKeys();
 					projLoaded = STATUS.BUILT;
 					resolve(currentProjData);
 				})
@@ -37,5 +59,8 @@ export default {
 	getProject: function () {
 		return currentProjData;
 	},
-	SEPERATOR: seperator,
+	getProjectKeys: function () {
+		return currentProjKeys;
+	},
+	SEPERATOR: seperator
 };

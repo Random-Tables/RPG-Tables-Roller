@@ -3,22 +3,40 @@
 	import { STATUS } from '$lib/enums';
 	import { onMount } from 'svelte';
 	import FolderExpander from '$lib/UI/ProjFolderExpander/index.svelte';
+	import ChoiceBox from '$lib/Viewer/choicebox.svelte';
 
 	let projectData: projData;
+	let projectKeys;
+	let choiceArray: Array<Choice> = [];
 
 	let isLoaded = false;
 	onMount(() => {
 		if (ProjectBuilder.getProjectStatus() === STATUS.BUILT) {
 			projectData = ProjectBuilder.getProject();
+			projectKeys = ProjectBuilder.getProjectKeys();
 		} else {
 			console.log('projects not built');
 		}
 	});
 
 	function onClickFolder(key) {
-		console.log('key', key);
-		console.log('KEYS', key.split(ProjectBuilder.SEPERATOR));
+		const keys = key.split(ProjectBuilder.SEPERATOR);
+		if (keys.length === 2) {
+			choiceArray = projectKeys[keys[0]].subfolderKeys[keys[1]];
+		} else if (keys.length === 1) {
+			choiceArray = projectKeys[keys[0]].data;
+        }
 	}
+
+	const removeChoiceRoll = (itemIndex, subItemIndex) => {
+		if (choiceArray[itemIndex].data.length === 1) {
+			choiceArray = choiceArray.filter((item, i) => i !== itemIndex);
+		} else {
+			const newChoiceArray = choiceArray.slice();
+			newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
+			choiceArray = newChoiceArray;
+		}
+	};
 </script>
 
 {#if projectData}
@@ -31,7 +49,14 @@
 				<FolderExpander {folder} {onClickFolder} />
 			{/each}
 		</div>
-		<div class="wrap-proj-choices">CHOICES</div>
+		<div class="wrap-proj-choices">
+			<h4>CHOICES</h4>
+			{#if choiceArray}
+				{#each choiceArray as choice, index}
+					<ChoiceBox {choice} {index} {removeChoiceRoll} />
+				{/each}
+			{/if}
+		</div>
 	</div>
 {:else}
 	<h3>No project Data Found</h3>
@@ -39,6 +64,7 @@
 
 <style>
 	.wrap-proj-data {
+		flex-grow: 1;
 		border: 2px solid black;
 		display: flex;
 	}
@@ -49,5 +75,6 @@
 	.wrap-proj-choices {
 		border: 1px solid lightcoral;
 		flex: 8 8 70%;
+        padding: 10px;
 	}
 </style>

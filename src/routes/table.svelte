@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import { STATUS, CHOICE_TYPE } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
@@ -15,6 +15,7 @@
 	let view = 'all';
 	let category = 'all';
 	let choiceArray: Array<Choice> = [];
+
 	viewsBuilt.subscribe((value) => {
 		status = value;
 	});
