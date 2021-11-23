@@ -1,35 +1,50 @@
 import FileSys from '$lib/FileSys/index';
 import { STATUS } from '$lib/enums';
 
-const seperator = '-!-';
+const SEPERATOR = '-!-';
 let projects: projList;
 let currentProjData: projData;
 let currentProjPath;
 let currentProjKeys;
 let projLoaded: STATUS;
+let selectedProjFolder;
+let folderKeys: Array<folderKey>;
 
 function buildCurrentProjKeys() {
 	const keysList = {};
+	const localFolderKeys: Array<folderKey> = [];
+	let defaultFolderSet = false;
+
 	if (currentProjData.folders) {
 		currentProjData.folders.forEach(function (folder) {
-			keysList[folder.name] = {
+			keysList[folder.name.replace(SEPERATOR, '/')] = {
 				data: folder.data
 			};
+			if (!defaultFolderSet) {
+				selectedProjFolder = folder.name;
+				defaultFolderSet = true;
+			}
+			localFolderKeys.push({ text: folder.name, value: folder.name });
 
 			if (folder.subfolders) {
 				folder.subfolders.forEach(function (subfolder) {
-					keysList[folder.name].subfolderKeys = {
-						[subfolder.name]: subfolder.data
+					keysList[folder.name.replace(SEPERATOR, '/')].subfolderKeys = {
+						[subfolder.name.replace(SEPERATOR, '/')]: subfolder.data
 					};
+					localFolderKeys.push({
+						text: folder.name + '/' + subfolder.name,
+						value: folder.name + SEPERATOR + subfolder.name
+					});
 				});
 			}
 		});
 	}
 	currentProjKeys = keysList;
+	folderKeys = localFolderKeys;
 }
 
 export default {
-	setProjist: function (newList: projList) {
+	setProjList: function (newList: projList) {
 		projects = newList;
 	},
 	getProjList: function () {
@@ -62,5 +77,14 @@ export default {
 	getProjectKeys: function () {
 		return currentProjKeys;
 	},
-	SEPERATOR: seperator
+	getSelectedProjFolder: function () {
+		return selectedProjFolder;
+	},
+	setSelectedProjFolder: function (newFolder) {
+		selectedProjFolder = newFolder;
+	},
+	getFolderKeys: function () {
+		return folderKeys;
+	},
+	SEPERATOR: SEPERATOR
 };

@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { onMount, afterUpdate } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
+	import ProjectBuilder from '$lib/ProjectBuilder';
 	import { STATUS, CHOICE_TYPE } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
 	import { viewsBuilt } from '$lib/stores';
 	import CollectionBar from '$lib/CollectionsBar/index.svelte';
 	import CollectionExpansion from '$lib/CollectionsBar/expansion.svelte';
 	import CategoryBar from '$lib/CategoryBar/index.svelte';
+	import FolderSelect from '$lib/UI/FolderSelect/index.svelte';
 
 	let status = STATUS.UNSTARTED;
 	let generalIndex;
@@ -26,6 +28,11 @@
 			index = generalIndex.categories[category];
 			categoryList = Object.keys(generalIndex.categories);
 		}
+	});
+
+	afterUpdate(() => {
+		console.log('getSelectedProjFolder', ProjectBuilder.getSelectedProjFolder());
+		console.log('getFolderKeys', ProjectBuilder.getFolderKeys());
 	});
 
 	function onClickTable(collection, tablesGroupKey, tableName) {
@@ -95,6 +102,8 @@
 <svelte:head>
 	<title>Tables</title>
 </svelte:head>
+
+<FolderSelect />
 
 <CategoryBar currentCategory={category} {categoryList} onSelect={onClickCategory} />
 <div class="content">

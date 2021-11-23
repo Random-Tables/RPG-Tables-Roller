@@ -63,6 +63,10 @@ type projData = {
 	lastEdit: string;
 	folders: Array<projFolder>;
 };
+type folderKey = {
+	text: string;
+	value: string;
+}
 
 interface ChoiceCall {
 	collection: string;

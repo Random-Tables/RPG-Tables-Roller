@@ -1,15 +1,16 @@
 <script lang="ts">
 	import ProjectBuilder from '$lib/ProjectBuilder';
 	import { STATUS } from '$lib/enums';
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import FolderExpander from '$lib/UI/ProjFolderExpander/index.svelte';
 	import ChoiceBox from '$lib/Viewer/choicebox.svelte';
 
 	let projectData: projData;
 	let projectKeys;
 	let choiceArray: Array<Choice> = [];
+	let keyChoice;
+	let keyString: '';
 
-	let isLoaded = false;
 	onMount(() => {
 		if (ProjectBuilder.getProjectStatus() === STATUS.BUILT) {
 			projectData = ProjectBuilder.getProject();
@@ -21,11 +22,15 @@
 
 	function onClickFolder(key) {
 		const keys = key.split(ProjectBuilder.SEPERATOR);
+		keyChoice = key;
+		keyString = keys[0];
+
 		if (keys.length === 2) {
+			keyString += '/' + keys[1];
 			choiceArray = projectKeys[keys[0]].subfolderKeys[keys[1]];
 		} else if (keys.length === 1) {
 			choiceArray = projectKeys[keys[0]].data;
-        }
+		}
 	}
 
 	const removeChoiceRoll = (itemIndex, subItemIndex) => {
@@ -37,11 +42,18 @@
 			choiceArray = newChoiceArray;
 		}
 	};
+
+	function setDefaultFolder(key) {
+		ProjectBuilder.setSelectedProjFolder(key);
+	}
 </script>
 
 {#if projectData}
 	<h3>{projectData.name}</h3>
 	<p><b>Last Edited</b> {projectData.lastEdit}</p>
+	{#if keyString !== ''}
+		<button on:click={() => setDefaultFolder(keyChoice)}>Set {keyString} as default folder</button>
+	{/if}
 
 	<div class="wrap-proj-data">
 		<div class="wrap-proj-folders">
@@ -75,6 +87,6 @@
 	.wrap-proj-choices {
 		border: 1px solid lightcoral;
 		flex: 8 8 70%;
-        padding: 10px;
+		padding: 10px;
 	}
 </style>
