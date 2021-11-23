@@ -1,15 +1,25 @@
 <script>
 	import { page } from '$app/stores';
+	import { ProjectDataStore } from '$lib/ProjectBuilder';
+
 </script>
 
 <header>
-
 	<nav>
 		<ul>
 			<li class:active={$page.path === '/'}><a sveltekit:prefetch href="/">Home</a></li>
 			<li class:active={$page.path === '/table'}><a sveltekit:prefetch href="/table">Tables</a></li>
-			<li class:active={$page.path === '/settings'}><a sveltekit:prefetch href="/settings">Settings</a></li>
-			<li class:active={$page.path === '/settings'}><a sveltekit:prefetch href="/projects">Projects</a></li>
+			<li class:active={$page.path === '/settings'}>
+				<a sveltekit:prefetch href="/settings">Settings</a>
+			</li>
+			<li class:active={$page.path === '/projects'}>
+				<a sveltekit:prefetch href="/projects">Projects</a>
+			</li>
+			{#if $ProjectDataStore}
+				<li class:active={$page.path === '/project'}>
+					<a sveltekit:prefetch href="/project">Project - {$ProjectDataStore.name}</a>
+				</li>
+			{/if}
 		</ul>
 	</nav>
 </header>

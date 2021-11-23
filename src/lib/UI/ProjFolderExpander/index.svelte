@@ -2,6 +2,7 @@
 	import ProjectBuilder from '$lib/ProjectBuilder';
 	export let folder: projFolder;
 	export let onClickFolder: Function;
+	export let folderIndex: Number;
 
 	let subfoldersOpen = false;
 
@@ -14,7 +15,7 @@
 	<div class="folder-header">
 		<div
 			on:click={() => {
-				onClickFolder(folder.name);
+				onClickFolder(folderIndex + '', folder.name);
 			}}
 		>
 			<b>{folder.name}</b>
@@ -27,11 +28,11 @@
 		</div>
 	</div>
 	{#if folder.subfolders && subfoldersOpen}
-		{#each folder.subfolders as subfolder}
+		{#each folder.subfolders as subfolder, subFolderIndex}
 			<div class="subfolder-header">
 				<div
 					on:click={() => {
-						onClickFolder(folder.name + ProjectBuilder.SEPERATOR + subfolder.name);
+						onClickFolder(folderIndex + ProjectBuilder.SEPERATOR + subFolderIndex, subfolder.name);
 					}}
 				>
 					<b>{subfolder.name}</b>

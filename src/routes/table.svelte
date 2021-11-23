@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import ProjectBuilder from '$lib/ProjectBuilder';
 	import { STATUS, CHOICE_TYPE } from '$lib/enums';
@@ -28,11 +28,6 @@
 			index = generalIndex.categories[category];
 			categoryList = Object.keys(generalIndex.categories);
 		}
-	});
-
-	afterUpdate(() => {
-		console.log('getSelectedProjFolder', ProjectBuilder.getSelectedProjFolder());
-		console.log('getFolderKeys', ProjectBuilder.getFolderKeys());
 	});
 
 	function onClickTable(collection, tablesGroupKey, tableName) {
@@ -97,6 +92,11 @@
 			choiceArray = newChoiceArray;
 		});
 	};
+
+	function addSingleChoiceToProj(index, subItemIndex) {
+		// TODO handle both 1 & all
+		ProjectBuilder.addRollToProject(choiceArray[index]);
+	}
 </script>
 
 <svelte:head>
@@ -129,6 +129,7 @@
 			{clearChoiceItem}
 			{removeChoiceRoll}
 			{newChoiceRoll}
+			{addSingleChoiceToProj}
 		/>
 	</div>
 </div>

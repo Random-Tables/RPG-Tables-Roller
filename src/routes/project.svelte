@@ -1,35 +1,43 @@
 <script lang="ts">
-	import ProjectBuilder from '$lib/ProjectBuilder';
+	import ProjectBuilder, { ProjectDataStore } from '$lib/ProjectBuilder';
 	import { STATUS } from '$lib/enums';
 	import { onMount, afterUpdate } from 'svelte';
 	import FolderExpander from '$lib/UI/ProjFolderExpander/index.svelte';
 	import ChoiceBox from '$lib/Viewer/choicebox.svelte';
 
 	let projectData: projData;
-	let projectKeys;
 	let choiceArray: Array<Choice> = [];
 	let keyChoice;
 	let keyString: '';
 
-	onMount(() => {
+	function setupData() {
 		if (ProjectBuilder.getProjectStatus() === STATUS.BUILT) {
 			projectData = ProjectBuilder.getProject();
-			projectKeys = ProjectBuilder.getProjectKeys();
 		} else {
-			console.log('projects not built');
+			console.error('projects not built');
 		}
+	}
+
+	onMount(() => {
+		setupData();
+	});
+	afterUpdate(() => {
+		setupData();
 	});
 
-	function onClickFolder(key) {
+	function onClickFolder(key, name) {
 		const keys = key.split(ProjectBuilder.SEPERATOR);
 		keyChoice = key;
-		keyString = keys[0];
+		keyString = name;
 
+		const keyA = parseInt(keys[0], 10);
 		if (keys.length === 2) {
-			keyString += '/' + keys[1];
-			choiceArray = projectKeys[keys[0]].subfolderKeys[keys[1]];
+			const keyB = parseInt(keys[1], 10);
+			choiceArray = projectData.folders[keyA].subfolders[keyB].data as Choice[];
+			// choiceArray = projectKeys[keys[0]].subfolderKeys[keys[1]];
 		} else if (keys.length === 1) {
-			choiceArray = projectKeys[keys[0]].data;
+			choiceArray = projectData.folders[keyA].data as Choice[];
+			// choiceArray = projectKeys[keys[0]].data;
 		}
 	}
 
@@ -43,22 +51,22 @@
 		}
 	};
 
-	function setDefaultFolder(key) {
-		ProjectBuilder.setSelectedProjFolder(key);
+	function setDefaultFolder() {
+		ProjectBuilder.setSelectedProjFolder(keyChoice);
 	}
 </script>
 
 {#if projectData}
 	<h3>{projectData.name}</h3>
 	<p><b>Last Edited</b> {projectData.lastEdit}</p>
-	{#if keyString !== ''}
-		<button on:click={() => setDefaultFolder(keyChoice)}>Set {keyString} as default folder</button>
+	{#if keyString && keyString !== ''}
+		<button on:click={setDefaultFolder}>Set {keyString} as default folder</button>
 	{/if}
 
 	<div class="wrap-proj-data">
 		<div class="wrap-proj-folders">
-			{#each projectData.folders as folder}
-				<FolderExpander {folder} {onClickFolder} />
+			{#each projectData.folders as folder, index}
+				<FolderExpander {folder} {onClickFolder} folderIndex={index} />
 			{/each}
 		</div>
 		<div class="wrap-proj-choices">

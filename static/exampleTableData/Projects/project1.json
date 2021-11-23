@@ -25,10 +25,19 @@
 								"tableName": "medieval"
 							},
 							"data": [
-								["Castle Name", "Tyrist Castle", "Castle Type:", "Small hillfort"],
-								["Castle Name", "Tyrist Redoubt", "Castle Type:", "Small hillfort"],
-								["Castle Name", "Wigville Castle", "Castle Type:", "Small hillfort"]
+								["Castle Name", "Ex Castle", "Castle Type:", "Ex hillfort"],
+								["Castle Name", "Ex Redoubt", "Castle Type:", "Ex hillfort"],
+								["Castle Name", "Ex Castle", "Castle Type:", "Ex hillfort"]
 							],
+							"type": "string"
+						},
+						{
+							"call": {
+								"collection": "castle",
+								"tablesGroupKey": "castle",
+								"tableName": "medieval"
+							},
+							"data": [["Castle Name", "Ex2 Castle", "Castle Type:", "Ex2 hillfort"]],
 							"type": "string"
 						}
 					]

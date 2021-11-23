@@ -6,11 +6,19 @@
 	export let clearChoiceItem;
 	export let removeChoiceRoll;
 	export let newChoiceRoll;
+	export let addSingleChoiceToProj;
 </script>
 
 <div class="viewer">
 	{#each choices as choice, index}
-		<ChoiceBox {choice} {index} {clearChoiceItem} {removeChoiceRoll} {newChoiceRoll} />
+		<ChoiceBox
+			{choice}
+			{index}
+			{clearChoiceItem}
+			{removeChoiceRoll}
+			{newChoiceRoll}
+			{addSingleChoiceToProj}
+		/>
 	{/each}
 </div>
 {#if choices.length > 1}

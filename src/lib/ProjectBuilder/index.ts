@@ -1,46 +1,39 @@
-import FileSys from '$lib/FileSys/index';
+// import FileSys from '$lib/FileSys/index';
 import { STATUS } from '$lib/enums';
+import { writable, readable } from 'svelte/store';
 
 const SEPERATOR = '-!-';
 let projects: projList;
 let currentProjData: projData;
 let currentProjPath;
-let currentProjKeys;
 let projLoaded: STATUS;
-let selectedProjFolder;
-let folderKeys: Array<folderKey>;
+let folderIndexing: Array<folderKey>;
+let selectedProjFolderindex;
+export const ProjectDataStore = writable(currentProjData);
 
 function buildCurrentProjKeys() {
-	const keysList = {};
-	const localFolderKeys: Array<folderKey> = [];
+	const localFolderIndexing: Array<folderKey> = [];
 	let defaultFolderSet = false;
 
 	if (currentProjData.folders) {
-		currentProjData.folders.forEach(function (folder) {
-			keysList[folder.name.replace(SEPERATOR, '/')] = {
-				data: folder.data
-			};
+		currentProjData.folders.forEach(function (folder, index) {
 			if (!defaultFolderSet) {
-				selectedProjFolder = folder.name;
+				selectedProjFolderindex = index + '';
 				defaultFolderSet = true;
 			}
-			localFolderKeys.push({ text: folder.name, value: folder.name });
+			localFolderIndexing.push({ text: folder.name, value: index + '' });
 
 			if (folder.subfolders) {
-				folder.subfolders.forEach(function (subfolder) {
-					keysList[folder.name.replace(SEPERATOR, '/')].subfolderKeys = {
-						[subfolder.name.replace(SEPERATOR, '/')]: subfolder.data
-					};
-					localFolderKeys.push({
+				folder.subfolders.forEach(function (subfolder, subIndex) {
+					localFolderIndexing.push({
 						text: folder.name + '/' + subfolder.name,
-						value: folder.name + SEPERATOR + subfolder.name
+						value: index + SEPERATOR + subIndex
 					});
 				});
 			}
 		});
 	}
-	currentProjKeys = keysList;
-	folderKeys = localFolderKeys;
+	folderIndexing = localFolderIndexing;
 }
 
 export default {
@@ -55,17 +48,22 @@ export default {
 			projLoaded = STATUS.STARTED;
 			currentProjPath = path;
 
-			FileSys.getFile(currentProjPath)
-				.then(function (projJSON) {
-					currentProjData = (projJSON as unknown) as projData;
-					buildCurrentProjKeys();
-					projLoaded = STATUS.BUILT;
-					resolve(currentProjData);
-				})
-				.catch(function (err) {
-					projLoaded = STATUS.FAILED;
-					reject();
-				});
+			(async () => {
+				const FileSys = await import("$lib/FileSys/index.ts");
+	
+				FileSys.default.getFile(currentProjPath)
+					.then(function (projJSON) {
+						currentProjData = (projJSON as unknown) as projData;
+						ProjectDataStore.set(currentProjData);
+						buildCurrentProjKeys();
+						projLoaded = STATUS.BUILT;
+						resolve(currentProjData);
+					})
+					.catch(function (err) {
+						projLoaded = STATUS.FAILED;
+						reject();
+					});
+			})();
 		});
 	},
 	getProjectStatus: function () {
@@ -74,17 +72,28 @@ export default {
 	getProject: function () {
 		return currentProjData;
 	},
-	getProjectKeys: function () {
-		return currentProjKeys;
-	},
-	getSelectedProjFolder: function () {
-		return selectedProjFolder;
+	getSelectedProjFolderIndex: function () {
+		return selectedProjFolderindex;
 	},
 	setSelectedProjFolder: function (newFolder) {
-		selectedProjFolder = newFolder;
+		selectedProjFolderindex = newFolder;
 	},
-	getFolderKeys: function () {
-		return folderKeys;
+	getFolderIndexing: function () {
+		return folderIndexing;
+	},
+	addRollToProject: function (Choice) {
+		const keys = selectedProjFolderindex.split(SEPERATOR);
+		const rootIndex = parseInt(keys[0], 10);
+
+		// let folderTarget = currentProjKeys[keys[0]];
+		let folderTarget = currentProjData.folders[rootIndex];
+
+		if (keys.length === 2) {
+			const subFolderIndex = parseInt(keys[2], 10);
+			folderTarget = folderTarget.subfolders[subFolderIndex];
+		}
+		folderTarget.data.push(Choice);
+		ProjectDataStore.set(currentProjData);
 	},
 	SEPERATOR: SEPERATOR
 };

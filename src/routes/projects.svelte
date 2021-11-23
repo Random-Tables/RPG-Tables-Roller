@@ -12,9 +12,8 @@
 	onMount(async () => {
 		if (CollectionBuilder.getStatus() === STATUS.BUILT) {
 			Projects = CollectionBuilder.getProjects();
-			console.log('Projects', Projects);
 		} else {
-			console.log('projects not built');
+			console.error('projects not built');
 		}
 	});
 
