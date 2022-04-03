@@ -28,7 +28,7 @@ async function asyncForEach(array, callback) {
 	}
 }
 
-async function buildIndexData() {
+async function buildIndexData(): Promise<void> {
 	return new Promise((resolve, reject) => {
 		(async () => {
 			try {
@@ -170,6 +170,7 @@ async function getRoll(
 		tablesGroupKey: group,
 		tableName: table
 	};
+	if (debug) console.log('getRoll--call', call);
 	return new Promise((resolve, reject) => {
 		let rootCollection;
 		if (isUtility) {

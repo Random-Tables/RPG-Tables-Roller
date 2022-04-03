@@ -10,6 +10,7 @@ const collectionsFolder = 'Collections';
 const projectsFolder = 'Projects';
 const readmePath = '/README.txt';
 const castlesIndex = '/Collections/castle';
+const namesIndex = '/Collections/names';
 
 function waitforme(milisec) {
 	return new Promise((resolve) => {
@@ -39,6 +40,21 @@ export default {
 	initRootFiles: async (): Promise<void> => {
 		return new Promise((resolve, reject) => {
 			(async () => {
+				// console.log('>>initRootFiles');
+				// try {
+				// 	const rootCheck = await fs.readTextFile(rootFolder + readmePath, {
+				// 		dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+				// 	});
+				// 	console.log('rootCheck', rootCheck);
+				// 	if (!rootCheck) {
+				// 		await fs.createDir(rootFolder, {
+				// 			dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+				// 		});
+				// 	}
+				// } catch (e) {
+				// 	console.error(e);
+				// }
+
 				const fileChecks = Promise.all([
 					fs
 						.readTextFile(rootFolder + readmePath, {
@@ -130,7 +146,7 @@ export default {
 							)
 				]);
 				await fixDirectory;
-				if (fileCheckResults[1] === false) {
+				if (CollectionsExists === false) {
 					// If no collections folder add in some example data
 					await fs.createDir(rootFolder + castlesIndex, {
 						dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
@@ -163,26 +179,50 @@ export default {
 							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 						}
 					);
+
+					await fs.createDir(rootFolder + namesIndex, {
+						dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+					});
+					await fs.writeFile(
+						{
+							path: rootFolder + namesIndex + '/index.json',
+							contents: stringData.namesIndex
+						},
+						{
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+						}
+					);
+					await fs.writeFile(
+						{
+							path: rootFolder + namesIndex + stringData.placesFolder,
+							contents: stringData.namesPlaces
+						},
+						{
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+						}
+					);
 				}
 				resolve();
 			})();
 		});
 	},
 	initRootDir: async (): Promise<void> => {
-		return new Promise((resolve, reject) => {
-			fs.readDir(rootFolder, {
-				dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-			}).then(
-				function (result) {
-					resolve();
-				},
-				function (err) {
-					fs.createDir(rootFolder, {
-						dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-					});
-					reject();
-				}
-			);
+		return new Promise(async (resolve, reject) => {
+
+			let roorDir = false;
+			try {
+				roorDir = await fs.readDir(rootFolder, {
+					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+				});
+			} catch (e) {
+				console.error(e);
+			}
+			if(!roorDir) {
+				await fs.createDir(rootFolder, {
+					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+				});
+			}
+			resolve();
 		});
 	},
 	getCollections: async (): Promise<FileEntry[]> => {
@@ -222,22 +262,26 @@ export default {
 		return new Promise((resolve, reject) => {
 			fs.readDir(rootFolder + '/' + projectsFolder, {
 				dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-			}).then(
-				function folderFiles(result) {
-					const projects = [];
-					result.forEach((element, index) => {
-						const name = element.name;
-						const length = element.name.length;
-						if (name.substring(length - 5, length) === '.json') {
-							projects.push(result[index]);
-						}
-					});
-					resolve(projects);
-				},
-				function folderMissing() {
-					reject();
-				}
-			);
+			})
+				.then(
+					function folderFiles(result) {
+						const projects = [];
+						result.forEach((element, index) => {
+							const name = element.name;
+							const length = element.name.length;
+							if (name.substring(length - 5, length) === '.json') {
+								projects.push(result[index]);
+							}
+						});
+						resolve(projects);
+					},
+					function folderMissing() {
+						reject();
+					}
+				)
+				.catch(function (e) {
+					console.error(e);
+				});
 		});
 	},
 	getFile: async (path: string): Promise<tableItem> => {
