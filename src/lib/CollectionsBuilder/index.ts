@@ -255,6 +255,16 @@ async function iniateBuild(): Promise<STATUS> {
 		}
 	});
 }
+async function getProjectsFromDisk(): Promise<projList> {
+	return new Promise((resolve, reject) => {
+		status = STATUS.STARTED;
+		(async () => {
+			projects = await FileSys.getProjectsData();
+			status = STATUS.BUILT;
+			resolve(projects);
+		})();
+	});
+}
 
 // EXPORT FUNCTIONS
 
@@ -272,5 +282,6 @@ export default {
 	},
 	getProjects(): projList {
 		return projects;
-	}
+	},
+	getProjectsFromDisk
 };

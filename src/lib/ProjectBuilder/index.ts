@@ -36,6 +36,12 @@ function buildCurrentProjKeys() {
 	folderIndexing = localFolderIndexing;
 }
 
+function generateRandAlphaNumStr(len) {
+	var rdmString = '';
+	for (; rdmString.length < len; rdmString += Math.random().toString(36).substring(2));
+	return rdmString.substring(0, len);
+}
+
 export default {
 	setProjList: function (newList: projList) {
 		projects = newList;
@@ -49,9 +55,12 @@ export default {
 			currentProjPath = path;
 
 			(async () => {
-				const FileSys = await import("$lib/FileSys/index.ts");
-	
-				FileSys.default.getFile(currentProjPath)
+				const FileSys = await import(
+					process.env.NODE_ENV === 'development' ? '$lib/FileSys/index.ts' : '$lib/FileSys/index.js'
+				);
+
+				FileSys.default
+					.getFile(currentProjPath)
 					.then(function (projJSON) {
 						currentProjData = (projJSON as unknown) as projData;
 						ProjectDataStore.set(currentProjData);
@@ -94,6 +103,28 @@ export default {
 		}
 		folderTarget.data.push(Choice);
 		ProjectDataStore.set(currentProjData);
+	},
+	createProject: function (name): Promise<Boolean> {
+		const projectJSON = JSON.stringify({
+			name,
+			lastEdit: '12/12/2020 19:45',
+			folders: []
+		});
+		return new Promise((resolve, reject) => {
+			(async () => {
+				const FileSys = await import(
+					process.env.NODE_ENV === 'development' ? '$lib/FileSys/index.ts' : '$lib/FileSys/index.js'
+				);
+				FileSys.default
+					.createProjectFile(name + generateRandAlphaNumStr(5), projectJSON)
+					.then(function () {
+						resolve(true);
+					})
+					.catch(function (err) {
+						reject(false);
+					});
+			})();
+		});
 	},
 	SEPERATOR: SEPERATOR
 };

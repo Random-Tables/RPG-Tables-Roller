@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let flex: string;
-	export let hrefLink: string;
+	export let hrefLink: string | boolean;
 </script>
 
 {#if hrefLink}

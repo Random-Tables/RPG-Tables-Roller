@@ -40,21 +40,6 @@ export default {
 	initRootFiles: async (): Promise<void> => {
 		return new Promise((resolve, reject) => {
 			(async () => {
-				// console.log('>>initRootFiles');
-				// try {
-				// 	const rootCheck = await fs.readTextFile(rootFolder + readmePath, {
-				// 		dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-				// 	});
-				// 	console.log('rootCheck', rootCheck);
-				// 	if (!rootCheck) {
-				// 		await fs.createDir(rootFolder, {
-				// 			dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-				// 		});
-				// 	}
-				// } catch (e) {
-				// 	console.error(e);
-				// }
-
 				const fileChecks = Promise.all([
 					fs
 						.readTextFile(rootFolder + readmePath, {
@@ -208,7 +193,6 @@ export default {
 	},
 	initRootDir: async (): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
-
 			let roorDir = false;
 			try {
 				roorDir = await fs.readDir(rootFolder, {
@@ -217,7 +201,7 @@ export default {
 			} catch (e) {
 				console.error(e);
 			}
-			if(!roorDir) {
+			if (!roorDir) {
 				await fs.createDir(rootFolder, {
 					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 				});
@@ -282,6 +266,27 @@ export default {
 				.catch(function (e) {
 					console.error(e);
 				});
+		});
+	},
+	createProjectFile: async (fileName, fileDataString): Promise<boolean> => {
+		return new Promise((resolve, reject) => {
+			fs.writeFile(
+				{
+					path: rootFolder + '/' + projectsFolder + '/' + fileName + '.json',
+					contents: fileDataString
+				},
+				{
+					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+				}
+			).then(
+				function createdReadme() {
+					resolve(true);
+				},
+				function createReadmeFailed(e) {
+					console.error(e);
+					resolve(false);
+				}
+			);
 		});
 	},
 	getFile: async (path: string): Promise<tableItem> => {

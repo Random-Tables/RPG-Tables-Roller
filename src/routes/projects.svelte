@@ -8,6 +8,9 @@
 
 	let Projects: projList;
 	let isGettingProjFile = false;
+	let newProjectTitle = '';
+	let disableCreateName = false;
+	let disableCreateAdd = true;
 
 	onMount(async () => {
 		if (CollectionBuilder.getStatus() === STATUS.BUILT) {
@@ -23,6 +26,20 @@
 		isGettingProjFile = false;
 		goto('/project');
 	}
+
+	async function createProject() {
+		disableCreateName = true;
+		disableCreateAdd = true;
+		await ProjectBuilder.createProject(newProjectTitle);
+		Projects = await CollectionBuilder.getProjectsFromDisk();
+	}
+	async function checkName() {
+		if (newProjectTitle.length > 0) {
+			disableCreateAdd = false;
+		} else {
+			disableCreateAdd = true;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -36,7 +53,30 @@
 {:else if Projects}
 	{#each Projects as proj}
 		<div on:click={() => onSelectProject(proj)}>
-			<Card flex="0 1 35%"><p>{proj.name}</p></Card>
+			<Card flex="0 1 35%" hrefLink={false}><p>{proj.name}</p></Card>
 		</div>
 	{/each}
 {/if}
+<div class="btn-wrap">
+	<h4>Create Project</h4>
+	<div>
+		<label for="projName">Name:</label>
+		<input
+			id="projName"
+			bind:value={newProjectTitle}
+			on:keyup={checkName}
+			type="text"
+			disabled={disableCreateName}
+		/>
+	</div>
+	<button on:click={createProject} disabled={disableCreateAdd}>Add</button>
+</div>
+
+<style>
+	.btn-wrap {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem 1rem;
+	}
+</style>
