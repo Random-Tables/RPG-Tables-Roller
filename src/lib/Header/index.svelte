@@ -7,16 +7,16 @@
 <header>
 	<nav>
 		<ul>
-			<li class:active={$page.path === '/'}><a sveltekit:prefetch href="/">Home</a></li>
-			<li class:active={$page.path === '/table'}><a sveltekit:prefetch href="/table">Tables</a></li>
-			<li class:active={$page.path === '/settings'}>
+			<li class:active={$page.url.pathname === '/'}><a sveltekit:prefetch href="/">Home</a></li>
+			<li class:active={$page.url.pathname === '/table'}><a sveltekit:prefetch href="/table">Tables</a></li>
+			<li class:active={$page.url.pathname === '/settings'}>
 				<a sveltekit:prefetch href="/settings">Settings</a>
 			</li>
-			<li class:active={$page.path === '/projects'}>
+			<li class:active={$page.url.pathname === '/projects'}>
 				<a sveltekit:prefetch href="/projects">Projects</a>
 			</li>
 			{#if $ProjectDataStore}
-				<li class:active={$page.path === '/project'}>
+				<li class:active={$page.url.pathname === '/project'}>
 					<a sveltekit:prefetch href="/project">Project - {$ProjectDataStore.name}</a>
 				</li>
 			{/if}
