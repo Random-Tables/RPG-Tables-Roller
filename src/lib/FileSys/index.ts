@@ -250,11 +250,12 @@ export default {
 				.then(
 					function folderFiles(result) {
 						const projects = [];
-						result.forEach((element, index) => {
+						result.forEach((element) => {
 							const name = element.name;
 							const length = element.name.length;
 							if (name.substring(length - 5, length) === '.json') {
-								projects.push(result[index]);
+								element.name = element.name.replace(".json", "");
+								projects.push(element);
 							}
 						});
 						resolve(projects);
