@@ -3,6 +3,7 @@ import { STATUS } from '$lib/enums';
 import { writable, readable } from 'svelte/store';
 
 const SEPERATOR = '-!-';
+const fileImportType = process.env.NODE_ENV === 'development' ? '.ts' : '.js';
 let projects: projList;
 let currentProjData: projData;
 let currentProjPath;
@@ -36,12 +37,6 @@ function buildCurrentProjKeys() {
 	folderIndexing = localFolderIndexing;
 }
 
-function generateRandAlphaNumStr(len) {
-	var rdmString = '';
-	for (; rdmString.length < len; rdmString += Math.random().toString(36).substring(2));
-	return rdmString.substring(0, len);
-}
-
 export default {
 	setProjList: function (newList: projList) {
 		projects = newList;
@@ -55,9 +50,7 @@ export default {
 			currentProjPath = path;
 
 			(async () => {
-				const FileSys = await import(
-					process.env.NODE_ENV === 'development' ? '$lib/FileSys/index.ts' : '$lib/FileSys/index.js'
-				);
+				const FileSys = await import(`../FileSys/index.js`);
 
 				FileSys.default
 					.getFile(currentProjPath)
@@ -112,17 +105,23 @@ export default {
 		});
 		return new Promise((resolve, reject) => {
 			(async () => {
-				const FileSys = await import(
-					process.env.NODE_ENV === 'development' ? '$lib/FileSys/index.ts' : '$lib/FileSys/index.js'
-				);
-				FileSys.default
-					.createProjectFile(name + generateRandAlphaNumStr(5), projectJSON)
-					.then(function () {
-						resolve(true);
-					})
-					.catch(function (err) {
-						reject(false);
-					});
+				const FileSys = await import(`../FileSys/index.js`);
+				const projects = await FileSys.default.getProjectsData();
+				const filenameExists = projects.some((proj) => {
+					return proj.name === name;
+				});
+				if (!filenameExists) {
+					FileSys.default
+						.createProjectFile(name, projectJSON)
+						.then(function () {
+							resolve(true);
+						})
+						.catch(function (err) {
+							reject(false);
+						});
+				} else {
+					reject("Filename already exists");
+				}
 			})();
 		});
 	},

@@ -11,6 +11,7 @@
 	let newProjectTitle = '';
 	let disableCreateName = false;
 	let disableCreateAdd = true;
+	let errorMsg = '';
 
 	onMount(async () => {
 		if (CollectionBuilder.getStatus() === STATUS.BUILT) {
@@ -30,8 +31,18 @@
 	async function createProject() {
 		disableCreateName = true;
 		disableCreateAdd = true;
-		await ProjectBuilder.createProject(newProjectTitle);
-		Projects = await CollectionBuilder.getProjectsFromDisk();
+		ProjectBuilder.createProject(newProjectTitle)
+			.then(() => {
+				errorMsg = '';
+			})
+			.catch((e) => {
+				errorMsg = e;
+			})
+			.finally(async () => {
+				Projects = await CollectionBuilder.getProjectsFromDisk();
+				disableCreateAdd = false;
+				disableCreateName = false;
+			});
 	}
 	async function checkName() {
 		if (newProjectTitle.length > 0) {
@@ -59,6 +70,7 @@
 {/if}
 <div class="btn-wrap">
 	<h4>Create Project</h4>
+	<h5>{errorMsg}</h5>
 	<div>
 		<label for="projName">Name:</label>
 		<input
@@ -78,5 +90,9 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5rem 1rem;
+	}
+
+	h5 {
+		color: indianred;
 	}
 </style>
