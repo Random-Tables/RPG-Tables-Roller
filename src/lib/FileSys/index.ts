@@ -269,21 +269,22 @@ export default {
 				});
 		});
 	},
-	createProjectFile: async (fileName, fileDataString): Promise<boolean> => {
+	saveProjectFile: async (fileName: string, fileDataString: string, byPath?: boolean): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
+			const path = byPath ? fileName : rootFolder + '/' + projectsFolder + '/' + fileName + '.json';
 			fs.writeFile(
 				{
-					path: rootFolder + '/' + projectsFolder + '/' + fileName + '.json',
+					path,
 					contents: fileDataString
 				},
 				{
 					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 				}
 			).then(
-				function createdReadme() {
+				() => {
 					resolve(true);
 				},
-				function createReadmeFailed(e) {
+				(e) => {
 					console.error(e);
 					resolve(false);
 				}

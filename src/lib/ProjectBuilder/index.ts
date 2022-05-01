@@ -87,7 +87,6 @@ export default {
 		const keys = selectedProjFolderindex.split(SEPERATOR);
 		const rootIndex = parseInt(keys[0], 10);
 
-		// let folderTarget = currentProjKeys[keys[0]];
 		let folderTarget = currentProjData.folders[rootIndex];
 
 		if (keys.length === 2) {
@@ -96,6 +95,7 @@ export default {
 		}
 		folderTarget.data.push(Choice);
 		ProjectDataStore.set(currentProjData);
+		this.saveProject();
 	},
 	createProject: function (name): Promise<Boolean> {
 		const projectJSON = JSON.stringify({
@@ -112,7 +112,7 @@ export default {
 				});
 				if (!filenameExists) {
 					FileSys.default
-						.createProjectFile(name, projectJSON)
+						.saveProjectFile(name, projectJSON)
 						.then(function () {
 							resolve(true);
 						})
@@ -122,6 +122,16 @@ export default {
 				} else {
 					reject("Filename already exists");
 				}
+			})();
+		});
+	},
+	saveProject: function (): Promise<Boolean> {
+		return new Promise((resolve, reject) => {
+			(async () => {
+				const FileSys = await import(`../FileSys/index.js`);
+				const projectJSON = JSON.stringify(currentProjData);
+				console.log("projectJSON", projectJSON);
+				FileSys.default.saveProjectFile(currentProjPath, projectJSON, true)
 			})();
 		});
 	},
