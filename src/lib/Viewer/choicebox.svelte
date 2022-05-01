@@ -1,10 +1,10 @@
 <script lang="ts">
 	export let choice: Choice;
 	export let index: number;
-	export let clearChoiceItem;
-	export let removeChoiceRoll;
-	export let newChoiceRoll;
-	export let addSingleChoiceToProj;
+	export let clearChoiceItem: Function = null;
+	export let removeChoiceRoll: Function = null;
+	export let newChoiceRoll: Function = null;
+	export let addSingleChoiceToProj: Function = null;
 </script>
 
 <div class="choice">

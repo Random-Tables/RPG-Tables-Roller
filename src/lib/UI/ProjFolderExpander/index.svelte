@@ -1,8 +1,11 @@
 <script lang="ts">
 	import ProjectBuilder from '$lib/ProjectBuilder';
+	import AddProjFolder from '$lib/AddProjFolder/index.svelte';
+
 	export let folder: projFolder;
 	export let onClickFolder: Function;
-	export let folderIndex: Number;
+	export let folderIndex: number;
+	export let onAddFolderComplete: Function;
 
 	let subfoldersOpen = false;
 
@@ -38,7 +41,9 @@
 					<b>{subfolder.name}</b>
 				</div>
 				<button class="dropdown">:</button>
-			</div>{/each}
+			</div>
+		{/each}
+		<AddProjFolder {folderIndex} onComplete={onAddFolderComplete} />
 	{/if}
 </div>
 

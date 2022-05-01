@@ -1,18 +1,23 @@
 <script lang="ts">
-	import ProjectBuilder, { ProjectDataStore } from '$lib/ProjectBuilder';
+	import ProjectBuilder from '$lib/ProjectBuilder';
 	import { STATUS } from '$lib/enums';
 	import { onMount, afterUpdate } from 'svelte';
 	import FolderExpander from '$lib/UI/ProjFolderExpander/index.svelte';
 	import ChoiceBox from '$lib/Viewer/choicebox.svelte';
+	import AddProjFolder from '$lib/AddProjFolder/index.svelte';
 
 	let projectData: projData;
 	let choiceArray: Array<Choice> = [];
 	let keyChoice;
 	let keyString: '';
 
+	function updateProj() {
+		projectData = ProjectBuilder.getProject();
+	}
+
 	function setupData() {
 		if (ProjectBuilder.getProjectStatus() === STATUS.BUILT) {
-			projectData = ProjectBuilder.getProject();
+			updateProj();
 		} else {
 			console.error('projects not built');
 		}
@@ -34,10 +39,8 @@
 		if (keys.length === 2) {
 			const keyB = parseInt(keys[1], 10);
 			choiceArray = projectData.folders[keyA].subfolders[keyB].data as Choice[];
-			// choiceArray = projectKeys[keys[0]].subfolderKeys[keys[1]];
 		} else if (keys.length === 1) {
 			choiceArray = projectData.folders[keyA].data as Choice[];
-			// choiceArray = projectKeys[keys[0]].data;
 		}
 	}
 
@@ -66,8 +69,9 @@
 	<div class="wrap-proj-data">
 		<div class="wrap-proj-folders">
 			{#each projectData.folders as folder, index}
-				<FolderExpander {folder} {onClickFolder} folderIndex={index} />
+				<FolderExpander {folder} {onClickFolder} folderIndex={index} onAddFolderComplete={updateProj}/>
 			{/each}
+			<AddProjFolder onComplete={updateProj} />
 		</div>
 		<div class="wrap-proj-choices">
 			<h4>CHOICES</h4>

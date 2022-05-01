@@ -37,6 +37,15 @@ function buildCurrentProjKeys() {
 	folderIndexing = localFolderIndexing;
 }
 
+function newFolder(name, isRoot?): projFolder {
+	const newFolder: projFolder = {
+		name,
+		data: []
+	};
+	if (isRoot) newFolder.subfolders = [];
+	return newFolder;
+}
+
 export default {
 	setProjList: function (newList: projList) {
 		projects = newList;
@@ -94,8 +103,30 @@ export default {
 			folderTarget = folderTarget.subfolders[subFolderIndex];
 		}
 		folderTarget.data.push(Choice);
+
 		ProjectDataStore.set(currentProjData);
 		this.saveProject();
+	},
+	addFolderToProject: function (folderName: string, parentIndex?: number): boolean {
+		if (parentIndex || parentIndex === 0) {
+			const currentSubFolders = currentProjData.folders[parentIndex].subfolders.map((f) => {
+				return f.name;
+			});
+			currentProjData.folders[parentIndex].subfolders.push(newFolder(folderName));
+		} else {
+			const currentFolders = currentProjData.folders.map((f) => {
+				return f.name;
+			});
+			if (!currentFolders.includes(folderName)) {
+				currentProjData.folders.push(newFolder(folderName, true));
+			} else {
+				return false;
+			}
+		}
+
+		ProjectDataStore.set(currentProjData);
+		this.saveProject();
+		return true;
 	},
 	createProject: function (name): Promise<Boolean> {
 		const projectJSON = JSON.stringify({
@@ -120,7 +151,7 @@ export default {
 							reject(false);
 						});
 				} else {
-					reject("Filename already exists");
+					reject('Filename already exists');
 				}
 			})();
 		});
@@ -130,8 +161,7 @@ export default {
 			(async () => {
 				const FileSys = await import(`../FileSys/index.js`);
 				const projectJSON = JSON.stringify(currentProjData);
-				console.log("projectJSON", projectJSON);
-				FileSys.default.saveProjectFile(currentProjPath, projectJSON, true)
+				FileSys.default.saveProjectFile(currentProjPath, projectJSON, true);
 			})();
 		});
 	},
