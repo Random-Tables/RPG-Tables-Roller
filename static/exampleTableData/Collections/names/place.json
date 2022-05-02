@@ -1,16 +1,13 @@
 {
 	"medieval": {
-		"id": "castle-name",
 		"name": "Castle Name:",
 		"table": ["Wigville", "Tyrist", "Yeville"]
 	},
 	"japan": {
-		"id": "castle-name",
 		"name": "Castle Name:",
 		"table": ["Himejo", "Yurijo", "Kannoji"]
 	},
 	"nest": {
-		"id": "nest-name",
 		"name": "Castle Name:",
 		"table": ["{{names/place/japan:A}}--{{names/place/medieval:B}}", "{{names/place/medieval:A}}--{{names/place/medieval:B}}"]
 	}

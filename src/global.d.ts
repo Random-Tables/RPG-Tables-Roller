@@ -29,12 +29,10 @@ type tableItem = {
 	tableSections: tableSection[];
 };
 type tableUtilityItem = {
-	id: string;
 	name: string;
 	table: string[];
 };
 type tableSection = {
-	id: string;
 	name: string;
 	type: string; // futureproofing for table type variations, current options; "simple"
 	table: string[];

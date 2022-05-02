@@ -3,13 +3,11 @@
 		"label": "Medieval European Castle",
 		"tableSections": [
 			{
-				"id": "castle-name",
 				"name": "Castle Name",
 				"table": ["{{names/place/medieval:A}} Castle", "{{names/place/medieval:A}} Redoubt"],
 				"type": "simple"
 			},
 			{
-				"id": "castle-type",
 				"name": "Castle Type:",
 				"table": ["large wooden Castle", "Small hillfort"],
 				"type": "simple"
@@ -20,7 +18,6 @@
 		"label": "Test multiname packet",
 		"tableSections": [
 			{
-				"id": "multi-call",
 				"name": "Multi Call",
 				"table": ["{{names/place/medieval:Unknown}}-{{names/place/japan:Some sort of}} Castle"],
 				"type": "simple"
@@ -31,7 +28,6 @@
 		"label": "Test multiutil packet",
 		"tableSections": [
 			{
-				"id": "multinest-util",
 				"name": "multinest util",
 				"table": ["{{names/place/nest:failed}} Multiutil"],
 				"type": "simple"
@@ -42,7 +38,6 @@
 		"label": "Test No collection & backup call value",
 		"tableSections": [
 			{
-				"id": "castle-name",
 				"name": "Castle Name",
 				"table": ["{{names/place/SDFD:Success}}"],
 				"type": "simple"
