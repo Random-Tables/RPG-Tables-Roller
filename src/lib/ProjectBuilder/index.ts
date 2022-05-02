@@ -1,15 +1,15 @@
-// import FileSys from '$lib/FileSys/index';
 import { STATUS } from '$lib/enums';
-import { writable, readable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
 const SEPERATOR = '-!-';
-const fileImportType = process.env.NODE_ENV === 'development' ? '.ts' : '.js';
+
 let projects: projList;
 let currentProjData: projData;
 let currentProjPath;
 let projLoaded: STATUS;
 let folderIndexing: Array<folderKey>;
 let selectedProjFolderindex;
+
 export const ProjectDataStore = writable(currentProjData);
 
 function buildCurrentProjKeys() {
@@ -126,6 +126,7 @@ export default {
 
 		ProjectDataStore.set(currentProjData);
 		this.saveProject();
+		buildCurrentProjKeys();
 		return true;
 	},
 	createProject: function (name): Promise<Boolean> {
