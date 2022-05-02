@@ -7,11 +7,13 @@
 	export let removeChoiceRoll;
 	export let newChoiceRoll;
 	export let addSingleChoiceToProj;
+	export let projSelected;
 </script>
 
 <div class="viewer">
 	{#each choices as choice, index}
 		<ChoiceBox
+			{projSelected}
 			{choice}
 			{index}
 			{clearChoiceItem}

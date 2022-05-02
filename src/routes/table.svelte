@@ -14,20 +14,19 @@
 	let generalIndex;
 	let index;
 	let categoryList = [];
-	let view = 'all';
 	let category = 'all';
 	let choiceArray: Array<Choice> = [];
+	let projSelected = false;
 
 	viewsBuilt.subscribe((value) => {
 		status = value;
 	});
 
 	onMount(async () => {
-		if (view === 'all') {
-			generalIndex = CollectionBuilder.getMGeneralIndex();
-			index = generalIndex.categories[category];
-			categoryList = Object.keys(generalIndex.categories);
-		}
+		generalIndex = CollectionBuilder.getMGeneralIndex();
+		index = generalIndex.categories[category];
+		categoryList = Object.keys(generalIndex.categories);
+		projSelected = ProjectBuilder.getProjectStatus() === STATUS.BUILT;
 	});
 
 	function onClickTable(collection, tablesGroupKey, tableName) {
@@ -93,8 +92,7 @@
 		});
 	};
 
-	function addSingleChoiceToProj(index, subItemIndex) {
-		// TODO handle both 1 & all
+	function addSingleChoiceToProj(index) {
 		ProjectBuilder.addRollToProject(choiceArray[index]);
 	}
 </script>
@@ -103,7 +101,9 @@
 	<title>Tables</title>
 </svelte:head>
 
-<FolderSelect />
+{#if projSelected}
+	<FolderSelect />
+{/if}
 
 <CategoryBar currentCategory={category} {categoryList} onSelect={onClickCategory} />
 <div class="content">
@@ -124,6 +124,7 @@
 	</div>
 	<div class="viewer">
 		<Viewer
+			{projSelected}
 			choices={choiceArray}
 			{clearChoices}
 			{clearChoiceItem}

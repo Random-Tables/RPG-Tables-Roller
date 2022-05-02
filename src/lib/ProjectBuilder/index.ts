@@ -6,7 +6,7 @@ const SEPERATOR = '-!-';
 let projects: projList;
 let currentProjData: projData;
 let currentProjPath;
-let projLoaded: STATUS;
+let projLoaded: STATUS = STATUS.UNSTARTED;
 let folderIndexing: Array<folderKey>;
 let selectedProjFolderindex;
 

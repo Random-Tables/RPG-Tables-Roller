@@ -5,6 +5,7 @@
 	export let removeChoiceRoll: Function = null;
 	export let newChoiceRoll: Function = null;
 	export let addSingleChoiceToProj: Function = null;
+	export let projSelected = false;
 </script>
 
 <div class="choice">
@@ -25,7 +26,9 @@
 						{#if newChoiceRoll}
 							<button on:click={() => newChoiceRoll(true, choice.call, index, rollIndex)}>RR</button
 							>
-							<button on:click={() => addSingleChoiceToProj(index, rollIndex)}>Save</button>
+							{#if projSelected}
+								<button on:click={() => addSingleChoiceToProj(index, rollIndex)}>Save</button>
+							{/if}
 						{/if}
 						<button on:click={() => removeChoiceRoll(index, rollIndex)}>X</button>
 					</div>
