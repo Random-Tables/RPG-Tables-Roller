@@ -1,6 +1,8 @@
 <script lang="ts">
 	import ProjectBuilder from '$lib/ProjectBuilder';
 	import AddProjFolder from '$lib/AddProjFolder/index.svelte';
+	import Menu from '$lib/UI/hovermenu.svelte';
+	import MenuItem from '$lib/UI/hovermenuItem.svelte';
 
 	export let folder: projFolder;
 	export let onClickFolder: Function;
@@ -27,7 +29,12 @@
 			{#if folder.subfolders}
 				<button class="expand" on:click={toggleSubfolders}>V</button>
 			{/if}
-			<button class="dropdown">:</button>
+
+			<Menu>
+				<button class="dropdown" slot="toggle">:</button>
+				<MenuItem><button class="norm">Rename</button></MenuItem>
+				<MenuItem><button class="norm">Delete</button></MenuItem>
+			</Menu>
 		</div>
 	</div>
 	{#if folder.subfolders && subfoldersOpen}
@@ -61,5 +68,12 @@
 	}
 	.folder-header {
 		background: rgba(92, 138, 163, 0.35);
+	}
+	button.norm {
+		border: 0;
+		padding: 0;
+		background: none;
+		padding: 0.5rem;
+		cursor: pointer;
 	}
 </style>
