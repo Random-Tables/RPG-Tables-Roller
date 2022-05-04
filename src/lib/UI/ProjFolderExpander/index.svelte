@@ -3,18 +3,46 @@
 	import AddProjFolder from '$lib/AddProjFolder/index.svelte';
 	import Menu from '$lib/UI/hovermenu.svelte';
 	import MenuItem from '$lib/UI/hovermenuItem.svelte';
+	import RenameFolder from '$lib/AddProjFolder/renameFolder.svelte';
 
 	export let folder: projFolder;
 	export let onClickFolder: Function;
 	export let folderIndex: number;
 	export let onAddFolderComplete: Function;
 
+	let showRenameModal = false;
 	let subfoldersOpen = false;
+	let renameFolderIndex;
+	let renameSubFolderIndex = null;
+	let renameFolderOriginalName = '';
 
 	function toggleSubfolders() {
 		subfoldersOpen = !subfoldersOpen;
 	}
+
+	function setShowRenameModal(
+		originalName: string,
+		setFolderIndex: number,
+		setSubFolderIndex?: number
+	) {
+		renameFolderIndex = setFolderIndex;
+		renameFolderOriginalName = originalName;
+		if (setSubFolderIndex || setSubFolderIndex === 0) {
+			renameSubFolderIndex = setSubFolderIndex;
+		} else {
+			renameSubFolderIndex = null;
+		}
+		showRenameModal = true;
+	}
 </script>
+
+<RenameFolder
+	{showRenameModal}
+	onClose={() => (showRenameModal = false)}
+	folderIndex={renameFolderIndex}
+	subFolderIndex={renameSubFolderIndex}
+	newFolderName={renameFolderOriginalName}
+/>
 
 <div>
 	<div class="folder-header">
@@ -32,7 +60,11 @@
 
 			<Menu>
 				<button class="dropdown" slot="toggle">:</button>
-				<MenuItem><button class="norm">Rename</button></MenuItem>
+				<MenuItem
+					><button class="norm" on:click={() => setShowRenameModal(folder.name, folderIndex)}
+						>Rename</button
+					></MenuItem
+				>
 				<MenuItem><button class="norm">Delete</button></MenuItem>
 			</Menu>
 		</div>
@@ -47,7 +79,17 @@
 				>
 					<b>{subfolder.name}</b>
 				</div>
-				<button class="dropdown">:</button>
+				<Menu>
+					<button class="dropdown" slot="toggle">:</button>
+					<MenuItem
+						><button
+							class="norm"
+							on:click={() => setShowRenameModal(subfolder.name, folderIndex, subFolderIndex)}
+							>Rename</button
+						></MenuItem
+					>
+					<MenuItem><button class="norm">Delete</button></MenuItem>
+				</Menu>
 			</div>
 		{/each}
 		<AddProjFolder {folderIndex} onComplete={onAddFolderComplete} />

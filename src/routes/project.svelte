@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ProjectBuilder from '$lib/ProjectBuilder';
+	import ProjectBuilder, {ProjectDataStore} from '$lib/ProjectBuilder';
 	import { STATUS } from '$lib/enums';
 	import { onMount, afterUpdate } from 'svelte';
 	import FolderExpander from '$lib/UI/ProjFolderExpander/index.svelte';
@@ -27,6 +27,9 @@
 		setupData();
 	});
 	afterUpdate(() => {
+		setupData();
+	});
+	ProjectDataStore.subscribe(() => {
 		setupData();
 	});
 

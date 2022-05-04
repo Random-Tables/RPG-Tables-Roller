@@ -157,6 +157,18 @@ export default {
 			})();
 		});
 	},
+	renameFolder: function (newName: string, folderIndex: number, subFolderIndex?: number): string {
+		const rootFolder = currentProjData.folders[folderIndex];
+		if (subFolderIndex || subFolderIndex === 0) {
+			rootFolder.subfolders[subFolderIndex].name = newName;
+		} else {
+			rootFolder.name = newName;
+		}
+		ProjectDataStore.set(currentProjData);
+		this.saveProject();
+		buildCurrentProjKeys();
+		return '';
+	},
 	saveProject: function (): Promise<Boolean> {
 		return new Promise((resolve, reject) => {
 			(async () => {
