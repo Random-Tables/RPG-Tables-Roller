@@ -158,16 +158,36 @@ export default {
 		});
 	},
 	renameFolder: function (newName: string, folderIndex: number, subFolderIndex?: number): string {
-		const rootFolder = currentProjData.folders[folderIndex];
-		if (subFolderIndex || subFolderIndex === 0) {
-			rootFolder.subfolders[subFolderIndex].name = newName;
-		} else {
-			rootFolder.name = newName;
+		try {
+			const rootFolder = currentProjData.folders[folderIndex];
+			if (subFolderIndex || subFolderIndex === 0) {
+				rootFolder.subfolders[subFolderIndex].name = newName;
+			} else {
+				rootFolder.name = newName;
+			}
+			ProjectDataStore.set(currentProjData);
+			this.saveProject();
+			buildCurrentProjKeys();
+			return '';
+		} catch(e) {
+			return 'Unable to rename folder';
 		}
-		ProjectDataStore.set(currentProjData);
-		this.saveProject();
-		buildCurrentProjKeys();
-		return '';
+	},
+	deleteFolder: function (folderIndex: number, subFolderIndex?: number): string {
+		try {
+			const rootFolder = currentProjData.folders;
+			if (subFolderIndex || subFolderIndex === 0) {
+				rootFolder[folderIndex].subfolders.splice(subFolderIndex, 1);
+			} else {
+				rootFolder.splice(folderIndex, 1);
+			}
+			ProjectDataStore.set(currentProjData);
+			this.saveProject();
+			buildCurrentProjKeys();
+			return '';
+		} catch(e) {
+			return 'Unable to rename folder';
+		}
 	},
 	saveProject: function (): Promise<Boolean> {
 		return new Promise((resolve, reject) => {

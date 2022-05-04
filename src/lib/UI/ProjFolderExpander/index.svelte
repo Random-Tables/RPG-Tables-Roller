@@ -4,6 +4,7 @@
 	import Menu from '$lib/UI/hovermenu.svelte';
 	import MenuItem from '$lib/UI/hovermenuItem.svelte';
 	import RenameFolder from '$lib/AddProjFolder/renameFolder.svelte';
+	import DeleteFolder from '$lib/AddProjFolder/deleteFolder.svelte';
 
 	export let folder: projFolder;
 	export let onClickFolder: Function;
@@ -15,6 +16,8 @@
 	let renameFolderIndex;
 	let renameSubFolderIndex = null;
 	let renameFolderOriginalName = '';
+
+	let showDeleteModal = false;
 
 	function toggleSubfolders() {
 		subfoldersOpen = !subfoldersOpen;
@@ -34,6 +37,16 @@
 		}
 		showRenameModal = true;
 	}
+
+	function setShowDeleteModal(setFolderIndex: number, setSubFolderIndex?: number) {
+		renameFolderIndex = setFolderIndex;
+		if (setSubFolderIndex || setSubFolderIndex === 0) {
+			renameSubFolderIndex = setSubFolderIndex;
+		} else {
+			renameSubFolderIndex = null;
+		}
+		showDeleteModal = true;
+	}
 </script>
 
 <RenameFolder
@@ -42,6 +55,13 @@
 	folderIndex={renameFolderIndex}
 	subFolderIndex={renameSubFolderIndex}
 	newFolderName={renameFolderOriginalName}
+/>
+
+<DeleteFolder
+	{showDeleteModal}
+	onClose={() => (showDeleteModal = false)}
+	folderIndex={renameFolderIndex}
+	subFolderIndex={renameSubFolderIndex}
 />
 
 <div>
@@ -65,7 +85,10 @@
 						>Rename</button
 					></MenuItem
 				>
-				<MenuItem><button class="norm">Delete</button></MenuItem>
+				<MenuItem
+					><button class="norm" on:click={() => setShowDeleteModal(folderIndex)}>Delete</button
+					></MenuItem
+				>
 			</Menu>
 		</div>
 	</div>
@@ -88,7 +111,11 @@
 							>Rename</button
 						></MenuItem
 					>
-					<MenuItem><button class="norm">Delete</button></MenuItem>
+					<MenuItem
+						><button class="norm" on:click={() => setShowDeleteModal(folderIndex, subFolderIndex)}
+							>Delete</button
+						></MenuItem
+					>
 				</Menu>
 			</div>
 		{/each}
