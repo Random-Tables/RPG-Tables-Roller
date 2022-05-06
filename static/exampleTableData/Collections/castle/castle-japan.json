@@ -11,6 +11,11 @@
 				"name": "Castle Type:",
 				"table": ["large wooden Castle", "Small hillfort"],
 				"type": "simple"
+			},
+			{
+				"name": "Guards:",
+				"table": ["{{Number#1-20:9}}", "{{Number#60-120:80}}"],
+				"type": "simple"
 			}
 		]
 	}

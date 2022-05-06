@@ -70,23 +70,41 @@ async function buildIndexData(): Promise<void> {
 }
 async function checkString(resultString: string): Promise<string> {
 	const externalCallFound = resultString.match(callRegex);
+
 	if (debug) console.log('checkString--externalCallFound', externalCallFound);
+
 	if (externalCallFound) {
 		function getStringRandom(item) {
 			return new Promise((res, rej) => {
-				const collectionString = item.substring(2, item.length - 2).split(':');
-				const collectionCall = collectionString[0]; // removes {{}} & backup option
-				const tableAddress = collectionCall.split('/');
-				if (debug) console.log('checkString--tableAddress', tableAddress);
+				const callString = item.substring(2, item.length - 2).split(':'); // removes {{}} wrapper from call
 
-				getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
-					if (debug) console.log('checkString--getRoll-response', response);
-					if (response.utility === '') {
-						res(collectionString[1]);
-					} else {
-						res(response.utility);
+				// Checks type of callString; subcollection or integer range
+				if (callString[0].includes('Number#')) {
+					const valueRange = callString[0].split('#')[1].split('-');
+
+					const lowValue = parseInt(valueRange[0]);
+					const highValue = parseInt(valueRange[1]);
+
+					if ((lowValue || lowValue === 0) && (highValue || highValue === 0)) {
+						res('' + (Math.floor(Math.random() * (highValue - lowValue)) + lowValue));
 					}
-				});
+					res(callString[1]);
+				} else {
+					const collectionCall = callString[0];
+					const tableAddress = collectionCall.split('/');
+
+					if (debug) console.log('checkString--tableAddress', tableAddress);
+
+					getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
+						if (debug) console.log('checkString--getRoll-response', response);
+
+						if (response.utility === '') {
+							res(callString[1]);
+						} else {
+							res(response.utility);
+						}
+					});
+				}
 			});
 		}
 
