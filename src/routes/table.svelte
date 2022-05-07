@@ -4,18 +4,18 @@
 	import ProjectBuilder from '$lib/ProjectBuilder';
 	import { STATUS, CHOICE_TYPE } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
-	import { viewsBuilt } from '$lib/stores';
+	import { viewsBuilt, choiceArrayStore } from '$lib/stores';
 	import CollectionBar from '$lib/CollectionsBar/index.svelte';
 	import CollectionExpansion from '$lib/CollectionsBar/expansion.svelte';
 	import CategoryBar from '$lib/CategoryBar/index.svelte';
 	import FolderSelect from '$lib/UI/FolderSelect/index.svelte';
+	import { get } from 'svelte/store';
 
 	let status = STATUS.UNSTARTED;
 	let generalIndex;
 	let index;
 	let categoryList = [];
 	let category = 'all';
-	let choiceArray: Array<Choice> = [];
 	let projSelected = false;
 
 	viewsBuilt.subscribe((value) => {
@@ -34,8 +34,8 @@
 		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString(), isUtility).then(
 			(res) => {
 				if (isUtility) {
-					choiceArray = [
-						...choiceArray,
+					choiceArrayStore.update((arr) => [
+						...arr,
 						{
 							data: [['Utility:', res.utility]],
 							call: {
@@ -45,9 +45,9 @@
 							},
 							type: CHOICE_TYPE.string
 						}
-					];
+					]);
 				} else {
-					choiceArray = [...choiceArray, res];
+					choiceArrayStore.update((arr) => [...arr, res]);
 				}
 			}
 		);
@@ -57,23 +57,27 @@
 		index = generalIndex.categories[category];
 	}
 	const clearChoices = () => {
-		choiceArray = [];
+		choiceArrayStore.set([]);
 	};
 	const clearChoiceItem = (index) => {
-		choiceArray = choiceArray.filter((item, i) => i !== index);
+		choiceArrayStore.update((arr) => arr.filter((item, i) => i !== index));
 	};
 	const removeChoiceRoll = (itemIndex, subItemIndex) => {
-		if (choiceArray[itemIndex].data.length === 1) {
+		if (get(choiceArrayStore)[itemIndex].data.length === 1) {
 			clearChoiceItem(itemIndex);
 		} else {
-			const newChoiceArray = choiceArray.slice();
-			newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
-			choiceArray = newChoiceArray;
+			choiceArrayStore.update((arr) => {
+				const newChoiceArray = arr.slice();
+				newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
+				return newChoiceArray;
+			});
 		}
 	};
 	const newChoiceRoll = (isReRoll, call: ChoiceCall, itemIndex, subItemIndex?) => {
 		const isUtility = category === 'utility';
-		const newChoiceArray = choiceArray.slice();
+
+		const newChoiceArray = get(choiceArrayStore).slice();
+
 		CollectionBuilder.getRollWithCall(call, isUtility).then((res) => {
 			if (isReRoll) {
 				if (isUtility) {
@@ -88,12 +92,13 @@
 					newChoiceArray[itemIndex].data.push(res.data[0]);
 				}
 			}
-			choiceArray = newChoiceArray;
+
+			choiceArrayStore.set(newChoiceArray);
 		});
 	};
 
 	function addSingleChoiceToProj(index) {
-		ProjectBuilder.addRollToProject(choiceArray[index]);
+		ProjectBuilder.addRollToProject(get(choiceArrayStore)[index]);
 	}
 </script>
 
@@ -125,7 +130,7 @@
 	<div class="viewer">
 		<Viewer
 			{projSelected}
-			choices={choiceArray}
+			choices={$choiceArrayStore}
 			{clearChoices}
 			{clearChoiceItem}
 			{removeChoiceRoll}
