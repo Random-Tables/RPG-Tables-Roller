@@ -8,8 +8,6 @@
 	export let onClose: Function;
 
 	function deleteFolder() {
-        console.log('folderIndex', folderIndex);
-        console.log('subFolderIndex', subFolderIndex);
 		ProjectBuilder.deleteFolder(folderIndex, subFolderIndex);
 		onClose();
 	}

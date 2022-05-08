@@ -192,6 +192,35 @@ export default {
 			return 'Unable to rename folder';
 		}
 	},
+	removeRoll: function (itemIndex, subItemIndex, folderKey) {
+		const keys = folderKey.split(SEPERATOR);
+
+		const keyA = parseInt(keys[0], 10);
+
+		function clearChoice(choiceArray) {
+			if (choiceArray[itemIndex].data.length === 1) {
+				choiceArray = choiceArray.filter((item, i) => i !== itemIndex);
+			} else {
+				const newChoiceArray = choiceArray.slice();
+				newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
+				choiceArray = newChoiceArray;
+			}
+
+			return choiceArray;
+		}
+
+		if (keys.length === 2) {
+			const keyB = parseInt(keys[1], 10);
+			const choiceRef = currentProjData.folders[keyA].subfolders[keyB].data as Choice[];
+			currentProjData.folders[keyA].subfolders[keyB].data = clearChoice(choiceRef);
+		} else if (keys.length === 1) {
+			const choiceRef = currentProjData.folders[keyA].data as Choice[];
+			currentProjData.folders[keyA].data = clearChoice(choiceRef);
+		}
+
+		ProjectDataStore.set(currentProjData);
+		this.saveProject();
+	},
 	saveProject: function (): Promise<Boolean> {
 		return new Promise((resolve, reject) => {
 			(async () => {

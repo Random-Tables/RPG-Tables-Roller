@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ProjectBuilder, {ProjectDataStore} from '$lib/ProjectBuilder';
+	import ProjectBuilder, { ProjectDataStore } from '$lib/ProjectBuilder';
 	import { STATUS } from '$lib/enums';
 	import { onMount, afterUpdate } from 'svelte';
 	import FolderExpander from '$lib/UI/ProjFolderExpander/index.svelte';
@@ -33,12 +33,11 @@
 		setupData();
 	});
 
-	function onClickFolder(key, name) {
-		const keys = key.split(ProjectBuilder.SEPERATOR);
-		keyChoice = key;
-		keyString = name;
+	function updateChoiceArray() {
+		const keys = keyChoice.split(ProjectBuilder.SEPERATOR);
 
 		const keyA = parseInt(keys[0], 10);
+
 		if (keys.length === 2) {
 			const keyB = parseInt(keys[1], 10);
 			choiceArray = projectData.folders[keyA].subfolders[keyB].data as Choice[];
@@ -46,15 +45,16 @@
 			choiceArray = projectData.folders[keyA].data as Choice[];
 		}
 	}
+	function onClickFolder(key, name) {
+		keyChoice = key;
+		keyString = name;
+
+		updateChoiceArray();
+	}
 
 	const removeChoiceRoll = (itemIndex, subItemIndex) => {
-		if (choiceArray[itemIndex].data.length === 1) {
-			choiceArray = choiceArray.filter((item, i) => i !== itemIndex);
-		} else {
-			const newChoiceArray = choiceArray.slice();
-			newChoiceArray[itemIndex].data.splice(subItemIndex, 1);
-			choiceArray = newChoiceArray;
-		}
+		ProjectBuilder.removeRoll(itemIndex, subItemIndex, keyChoice);
+		updateChoiceArray();
 	};
 
 	function setDefaultFolder() {
@@ -72,7 +72,12 @@
 	<div class="wrap-proj-data">
 		<div class="wrap-proj-folders">
 			{#each projectData.folders as folder, index}
-				<FolderExpander {folder} {onClickFolder} folderIndex={index} onAddFolderComplete={updateProj}/>
+				<FolderExpander
+					{folder}
+					{onClickFolder}
+					folderIndex={index}
+					onAddFolderComplete={updateProj}
+				/>
 			{/each}
 			<AddProjFolder onComplete={updateProj} />
 		</div>
