@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { viewsBuilt } from '$lib/stores';
-	import Card from '$lib/card/index.svelte';
 	import { STATUS } from '$lib/enums';
 	import Errors from '$lib/UI/BuildErrors.svelte';
 
@@ -13,7 +12,7 @@
 	onMount(async () => {
 		const CollectionBuilder = await import('$lib/CollectionsBuilder');
 		CollectionBuilder.default.iniateBuild().then(function (newStatus) {
-			viewsBuilt.update(() => newStatus);
+			viewsBuilt.set(newStatus);
 		});
 	});
 </script>
@@ -38,11 +37,6 @@
 	{/if}
 
 	<Errors />
-
-	<h3>Views</h3>
-	<div class="flextable">
-		<Card hrefLink="/table" flex="0 1 35%"><p>All</p></Card>
-	</div>
 </section>
 
 <style>
