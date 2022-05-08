@@ -69,12 +69,19 @@ interface ChoiceCall {
 	collection: string;
 	tablesGroupKey: string;
 	tableName: string;
+	class?: string;
 }
 interface Choice {
-	data?: Array<Array<string>>;
+	data?: Array<Array<ChoiceData>>;
 	utility?: string;
 	type: CHOICE_TYPE;
 	call: ChoiceCall;
+}
+type ChoiceData = {
+	title: string;
+	data: string;
+	class?: string;
+	// icon?: string;
 }
 
 enum CHOICE_TYPE {

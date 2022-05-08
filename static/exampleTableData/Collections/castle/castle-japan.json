@@ -14,7 +14,20 @@
 			},
 			{
 				"name": "Guards:",
-				"table": ["{{Number#1-20:9}}", "{{Number#60-120:80}}"],
+				"table": ["{{Number#100-300:9}}", "{{Number#60-120:80}}"],
+				"class": "inline-block text-bold",
+				"type": "simple"
+			},
+			{
+				"name": "Archers:",
+				"table": ["{{Number#20-40:9}}", "{{Number#60-120:80}}"],
+				"class": "inline-block",
+				"type": "simple"
+			},
+			{
+				"name": "Knights:",
+				"table": ["{{Number#1-20:9}}"],
+				"class": "inline-block",
 				"type": "simple"
 			}
 		]

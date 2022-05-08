@@ -112,3 +112,38 @@ button:focus:not(:focus-visible) {
 	gap: 10px;
 	width: 100%;
 }
+
+/* Tablesection styling */
+
+.inline {
+	display: inline;
+}
+
+.inline-block {
+	display: inline-block;
+	margin-right: 0.3rem;
+}
+
+.height-1rem {
+	height: 1rem;
+}
+
+.height-1-5rem {
+	height: 1rem;
+}
+
+.height-2rem {
+	height: 1rem;
+}
+
+.text-bold {
+	font-weight: bold;
+}
+
+.text-bolder {
+	font-weight: bolder;
+}
+
+.text-red-error {
+	color: indianred;
+}

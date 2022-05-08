@@ -11,17 +11,16 @@
 <div class="choice">
 	{#if choice.type === 'string'}
 		<div class="string-wrap">
-			{#each choice.data as values, rollIndex}
+			{#each choice.data as choiceRolls, rollIndex}
 				<div class="string">
-					<p>
-						{#each values as valueTuple, tupleIndex}
-							{#if tupleIndex % 2 === 0}
-								<b>{valueTuple}</b>
-							{:else}
-								<span>{valueTuple}</span><br />
-							{/if}
+					<div>
+						{#each choiceRolls as choiceData}
+							<div class={choiceData.class}>
+								<b>{choiceData.title}</b>
+								<span>{choiceData.data}</span>
+							</div>
 						{/each}
-					</p>
+					</div>
 					<div class="options">
 						{#if newChoiceRoll}
 							<button on:click={() => newChoiceRoll(true, choice.call, index, rollIndex)}>RR</button

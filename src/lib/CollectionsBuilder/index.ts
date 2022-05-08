@@ -21,7 +21,15 @@ const generalIndex = {
 };
 
 const errorResponse = {
-	data: [['Error', 'Error building table']],
+	data: [
+		[
+			{
+				title: 'Error',
+				data: 'Error building table',
+				class: 'text-red-error'
+			}
+		]
+	],
 	call: { collection: '', tablesGroupKey: '', tableName: '' },
 	type: 0
 };
@@ -193,15 +201,22 @@ async function rollTable(
 			try {
 				switch (type) {
 					case CHOICE_TYPE.string:
-						const result = [];
-						await asyncForEach(tableSections, async (section) => {
-							result.push(section.name);
+						const result: ChoiceData[] = [];
 
+						await asyncForEach(tableSections, async (section) => {
 							const choicesAvailable = section.table.length;
+
 							const randomTable = Math.floor(Math.random() * choicesAvailable);
+
 							const checkedResult = await checkString(section.table[randomTable]);
-							result.push(checkedResult);
+
+							result.push({
+								title: section.name,
+								data: checkedResult,
+								class: section.class
+							});
 						});
+
 						resolve({
 							type,
 							call,
@@ -212,7 +227,15 @@ async function rollTable(
 						resolve({
 							type: CHOICE_TYPE.string,
 							call: errorResponse.call,
-							data: [['Error', 'Unable to roll table']]
+							data: [
+								[
+									{
+										title: 'Error',
+										data: 'Unable to roll table',
+										class: 'text-red-error'
+									}
+								]
+							]
 						});
 				}
 			} catch (err) {
@@ -229,12 +252,15 @@ async function getRoll(
 	isUtility: boolean = false
 ): Promise<Choice> {
 	if (debug) console.log('getRoll--isUtility', isUtility);
+
 	const call = {
 		collection,
 		tablesGroupKey: group,
 		tableName: table
 	};
+
 	if (debug) console.log('getRoll--call', call);
+
 	return new Promise((resolve, reject) => {
 		let rootCollection;
 		if (isUtility) {
