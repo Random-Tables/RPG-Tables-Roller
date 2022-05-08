@@ -1,27 +1,34 @@
 import { STATUS } from '$lib/enums';
 import FileSys from '$lib/FileSys/index';
-let debug = true;
+import { writable } from 'svelte/store';
 
-const stringReturnedValues = 3;
+let debug = process.env.NODE_ENV === 'development';
+
+export const ErrorArray = writable([]);
+
 let status = STATUS.UNSTARTED;
 let projects: projList;
-// let dataMode = DATA_MODE.SLOW;
+
 const callRegex = /\{{(.*?)\}}/g; // finds all text covered by {{example/roll:default}}
+
 const generalIndex = {
 	categories: {
 		all: {},
 		utility: {}
 	}
 };
+
 const errorResponse = {
 	data: [['Error', 'Error building table']],
 	call: { collection: '', tablesGroupKey: '', tableName: '' },
 	type: 0
 };
+
 enum CHOICE_TYPE {
 	string = 'string',
 	npc = 'npc'
 }
+
 async function asyncForEach(array, callback) {
 	for (let index = 0; index < array.length; index++) {
 		await callback(array[index], index, array);
@@ -33,19 +40,35 @@ async function buildIndexData(): Promise<void> {
 		(async () => {
 			try {
 				const collections: FileEntry[] = await FileSys.getCollections();
+
 				if (collections) {
-					await collections.forEach(async (element, index) => {
+					// Local arrays for testing required collections
+					const CollectionIds = [];
+					const CollectionName = [];
+					const requiredCheckArray = [];
+
+					await asyncForEach(collections, async (element, index) => {
 						const tableIndexData: tableIndex = await FileSys.getCollectionIndex(element.path);
+
+						// Build data to check required collections
+						CollectionIds.push(tableIndexData.collectionID);
+						CollectionName.push(tableIndexData.collectionName);
+						requiredCheckArray.push(tableIndexData.required || []);
+
 						// add to category
 						const category = tableIndexData.category.toLowerCase();
+
 						if (category !== 'utility') {
 							generalIndex.categories.all[tableIndexData.collectionID] = tableIndexData;
 						}
+
 						if (!generalIndex.categories[category]) {
 							generalIndex.categories[category] = {};
 						}
+
 						generalIndex.categories[category][tableIndexData.collectionID] = tableIndexData;
 						generalIndex.categories[category][tableIndexData.collectionID].tablesData = {};
+
 						Object.keys(tableIndexData.tables).forEach(function (key: string) {
 							generalIndex.categories[category][tableIndexData.collectionID].tablesData[key] = {
 								dataReady: false,
@@ -54,7 +77,28 @@ async function buildIndexData(): Promise<void> {
 							};
 						});
 					});
+
+					// Check required items
+					if (CollectionIds.length === requiredCheckArray.length) {
+						requiredCheckArray.forEach((reqArray, collectionIndex) => {
+							reqArray.forEach((required) => {
+								// Add error if required collection missing from collections
+
+								if (!CollectionIds.includes(required)) {
+									const errorString =
+										CollectionName[collectionIndex] + ' is missing collection: ' + required;
+									ErrorArray.update((val) => {
+										const arr = val.slice();
+										arr.push(errorString);
+										return arr;
+									});
+								}
+							});
+						});
+					}
+
 					if (debug) console.log('generalIndex', generalIndex);
+
 					status = STATUS.BUILT;
 					resolve();
 				} else {
@@ -141,7 +185,6 @@ async function rollTable(
 	type: CHOICE_TYPE,
 	call: ChoiceCall
 ): Promise<Choice> {
-	// const returnNum = resultsNum || stringReturnedValues;
 	return new Promise((resolve, reject) => {
 		(async () => {
 			try {

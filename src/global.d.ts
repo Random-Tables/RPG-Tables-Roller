@@ -15,13 +15,12 @@ interface FileEntry {
 type tableIndex = {
 	collectionID: string; // used as address
 	collectionName: string; // Readable Name
+	required?: string[]; // Used to relay to user if any externally used tables are missing
 	category?: string; // preferred category
 	isUtility?: boolean; // If true not shown in main list, but used in background
-	isUtility?: boolean; // If true not shown, but used in background
-	tags?: string[];
+	tags?: string[]; // for future searching / categorisation
 	tables?: object; // list of tableIds
-	tables?: object; // list of Utility tableIds if whole collection not utility
-	description?: string;
+	description?: string; // Optional 
 	path: string; // root filepath
 };
 type tableItem = {
