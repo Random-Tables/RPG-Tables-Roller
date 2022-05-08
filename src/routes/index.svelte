@@ -4,6 +4,7 @@
 	import { viewsBuilt } from '$lib/stores';
 	import { STATUS } from '$lib/enums';
 	import Errors from '$lib/UI/BuildErrors.svelte';
+	import LoadedCollections from '$lib/UI/loadedCollections.svelte';
 
 	let status = STATUS.UNSTARTED;
 	viewsBuilt.subscribe((value) => {
@@ -35,6 +36,8 @@
 	{:else}
 		<h3>Generating data from tables</h3>
 	{/if}
+
+	<LoadedCollections />
 
 	<Errors />
 </section>

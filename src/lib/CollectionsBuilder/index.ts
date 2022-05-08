@@ -6,6 +6,8 @@ let debug = process.env.NODE_ENV === 'development';
 
 export const ErrorArray = writable([]);
 
+export const LoadedArray = writable([]);
+
 let status = STATUS.UNSTARTED;
 let projects: projList;
 
@@ -96,6 +98,7 @@ async function buildIndexData(): Promise<void> {
 							});
 						});
 					}
+					LoadedArray.set(CollectionName);
 
 					if (debug) console.log('generalIndex', generalIndex);
 
