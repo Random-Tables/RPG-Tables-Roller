@@ -97,8 +97,9 @@
 		});
 	};
 
-	function addSingleChoiceToProj(index) {
-		ProjectBuilder.addRollToProject(get(choiceArrayStore)[index]);
+	function addSingleChoiceToProj(choiceIndex: number, subChoice: number ) {
+		const choices = get(choiceArrayStore);
+		ProjectBuilder.addRollToProject(choices[choiceIndex], subChoice);
 	}
 </script>
 

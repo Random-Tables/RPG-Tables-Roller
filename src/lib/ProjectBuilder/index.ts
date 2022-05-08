@@ -92,7 +92,7 @@ export default {
 	getFolderIndexing: function () {
 		return folderIndexing;
 	},
-	addRollToProject: function (Choice) {
+	addRollToProject: function (choice: Choice, subChoice: number) {
 		const keys = selectedProjFolderindex.split(SEPERATOR);
 		const rootIndex = parseInt(keys[0], 10);
 
@@ -102,7 +102,10 @@ export default {
 			const subFolderIndex = parseInt(keys[2], 10);
 			folderTarget = folderTarget.subfolders[subFolderIndex];
 		}
-		folderTarget.data.push(Choice);
+
+		const choiceItem = Object.assign({}, choice);
+		choiceItem.data = [choice.data[subChoice]];
+		folderTarget.data.push(choiceItem);
 
 		ProjectDataStore.set(currentProjData);
 		this.saveProject();
@@ -169,7 +172,7 @@ export default {
 			this.saveProject();
 			buildCurrentProjKeys();
 			return '';
-		} catch(e) {
+		} catch (e) {
 			return 'Unable to rename folder';
 		}
 	},
@@ -185,7 +188,7 @@ export default {
 			this.saveProject();
 			buildCurrentProjKeys();
 			return '';
-		} catch(e) {
+		} catch (e) {
 			return 'Unable to rename folder';
 		}
 	},
