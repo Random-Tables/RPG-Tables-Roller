@@ -1,5 +1,5 @@
 import { STATUS } from '$lib/enums';
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 
 const SEPERATOR = '-!-';
 
@@ -8,8 +8,8 @@ let currentProjData: projData;
 let currentProjPath;
 let projLoaded: STATUS = STATUS.UNSTARTED;
 let folderIndexing: Array<folderKey>;
-let selectedProjFolderindex;
 
+export const selectedProjFolderStore = writable("");
 export const ProjectDataStore = writable(currentProjData);
 
 function buildCurrentProjKeys() {
@@ -19,7 +19,7 @@ function buildCurrentProjKeys() {
 	if (currentProjData.folders) {
 		currentProjData.folders.forEach(function (folder, index) {
 			if (!defaultFolderSet) {
-				selectedProjFolderindex = index + '';
+				selectedProjFolderStore.set(index + '');
 				defaultFolderSet = true;
 			}
 			localFolderIndexing.push({ text: folder.name, value: index + '' });
@@ -83,17 +83,14 @@ export default {
 	getProject: function () {
 		return currentProjData;
 	},
-	getSelectedProjFolderIndex: function () {
-		return selectedProjFolderindex;
-	},
 	setSelectedProjFolder: function (newFolder) {
-		selectedProjFolderindex = newFolder;
+		selectedProjFolderStore.set(newFolder);
 	},
 	getFolderIndexing: function () {
 		return folderIndexing;
 	},
 	addRollToProject: function (choice: Choice, subChoice: number) {
-		const keys = selectedProjFolderindex.split(SEPERATOR);
+		const keys = get(selectedProjFolderStore).split(SEPERATOR);
 		const rootIndex = parseInt(keys[0], 10);
 
 		let folderTarget = currentProjData.folders[rootIndex];
