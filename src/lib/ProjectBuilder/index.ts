@@ -96,7 +96,7 @@ export default {
 		let folderTarget = currentProjData.folders[rootIndex];
 
 		if (keys.length === 2) {
-			const subFolderIndex = parseInt(keys[2], 10);
+			const subFolderIndex = parseInt(keys[1], 10);
 			folderTarget = folderTarget.subfolders[subFolderIndex];
 		}
 
