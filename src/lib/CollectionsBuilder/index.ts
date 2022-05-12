@@ -213,7 +213,9 @@ async function rollTable(
 							result.push({
 								title: section.name,
 								data: checkedResult,
-								class: section.class
+								class: section.class,
+								icon: section.icon,
+								iconclass: section.iconclass
 							});
 						});
 

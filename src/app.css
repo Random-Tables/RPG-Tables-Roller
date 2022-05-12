@@ -147,3 +147,16 @@ button:focus:not(:focus-visible) {
 .text-red-error {
 	color: indianred;
 }
+
+.icon-sq-xs {
+	height: 1rem;
+	width: 1rem;
+}
+.icon-sq-sm {
+	height: 1.5rem;
+	width: 1.5rem;
+}
+.icon-sq-md {
+	height: 2rem;
+	width: 2rem;
+}

@@ -81,7 +81,8 @@ type ChoiceData = {
 	title: string;
 	data: string;
 	class?: string;
-	// icon?: string;
+	icon?: string;
+	iconclass?: string;
 }
 
 enum CHOICE_TYPE {

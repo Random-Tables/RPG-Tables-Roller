@@ -16,6 +16,9 @@
 					<div>
 						{#each choiceRolls as choiceData}
 							<div class={choiceData.class}>
+								{#if choiceData.icon}
+									<img src={choiceData.icon} class={choiceData.iconclass} alt="icon" />
+								{/if}
 								<b>{choiceData.title}</b>
 								<span>{choiceData.data}</span>
 							</div>
