@@ -2,6 +2,7 @@
 	import ProjectBuilder from '$lib/ProjectBuilder';
 
 	export let folderIndex: number = null;
+	export let isSubfolder: boolean = false;
 	export let onComplete: Function;
 
 	let newFolderName = '';
@@ -29,7 +30,7 @@
 </script>
 
 <div>
-	<label for="projName">New:</label>
+	<label for="projName">{isSubfolder ? 'New Subfolder:' : 'New:'}</label>
 	<input id="projName" bind:value={newFolderName} on:keyup={checkName} type="text" />
 	<div class="flextable">
 		<button on:click={addFolder} disabled={disableAddNew}>Add Project</button>

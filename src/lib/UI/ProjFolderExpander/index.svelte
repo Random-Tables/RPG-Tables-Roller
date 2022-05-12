@@ -74,9 +74,7 @@
 			<b>{folder.name}</b>
 		</div>
 		<div>
-			{#if folder.subfolders}
-				<button class="expand" on:click={toggleSubfolders}>V</button>
-			{/if}
+			<button class="expand" on:click={toggleSubfolders}>{subfoldersOpen ? '▲' : '▼'}</button>
 
 			<Menu>
 				<button class="dropdown" slot="toggle">:</button>
@@ -119,7 +117,9 @@
 				</Menu>
 			</div>
 		{/each}
-		<AddProjFolder {folderIndex} onComplete={onAddFolderComplete} />
+	{/if}
+	{#if subfoldersOpen}
+		<AddProjFolder {folderIndex} onComplete={onAddFolderComplete} isSubfolder={true} />
 	{/if}
 </div>
 
