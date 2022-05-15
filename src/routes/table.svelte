@@ -117,11 +117,15 @@
 		{#if status === STATUS.BUILT && index}
 			<CollectionBar>
 				{#each Object.keys(index) as collection}
+					{#each Object.keys(index[collection].tablesData) as choiceGroup}
+
 					<CollectionExpansion
 						title={index[collection].collectionName}
-						choices={index[collection].tablesData}
+						{choiceGroup}
+						choiceTables={index[collection].tablesData[choiceGroup].tablesList}
 						onClick={(groupkey, tableName) => onClickTable(collection, groupkey, tableName)}
 					/>
+					{/each}
 				{/each}
 			</CollectionBar>
 		{:else}

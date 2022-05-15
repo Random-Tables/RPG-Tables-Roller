@@ -10,7 +10,7 @@
 
 {#if $LoadedArray}
 	<div class="wrapper">
-		<div class="flextable">
+		<div class="flextable-between">
 			<h4>Loaded Collections</h4>
 			<button on:click={switchExpansion}>{expanded ? '▲' : '▼'}</button>
 		</div>
@@ -25,10 +25,6 @@
 {/if}
 
 <style>
-	.flextable {
-		justify-content: space-between;
-		align-items: center;
-	}
 	.wrapper {
 		padding: 1rem;
 		border: 1px solid darkgray;

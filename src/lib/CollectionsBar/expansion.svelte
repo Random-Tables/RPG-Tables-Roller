@@ -1,23 +1,32 @@
 <script lang="ts">
-	// import Chevron from 'svelte-feather-icons/src/icons/ChevronDownIcon';
-
-	let isExpanded = false;
 	export let title: string;
-	export let choices;
 	export let onClick: Function;
+	export let choiceTables: Array<string>;
+	export let choiceGroup: string;
+
+	let expanded = true;
+
+	function switchExpansion() {
+		expanded = !expanded;
+	}
 </script>
 
 <div class="title"><h2>{title}</h2></div>
-{#each Object.keys(choices) as choiceKey}
-	<h4>{choiceKey}</h4>
-	{#each choices[choiceKey].tablesList as tableName}
+
+<div class="flextable-between">
+	<h4>{choiceGroup}</h4>
+	<button on:click={switchExpansion}>{expanded ? '▲' : '▼'}</button>
+</div>
+
+{#if expanded}
+	{#each choiceTables as tableName}
 		<ul>
 			<li>
-				<button on:click={() => onClick(choiceKey, tableName)}>{tableName}</button>
+				<button on:click={() => onClick(choiceGroup, tableName)}>{tableName}</button>
 			</li>
 		</ul>
 	{/each}
-{/each}
+{/if}
 
 <style>
 	h2 {
