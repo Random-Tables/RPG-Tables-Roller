@@ -1,11 +1,12 @@
+## Fantasy Tables Files
+
+The fantasy tables app will stores some files on your drive, under the below folders
+
 ### Collections
 
-New collections of tables should sit under
-'Fantasy-Tables/Collections'
-within their own folder, inside each uniquely named folder should be an index.json file eg:
+This files stores all your tables underneath collections, each within their own folder, and each inside a uniquely named folder should be an index.json file eg:
 'Fantasy-Tables/Collections/castles/index.json'
 
-### Views
+### Projects
 
-New views should be placed under
-'Fantasy-Tables/Views'
+Projects contains all the files for each of your projects, each one being it's own .json file
