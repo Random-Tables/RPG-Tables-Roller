@@ -16,6 +16,10 @@
 	--column-margin-top: 2rem;
 }
 
+html {
+	font-size: 16px;
+}
+
 body {
 	min-height: 100vh;
 	margin: 0;
@@ -58,10 +62,12 @@ p {
 }
 
 p {
+	font-size: 1rem;
 	line-height: 1.5;
 }
 
 a {
+	font-size: 1rem;
 	color: var(--accent-color);
 	text-decoration: none;
 }
@@ -71,17 +77,29 @@ a:hover {
 }
 
 h1 {
-	font-size: 2rem;
+	font-size: 3rem;
 	margin-bottom: 0 0 1em 0;
 	text-align: center;
 }
 
 h2 {
-	font-size: 1rem;
+	font-size: 2rem;
+}
+
+h3 {
+	font-size: 1.8rem;
+}
+
+h4 {
+	font-size: 1.5rem;
+}
+
+h5 {
+	font-size: 1.2rem;
 }
 
 pre {
-	font-size: 16px;
+	font-size: 1rem;
 	font-family: var(--font-mono);
 	background-color: rgba(255, 255, 255, 0.45);
 	border-radius: 3px;
@@ -93,8 +111,13 @@ pre {
 
 input,
 button {
+	font-size: 1rem;
 	font-size: inherit;
 	font-family: inherit;
+}
+
+button {
+	padding: 0.2rem;
 }
 
 button:focus:not(:focus-visible) {

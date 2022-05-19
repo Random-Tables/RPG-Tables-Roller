@@ -12,7 +12,7 @@
 	{#if choice.type === 'string'}
 		<div class="string-wrap">
 			{#each choice.data as choiceRolls, rollIndex}
-				<div class="string">
+				<div class="subchoice-item">
 					<div>
 						{#each choiceRolls as choiceData}
 							<div class={choiceData.class}>
@@ -57,7 +57,7 @@
 	.string-wrap {
 		flex: 1 1 100%;
 	}
-	.string {
+	.subchoice-item {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;

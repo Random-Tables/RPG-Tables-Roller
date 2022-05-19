@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import ProjectBuilder from '$lib/ProjectBuilder';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
-	import { STATUS, CHOICE_TYPE } from '$lib/enums';
+	import { STATUS } from '$lib/enums';
 	import Card from '$lib/card/index.svelte';
 
 	let Projects: projList;
@@ -62,11 +62,13 @@
 {#if isGettingProjFile}
 	<h3>Loading</h3>
 {:else if Projects}
-	{#each Projects as proj}
-		<div on:click={() => onSelectProject(proj)}>
-			<Card flex="0 1 35%" hrefLink={false}><p>{proj.name}</p></Card>
-		</div>
-	{/each}
+	<div class="project-list">
+		{#each Projects as proj}
+			<div class="project-item" on:click={() => onSelectProject(proj)}>
+				<Card flex="0 1 35%"><p>{proj.name}</p></Card>
+			</div>
+		{/each}
+	</div>
 {/if}
 <div class="btn-wrap">
 	<h4>Create Project</h4>

@@ -33,7 +33,7 @@
 	<label for="projName">{isSubfolder ? 'New Subfolder:' : 'New:'}</label>
 	<input id="projName" bind:value={newFolderName} on:keyup={checkName} type="text" />
 	<div class="flextable">
-		<button on:click={addFolder} disabled={disableAddNew}>Add Project</button>
+		<button on:click={addFolder} disabled={disableAddNew}>{isSubfolder ? 'Add Subfolder' : 'Add Folder'}</button>
 		<h5>{addFolderError}</h5>
 	</div>
 </div>

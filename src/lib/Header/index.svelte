@@ -5,7 +5,7 @@
 </script>
 
 <header>
-	<nav>
+	<nav class="navigation">
 		<ul>
 			<li class:active={$page.url.pathname === '/'}><a sveltekit:prefetch href="/">Home</a></li>
 			<li class:active={$page.url.pathname === '/table'}><a sveltekit:prefetch href="/table">Tables</a></li>

@@ -1,0 +1,125 @@
+@font-face {
+	font-family: 'Handlee';
+	src: url('/fonts/Handlee-Regular.ttf') format('truetype');
+}
+
+div.theme-fantasy {
+	background: url('/theme/fantasy/parchment-bg.png');
+	font-family: 'Handlee', cursive;
+	min-height: 100vh;
+}
+
+div.theme-fantasy button {
+	padding: 0.2rem 1rem;
+	background: rgba(57, 28, 28, 0.34);
+	border: none;
+	border-left: 4px solid rgba(29, 5, 5, 0.54);
+	border-right: 4px solid rgba(29, 5, 5, 0.54);
+	color: whitesmoke;
+	font-size: 1.2rem;
+	cursor: pointer;
+	transition: all ease-in-out 0.2s;
+}
+div.theme-fantasy button:hover {
+	background: rgba(57, 28, 28, 0.6);
+}
+
+div.theme-fantasy .navigation {
+	background: rgba(29, 13, 13, 0.2);
+	width: 100%;
+	justify-content: start;
+	border-bottom: 4px solid rgba(32, 19, 19, 0.5);
+}
+div.theme-fantasy .navigation ul li {
+	background: rgba(57, 28, 28, 0.2);
+	border: none;
+	cursor: pointer;
+	transition: all ease-in-out 0.2s;
+}
+div.theme-fantasy .navigation ul li:hover {
+	background: rgba(57, 28, 28, 0.6);
+	color: darkolivegreen;
+}
+
+div.theme-fantasy .collection-bar {
+	border: 3px solid rgba(89, 16, 16, 0.22);
+	border-radius: 0;
+	padding: 0.2rem;
+}
+div.theme-fantasy .collection-bar h2 {
+	font-size: 1.7rem;
+	border: none;
+	padding-top: 0.9rem;
+	color: antiquewhite;
+	background: rgba(37, 20, 20, 0.52);
+}
+div.theme-fantasy .collection-bar h4 {
+	color: rgba(45, 20, 20, 0.69);
+	border: none;
+}
+div.theme-fantasy .collection-bar ul {
+	margin: 0.5rem 0;
+}
+div.theme-fantasy .collection-bar ul button {
+	background: rgba(64, 33, 33, 0.15);
+	color: black;
+	padding: 0.4rem 1.5rem;
+}
+div.theme-fantasy .collection-bar ul button:hover {
+	background: rgba(64, 33, 33, 0.25);
+}
+
+div.theme-fantasy .choice-viewbox {
+	border-radius: 0;
+	border: 3px solid rgba(89, 16, 16, 0.22);
+	padding: 0.2rem;
+}
+div.theme-fantasy .choice-viewbox .choice:not(:first-child) {
+	margin-top: 0.5rem;
+}
+div.theme-fantasy .choice-viewbox .choice {
+	border: 2px solid rgba(89, 16, 16, 0.22);
+	background: rgba(64, 33, 33, 0.2);
+	padding: 0;
+	padding: 0.5rem 1rem;
+}
+div.theme-fantasy .choice-viewbox .roll-options {
+	margin-left: 1rem;
+	width: 80px;
+	display: flex;
+	flex-direction: column;
+}
+div.theme-fantasy .choice-viewbox .subchoice-item {
+	padding: 0.5rem 0;
+}
+div.theme-fantasy .choice-viewbox .subchoice-item:not(:first-child) {
+	border-top: 2px solid rgba(89, 16, 16, 0.22);
+}
+
+div.theme-fantasy .project-list .project-item:not(:first-child) {
+	margin-top: 0.5rem;
+}
+div.theme-fantasy .project-list .project-item {
+	cursor: pointer;
+    width: min-content;
+}
+div.theme-fantasy .project-list .card-item {
+	width: 40rem;
+	border: 2px solid rgba(89, 16, 16, 0.22);
+	background: rgba(64, 33, 33, 0.5);
+	padding: 0;
+	padding: 0.5rem 1rem;
+	text-transform: capitalize;
+}
+div.theme-fantasy .project-list .card-item p {
+	color: whitesmoke;
+	font-size: 2rem;
+	margin: 0;
+}
+
+div.theme-fantasy input#projName {
+	border: 3px solid rgba(89, 16, 16, 0.8);
+	background: rgba(64, 33, 33, 0.1);
+	padding: 0.5rem 1rem;
+	font-size: 1.2rem;
+}

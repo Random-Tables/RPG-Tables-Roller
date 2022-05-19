@@ -1,14 +1,16 @@
 <script>
 	import Header from '$lib/Header/index.svelte';
 	import '../app.css';
+	import '../themes/fantasy.css';
 </script>
 
-<Header />
+<div class="theme-fantasy">
+	<Header />
 
-<main>
-	<slot />
-</main>
-
+	<main>
+		<slot />
+	</main>
+</div>
 
 <style>
 	main {

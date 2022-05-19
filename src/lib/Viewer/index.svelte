@@ -10,7 +10,7 @@
 	export let projSelected;
 </script>
 
-<div class="viewer">
+<div class="choice-viewbox">
 	{#each choices as choice, index}
 		<ChoiceBox
 			{projSelected}
@@ -28,7 +28,7 @@
 {/if}
 
 <style>
-	.viewer {
+	.choice-viewbox {
 		border: 1px solid black;
 		padding: 10px;
 		margin: 0 1rem;
