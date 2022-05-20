@@ -1,7 +1,7 @@
 import stringData from './defaultData';
 
 var fs = undefined;
-if (typeof window !== undefined) {
+if (window && typeof window !== undefined) {
 	fs = window.__TAURI__.fs;
 }
 const TauriDocumentKey = 'Document';
