@@ -286,6 +286,14 @@ async function getRoll(
 							if (debug) console.log('rollUtility-res', rollResult);
 							resolve({
 								utility: rollResult,
+								data: [
+									[
+										{
+											title: '',
+											data: rollResult
+										}
+									]
+								],
 								type: CHOICE_TYPE.string,
 								call
 							});

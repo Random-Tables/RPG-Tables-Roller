@@ -19,13 +19,13 @@
 </div>
 
 {#if expanded}
-	{#each choiceTables as tableName}
-		<ul>
+	<ul>
+		{#each choiceTables as tableName}
 			<li>
 				<button on:click={() => onClick(choiceGroup, tableName)}>{tableName}</button>
 			</li>
-		</ul>
-	{/each}
+		{/each}
+	</ul>
 {/if}
 
 <style>

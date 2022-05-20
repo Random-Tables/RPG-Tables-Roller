@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import ProjectBuilder from '$lib/ProjectBuilder';
-	import { STATUS, CHOICE_TYPE } from '$lib/enums';
+	import { STATUS } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
 	import { viewsBuilt, choiceArrayStore } from '$lib/stores';
 	import CollectionBar from '$lib/CollectionsBar/index.svelte';
@@ -33,22 +33,7 @@
 		const isUtility = category === 'utility';
 		CollectionBuilder.getRoll(collection, tablesGroupKey, tableName.toString(), isUtility).then(
 			(res) => {
-				if (isUtility) {
-					choiceArrayStore.update((arr) => [
-						...arr,
-						{
-							data: [['Utility:', res.utility]],
-							call: {
-								collection,
-								tablesGroupKey,
-								tableName
-							},
-							type: CHOICE_TYPE.string
-						}
-					]);
-				} else {
-					choiceArrayStore.update((arr) => [...arr, res]);
-				}
+				choiceArrayStore.update((arr) => [...arr, res]);
 			}
 		);
 	}
@@ -80,24 +65,16 @@
 
 		CollectionBuilder.getRollWithCall(call, isUtility).then((res) => {
 			if (isReRoll) {
-				if (isUtility) {
-					newChoiceArray[itemIndex].data[subItemIndex] = ['Utility:', res.utility];
-				} else {
 					newChoiceArray[itemIndex].data[subItemIndex] = res.data[0];
-				}
 			} else {
-				if (isUtility) {
-					newChoiceArray[itemIndex].data.push(['Utility:', res.utility]);
-				} else {
 					newChoiceArray[itemIndex].data.push(res.data[0]);
-				}
 			}
 
 			choiceArrayStore.set(newChoiceArray);
 		});
 	};
 
-	function addSingleChoiceToProj(choiceIndex: number, subChoice: number ) {
+	function addSingleChoiceToProj(choiceIndex: number, subChoice: number) {
 		const choices = get(choiceArrayStore);
 		ProjectBuilder.addRollToProject(choices[choiceIndex], subChoice);
 	}
@@ -118,13 +95,12 @@
 			<CollectionBar>
 				{#each Object.keys(index) as collection}
 					{#each Object.keys(index[collection].tablesData) as choiceGroup}
-
-					<CollectionExpansion
-						title={index[collection].collectionName}
-						{choiceGroup}
-						choiceTables={index[collection].tablesData[choiceGroup].tablesList}
-						onClick={(groupkey, tableName) => onClickTable(collection, groupkey, tableName)}
-					/>
+						<CollectionExpansion
+							title={index[collection].collectionName}
+							{choiceGroup}
+							choiceTables={index[collection].tablesData[choiceGroup].tablesList}
+							onClick={(groupkey, tableName) => onClickTable(collection, groupkey, tableName)}
+						/>
 					{/each}
 				{/each}
 			</CollectionBar>
