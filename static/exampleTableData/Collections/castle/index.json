@@ -1,7 +1,7 @@
 {
 	"collectionID": "castle",
 	"collectionName": "Medieval Castles",
-	"required": ["names", "exampleerror"],
+	"required": ["names"],
 	"category": "Place",
 	"isUtility": false,
 	"tags": ["place", "medieval", "low-fantasy"],
