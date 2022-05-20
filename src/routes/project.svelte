@@ -66,7 +66,7 @@
 	<h3>{projectData.name}</h3>
 	<p><b>Last Edited</b> {projectData.lastEdit}</p>
 	{#if keyString && keyString !== ''}
-		<button on:click={setDefaultFolder}>Set {keyString} as default folder</button>
+		<button class="project-set-default" on:click={setDefaultFolder}>Set {keyString} as default folder</button>
 	{/if}
 
 	<div class="wrap-proj-data">

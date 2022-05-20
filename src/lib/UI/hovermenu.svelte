@@ -1,6 +1,6 @@
 <div>
 	<button><slot name="toggle" /></button>
-	<menu><slot /></menu>
+	<menu class="hovermenu"><slot /></menu>
 </div>
 
 <style>
@@ -26,9 +26,9 @@
 		opacity: 0;
 		right: 1%;
 		overflow: hidden;
-        left: 0;
-        width: fit-content;
-        z-index: 10;
+		left: 0;
+		width: fit-content;
+		z-index: 10;
 	}
 
 	div:hover > menu,

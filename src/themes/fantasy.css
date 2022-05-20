@@ -101,7 +101,7 @@ div.theme-fantasy .project-list .project-item:not(:first-child) {
 }
 div.theme-fantasy .project-list .project-item {
 	cursor: pointer;
-    width: min-content;
+	width: min-content;
 }
 div.theme-fantasy .project-list .card-item {
 	width: 40rem;
@@ -122,4 +122,21 @@ div.theme-fantasy input#projName {
 	background: rgba(64, 33, 33, 0.1);
 	padding: 0.5rem 1rem;
 	font-size: 1.2rem;
+}
+
+div.theme-fantasy .wrap-proj-data .choice {
+	border: 2px solid rgba(89, 16, 16, 0.8);
+	background: rgba(64, 33, 33, 0.2);
+	padding: 0;
+	padding: 0.5rem 1rem;
+}
+div.theme-fantasy .project-set-default {
+	margin: 0 auto 1rem 0;
+}
+
+div.theme-fantasy menu.hovermenu li {
+	background: #ab9090;
+}
+div.theme-fantasy menu.hovermenu li:hover {
+	background: #8d7676;
 }
