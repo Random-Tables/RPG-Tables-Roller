@@ -1,29 +1,47 @@
 <script>
-	import { types, settings, settingsStatus } from '$lib/settings';
+	import SettingsManager, {
+		settingsStore,
+		settingsSetup,
+		settingsTypes
+	} from '$lib/SettingsManager';
 
-	let settingsStatuslocal;
-	settingsStatus.subscribe((value) => {
-		settingsStatuslocal = value;
-	});
 	function onUpdateInput(key, newValue) {
-		const newObj = Object.assign(settingsStatuslocal, {});
-		newObj[key] = newValue;
-		settingsStatus.update(() => newObj);
+		SettingsManager.changeSettings(key, newValue);
 	}
 </script>
 
 <div>
 	<h3>Settings</h3>
 	<div class="settings">
-		{#each Object.keys(settings) as key}
+		{#each settingsSetup as set}
 			<div class="setting-item">
-				<label>{settings[key].text}</label>
-				{#if settings[key].type === types.bool}
+				<label for="set-{set.key}">{set.text}</label>
+				{#if set.type === settingsTypes.check}
 					<input
+						name="set-{set.key}"
 						type="checkbox"
-						bind:checked={settingsStatuslocal[key]}
-						on:change={(evt) => onUpdateInput(key, evt.currentTarget.checked)}
+						checked={$settingsStore[set.key]}
+						on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.checked)}
 					/>
+				{:else if set.type === settingsTypes.dial}
+					<input
+						name="set-{set.key}"
+						type="number"
+						min={set.min}
+						max={set.max}
+						step="1"
+						value={$settingsStore[set.key]}
+						on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
+					/>
+				{:else if set.type === settingsTypes.select}
+					<select
+						value={$settingsStore[set.key]}
+						on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
+					>
+						{#each set.choices as choice}
+							<option value={choice}>{choice}</option>
+						{/each}
+					</select>
 				{/if}
 			</div>
 		{/each}

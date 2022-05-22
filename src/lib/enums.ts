@@ -13,3 +13,8 @@ export enum CHOICE_TYPE {
 	string = 'string',
 	npc = 'npc'
 }
+
+export enum THEME {
+	fantasy = 'fantasy',
+	horror = 'horror'
+}
