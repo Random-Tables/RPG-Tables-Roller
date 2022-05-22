@@ -60,7 +60,6 @@ export default {
 				FileSys.default
 					.getSettingsFile()
 					.then(function (settingsJSON) {
-						console.log('>>1');
 						settingsLoaded = STATUS.BUILT;
 						settingsStore.set(settingsJSON as Object);
 						resolve(settingsJSON);

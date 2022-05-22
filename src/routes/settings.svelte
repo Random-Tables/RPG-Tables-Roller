@@ -8,14 +8,12 @@
 	import { STATUS } from '$lib/enums';
 
 	let projStatus = SettingsManager.getStatus();
-	
+
 	onMount(() => {
-		console.log('SettingsManager.getStatus()', SettingsManager.getStatus());
 		if (projStatus === STATUS.UNSTARTED) SettingsManager.buildFromFile();
 	});
 
 	settingsStore.subscribe(() => {
-		console.log('x', SettingsManager.getStatus());
 		projStatus = SettingsManager.getStatus();
 	});
 
@@ -25,7 +23,7 @@
 </script>
 
 <div>
-	<h3>Settings - {projStatus}</h3>
+	<h3>Settings</h3>
 	{#if projStatus === STATUS.BUILT}
 		<div class="settings">
 			{#each settingsSetup as set}
