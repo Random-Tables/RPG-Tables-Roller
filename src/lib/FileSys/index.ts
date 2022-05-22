@@ -11,6 +11,7 @@ const projectsFolder = 'Projects';
 const readmePath = '/README.txt';
 const castlesIndex = '/Collections/castle';
 const namesIndex = '/Collections/names';
+const settingsFile = '/settings.json';
 
 function waitforme(milisec) {
 	return new Promise((resolve) => {
@@ -254,7 +255,7 @@ export default {
 							const name = element.name;
 							const length = element.name.length;
 							if (name.substring(length - 5, length) === '.json') {
-								element.name = element.name.replace(".json", "");
+								element.name = element.name.replace('.json', '');
 								projects.push(element);
 							}
 						});
@@ -269,9 +270,35 @@ export default {
 				});
 		});
 	},
-	saveProjectFile: async (fileName: string, fileDataString: string, byPath?: boolean): Promise<boolean> => {
+	saveProjectFile: async (
+		fileName: string,
+		fileDataString: string,
+		byPath?: boolean
+	): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			const path = byPath ? fileName : rootFolder + '/' + projectsFolder + '/' + fileName + '.json';
+			fs.writeFile(
+				{
+					path,
+					contents: fileDataString
+				},
+				{
+					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+				}
+			).then(
+				() => {
+					resolve(true);
+				},
+				(e) => {
+					console.error(e);
+					resolve(false);
+				}
+			);
+		});
+	},
+	saveSettingsFile: async (fileDataString: string): Promise<boolean> => {
+		return new Promise((resolve, reject) => {
+			const path = rootFolder + settingsFile;
 			fs.writeFile(
 				{
 					path,
@@ -297,6 +324,22 @@ export default {
 
 		return new Promise((resolve, reject) => {
 			fs.readTextFile(path + append).then(
+				function (result) {
+					const tableObject = JSON.parse(result);
+					resolve(tableObject);
+				},
+				function (error) {
+					console.error(error);
+					reject({ collectionID: null, collectionName: 'error' });
+				}
+			);
+		});
+	},
+	getSettingsFile(): Promise<Object> {
+		return new Promise((resolve, reject) => {
+			fs.readTextFile(rootFolder + settingsFile, {
+				dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+			}).then(
 				function (result) {
 					const tableObject = JSON.parse(result);
 					resolve(tableObject);

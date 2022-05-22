@@ -1,5 +1,5 @@
 import { STATUS, THEME } from '$lib/enums';
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 
 let settingsLoaded: STATUS = STATUS.UNSTARTED;
 
@@ -37,21 +37,45 @@ export const settingsStore = writable({
 	showCopyToClipboad: false,
 	fontSize: 16,
 	theme: THEME.fantasy
-});
+} as Object);
 
 export default {
-	buildFromFile() {
+	buildFromFile: async function (): Promise<Object> {
 		settingsLoaded = STATUS.STARTED;
+		return new Promise((resolve, reject) => {
+			(async () => {
+				const FileSys = await import(`../FileSys/index.js`);
+
+				FileSys.default
+					.getSettingsFile()
+					.then(function (settingsJSON) {
+						settingsStore.set(settingsJSON as Object);
+						settingsLoaded = STATUS.BUILT;
+						resolve(settingsJSON);
+					})
+					.catch(function (err) {
+						settingsLoaded = STATUS.FAILED;
+						reject();
+					});
+			})();
+		});
 	},
-	saveSettingsFile() {},
+	saveFile() {
+		return new Promise(() => {
+			(async () => {
+				const FileSys = await import(`../FileSys/index.js`);
+				const settingsJSON = JSON.stringify(get(settingsStore));
+				FileSys.default.saveSettingsFile(settingsJSON);
+			})();
+		});
+	},
 	changeSettings(setting, newValue) {
-		console.log('key::' + setting, newValue);
 		settingsStore.update((originalObj) => {
 			const newObj = Object.assign({}, originalObj);
 			newObj[setting] = newValue;
 			return newObj;
 		});
-		// this.saveSettingsFile();
+		this.saveFile();
 	},
 	getStatus: function () {
 		return settingsLoaded;

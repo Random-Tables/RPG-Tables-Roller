@@ -4,6 +4,13 @@
 		settingsSetup,
 		settingsTypes
 	} from '$lib/SettingsManager';
+	import { onMount } from 'svelte';
+	import { STATUS } from '$lib/enums';
+
+	onMount(() => {
+		console.log("SettingsManager.getStatus()", SettingsManager.getStatus());
+		if (SettingsManager.getStatus() === STATUS.UNSTARTED) SettingsManager.buildFromFile();
+	});
 
 	function onUpdateInput(key, newValue) {
 		SettingsManager.changeSettings(key, newValue);
@@ -12,40 +19,46 @@
 
 <div>
 	<h3>Settings</h3>
-	<div class="settings">
-		{#each settingsSetup as set}
-			<div class="setting-item">
-				<label for="set-{set.key}">{set.text}</label>
-				{#if set.type === settingsTypes.check}
-					<input
-						name="set-{set.key}"
-						type="checkbox"
-						checked={$settingsStore[set.key]}
-						on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.checked)}
-					/>
-				{:else if set.type === settingsTypes.dial}
-					<input
-						name="set-{set.key}"
-						type="number"
-						min={set.min}
-						max={set.max}
-						step="1"
-						value={$settingsStore[set.key]}
-						on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
-					/>
-				{:else if set.type === settingsTypes.select}
-					<select
-						value={$settingsStore[set.key]}
-						on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
-					>
-						{#each set.choices as choice}
-							<option value={choice}>{choice}</option>
-						{/each}
-					</select>
-				{/if}
-			</div>
-		{/each}
-	</div>
+	{#if SettingsManager.getStatus() === STATUS.BUILT}
+		<div class="settings">
+			{#each settingsSetup as set}
+				<div class="setting-item">
+					<label for="set-{set.key}">{set.text}</label>
+					{#if set.type === settingsTypes.check}
+						<input
+							name="set-{set.key}"
+							type="checkbox"
+							checked={$settingsStore[set.key]}
+							on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.checked)}
+						/>
+					{:else if set.type === settingsTypes.dial}
+						<input
+							name="set-{set.key}"
+							type="number"
+							min={set.min}
+							max={set.max}
+							step="1"
+							value={$settingsStore[set.key]}
+							on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
+						/>
+						<span>Set between {set.min} and {set.max}</span>
+					{:else if set.type === settingsTypes.select}
+						<select
+							value={$settingsStore[set.key]}
+							on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
+						>
+							{#each set.choices as choice}
+								<option value={choice}>{choice}</option>
+							{/each}
+						</select>
+					{/if}
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<p>Settings file being built from local settings</p>
+		<button>Overwrite local settings</button>
+	{/if}
 </div>
 
 <style>
