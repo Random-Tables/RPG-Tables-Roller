@@ -7,9 +7,16 @@
 	import { onMount } from 'svelte';
 	import { STATUS } from '$lib/enums';
 
+	let projStatus = SettingsManager.getStatus();
+	
 	onMount(() => {
-		console.log("SettingsManager.getStatus()", SettingsManager.getStatus());
-		if (SettingsManager.getStatus() === STATUS.UNSTARTED) SettingsManager.buildFromFile();
+		console.log('SettingsManager.getStatus()', SettingsManager.getStatus());
+		if (projStatus === STATUS.UNSTARTED) SettingsManager.buildFromFile();
+	});
+
+	settingsStore.subscribe(() => {
+		console.log('x', SettingsManager.getStatus());
+		projStatus = SettingsManager.getStatus();
 	});
 
 	function onUpdateInput(key, newValue) {
@@ -18,8 +25,8 @@
 </script>
 
 <div>
-	<h3>Settings</h3>
-	{#if SettingsManager.getStatus() === STATUS.BUILT}
+	<h3>Settings - {projStatus}</h3>
+	{#if projStatus === STATUS.BUILT}
 		<div class="settings">
 			{#each settingsSetup as set}
 				<div class="setting-item">
@@ -55,6 +62,8 @@
 				</div>
 			{/each}
 		</div>
+	{:else if projStatus === STATUS.UNSTARTED || projStatus === STATUS.STARTED}
+		<h4>Settings Loading</h4>
 	{:else}
 		<p>Settings file being built from local settings</p>
 		<button>Overwrite local settings</button>

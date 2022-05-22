@@ -32,12 +32,23 @@ export const settingsSetup = [
 		choices: ['fantasy', 'horror-mystery']
 	}
 ];
-
-export const settingsStore = writable({
+const defaultVal = {
 	showCopyToClipboad: false,
 	fontSize: 16,
 	theme: THEME.fantasy
-} as Object);
+} as Object;
+
+export const settingsStore = writable(defaultVal);
+
+function saveFile() {
+	return new Promise(() => {
+		(async () => {
+			const FileSys = await import(`../FileSys/index.js`);
+			const settingsJSON = JSON.stringify(get(settingsStore));
+			FileSys.default.saveSettingsFile(settingsJSON);
+		})();
+	});
+}
 
 export default {
 	buildFromFile: async function (): Promise<Object> {
@@ -49,26 +60,21 @@ export default {
 				FileSys.default
 					.getSettingsFile()
 					.then(function (settingsJSON) {
-						settingsStore.set(settingsJSON as Object);
+						console.log('>>1');
 						settingsLoaded = STATUS.BUILT;
+						settingsStore.set(settingsJSON as Object);
 						resolve(settingsJSON);
 					})
 					.catch(function (err) {
-						settingsLoaded = STATUS.FAILED;
+						saveFile();
+						settingsLoaded = STATUS.BUILT;
+						settingsStore.set(defaultVal);
 						reject();
 					});
 			})();
 		});
 	},
-	saveFile() {
-		return new Promise(() => {
-			(async () => {
-				const FileSys = await import(`../FileSys/index.js`);
-				const settingsJSON = JSON.stringify(get(settingsStore));
-				FileSys.default.saveSettingsFile(settingsJSON);
-			})();
-		});
-	},
+	saveFile: saveFile,
 	changeSettings(setting, newValue) {
 		settingsStore.update((originalObj) => {
 			const newObj = Object.assign({}, originalObj);

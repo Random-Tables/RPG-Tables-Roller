@@ -21,6 +21,11 @@ function waitforme(milisec) {
 	});
 }
 
+function promiseError(e, reject) {
+	console.error(e);
+	reject('error::' + e);
+}
+
 export default {
 	setup: async (): Promise<void> => {
 		if (typeof window !== undefined) {
@@ -200,7 +205,7 @@ export default {
 					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 				});
 			} catch (e) {
-				console.error(e);
+				promiseError(e, reject);
 			}
 			if (!roorDir) {
 				await fs.createDir(rootFolder, {
@@ -238,9 +243,7 @@ export default {
 						reject({ collectionID: null, collectionName: 'error' });
 					}
 				)
-				.catch((err) => {
-					console.error('ERR', err);
-				});
+				.catch((e) => promiseError(e, reject));
 		});
 	},
 	getProjectsData: async (): Promise<projList> => {
@@ -265,9 +268,7 @@ export default {
 						reject();
 					}
 				)
-				.catch(function (e) {
-					console.error(e);
-				});
+				.catch((e) => promiseError(e, reject));
 		});
 	},
 	saveProjectFile: async (
@@ -289,10 +290,7 @@ export default {
 				() => {
 					resolve(true);
 				},
-				(e) => {
-					console.error(e);
-					resolve(false);
-				}
+				(e) => promiseError(e, reject)
 			);
 		});
 	},
@@ -311,10 +309,7 @@ export default {
 				() => {
 					resolve(true);
 				},
-				(e) => {
-					console.error(e);
-					resolve(false);
-				}
+				(e) => promiseError(e, reject)
 			);
 		});
 	},
@@ -325,8 +320,13 @@ export default {
 		return new Promise((resolve, reject) => {
 			fs.readTextFile(path + append).then(
 				function (result) {
-					const tableObject = JSON.parse(result);
-					resolve(tableObject);
+					try {
+						const tableObject = JSON.parse(result);
+						resolve(tableObject);
+					} catch (e) {
+						console.error(e);
+						reject({ collectionID: null, collectionName: 'error' });
+					}
 				},
 				function (error) {
 					console.error(error);
@@ -341,13 +341,14 @@ export default {
 				dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
 			}).then(
 				function (result) {
-					const tableObject = JSON.parse(result);
-					resolve(tableObject);
+					try {
+						const tableObject = JSON.parse(result);
+						resolve(tableObject);
+					} catch (e) {
+						promiseError(e, reject);
+					}
 				},
-				function (error) {
-					console.error(error);
-					reject({ collectionID: null, collectionName: 'error' });
-				}
+				(e) => promiseError(e, reject)
 			);
 		});
 	}
