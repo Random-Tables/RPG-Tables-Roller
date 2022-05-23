@@ -1,10 +1,13 @@
 <script>
+	// @ts-nocheck
+
+	import { settingsStore } from '$lib/SettingsManager';
 	import Header from '$lib/Header/index.svelte';
 	import '../app.css';
 	import '../themes/fantasy.css';
 </script>
 
-<div class="theme-fantasy">
+<div class="theme-{$settingsStore.theme}">
 	<Header />
 
 	<main>
