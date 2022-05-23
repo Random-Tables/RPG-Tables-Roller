@@ -22,7 +22,15 @@ export const settingsSetup = [
 		default: 16,
 		type: settingsTypes.dial,
 		min: '12',
-		max: '28'
+		max: '28',
+		onChangeFunc: (newValue) => {
+			const root = document.querySelector(':root') as HTMLElement;
+			const parsedVal = parseInt(newValue, 10);
+
+			if (parsedVal >= 12 && parsedVal <= 28) {
+				root.style.fontSize = newValue + 'px';
+			}
+		}
 	},
 	{
 		key: 'theme',

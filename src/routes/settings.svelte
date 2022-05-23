@@ -17,7 +17,8 @@
 		projStatus = SettingsManager.getStatus();
 	});
 
-	function onUpdateInput(key, newValue) {
+	function onUpdateInput(key, newValue, onChangeFunc) {
+		if (onChangeFunc) onChangeFunc(newValue);
 		SettingsManager.changeSettings(key, newValue);
 	}
 </script>
@@ -44,7 +45,7 @@
 							max={set.max}
 							step="1"
 							value={$settingsStore[set.key]}
-							on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
+							on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value, set.onChangeFunc)}
 						/>
 						<span>Set between {set.min} and {set.max}</span>
 					{:else if set.type === settingsTypes.select}
@@ -82,7 +83,7 @@
 	.setting-item label {
 		min-width: 60vw;
 		display: inline-block;
-		font-size: 18px;
+		font-size: 1.1rem;
 	}
 	.setting-item input {
 		width: 1.5rem;
