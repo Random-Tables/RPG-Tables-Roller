@@ -11,12 +11,6 @@ export const settingsTypes = {
 
 export const settingsSetup = [
 	{
-		key: 'showCopyToClipboad',
-		text: 'Show Table-Link copy to clipboard button',
-		default: false,
-		type: settingsTypes.check
-	},
-	{
 		key: 'fontSize',
 		text: 'Larger text',
 		default: 16,
@@ -41,7 +35,6 @@ export const settingsSetup = [
 	}
 ];
 const defaultVal = {
-	showCopyToClipboad: false,
 	fontSize: 16,
 	theme: THEME.fantasy
 } as Object;
