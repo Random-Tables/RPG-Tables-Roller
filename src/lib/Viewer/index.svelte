@@ -26,14 +26,3 @@
 {#if choices.length > 1}
 	<button on:click={clearChoices}>Clear All</button>
 {/if}
-
-<style>
-	.choice-viewbox {
-		border: 1px solid black;
-		padding: 10px;
-		margin: 0 1rem;
-		border-radius: 5px;
-		max-height: calc(100vh - 200px);
-		overflow-x: scroll;
-	}
-</style>

@@ -5,7 +5,6 @@
 	import { STATUS } from '$lib/enums';
 	import Viewer from '$lib/Viewer/index.svelte';
 	import { viewsBuilt, choiceArrayStore } from '$lib/stores';
-	import CollectionBar from '$lib/CollectionsBar/index.svelte';
 	import CollectionExpansion from '$lib/CollectionsBar/expansion.svelte';
 	import CategoryBar from '$lib/CategoryBar/index.svelte';
 	import FolderSelect from '$lib/UI/FolderSelect/index.svelte';
@@ -65,9 +64,9 @@
 
 		CollectionBuilder.getRollWithCall(call, isUtility).then((res) => {
 			if (isReRoll) {
-					newChoiceArray[itemIndex].data[subItemIndex] = res.data[0];
+				newChoiceArray[itemIndex].data[subItemIndex] = res.data[0];
 			} else {
-					newChoiceArray[itemIndex].data.push(res.data[0]);
+				newChoiceArray[itemIndex].data.push(res.data[0]);
 			}
 
 			choiceArrayStore.set(newChoiceArray);
@@ -92,7 +91,7 @@
 <div class="content">
 	<div class="collections">
 		{#if status === STATUS.BUILT && index}
-			<CollectionBar>
+			<div class="collection-bar">
 				{#each Object.keys(index) as collection}
 					{#each Object.keys(index[collection].tablesData) as choiceGroup}
 						<CollectionExpansion
@@ -103,7 +102,7 @@
 						/>
 					{/each}
 				{/each}
-			</CollectionBar>
+			</div>
 		{:else}
 			<b>Building indexes....</b>
 		{/if}
@@ -126,9 +125,6 @@
 		width: 100%;
 		margin: var(--column-margin-top) auto 0 auto;
 		display: flex;
-	}
-	.collections {
-		flex: 1 0 200px;
 	}
 	.viewer {
 		flex: 3 1 50%;

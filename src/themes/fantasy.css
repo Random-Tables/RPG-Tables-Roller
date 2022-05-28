@@ -47,12 +47,12 @@ div.theme-fantasy .collection-bar {
 	padding: 0.2rem;
 }
 div.theme-fantasy .collection-bar h2 {
-	font-size: 1.7rem;
 	border: none;
 	padding-top: 0.9rem;
 	color: antiquewhite;
 	background: rgba(37, 20, 20, 0.52);
 }
+
 div.theme-fantasy .collection-bar h4 {
 	color: rgba(45, 20, 20, 0.69);
 	border: none;
@@ -72,7 +72,6 @@ div.theme-fantasy .collection-bar ul button:hover {
 div.theme-fantasy .choice-viewbox {
 	border-radius: 0;
 	border: 3px solid rgba(89, 16, 16, 0.22);
-	padding: 0.2rem;
 }
 div.theme-fantasy .choice-viewbox .choice:not(:first-child) {
 	margin-top: 0.5rem;
@@ -139,4 +138,13 @@ div.theme-fantasy menu.hovermenu li {
 }
 div.theme-fantasy menu.hovermenu li:hover {
 	background: #8d7676;
+}
+
+@media (min-width: 720px) {
+	div.theme-fantasy .collection-bar h2 {
+		font-size: 1.7rem;
+	}
+	div.theme-fantasy .choice-viewbox {
+		padding: 0.2rem;
+	}
 }

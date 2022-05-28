@@ -124,9 +124,63 @@ button:focus:not(:focus-visible) {
 	outline: none;
 }
 
+.content {
+	flex-direction: column;
+}
+
+.content .collections {
+	flex: 1 0 200px;
+	margin-bottom: 2rem;
+}
+
+div.viewer .choice-viewbox {
+	padding: 0;
+	max-height: calc(70vh - 260px);
+	border: 1px solid black;
+	padding: 10px;
+	border-radius: 5px;
+	overflow-x: scroll;
+}
+
+.collection-bar {
+	border: 1px solid grey;
+	border-radius: 10px;
+	overflow: scroll;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	max-height: 30vh;
+}
+.content .collections h2 {
+	font-size: 1.2rem;
+}
+.content .collections h4 {
+	font-size: 1.1rem;
+}
+
 @media (min-width: 720px) {
+	.choice-viewbox {
+		max-height: calc(100vh - 200px);
+	}
 	h1 {
 		font-size: 2.4rem;
+	}
+	div.content {
+		flex-direction: row;
+	}
+	.content .collections {
+		overflow-y: auto;
+		margin-bottom: 1rem;
+		flex: 1 0 35vh;
+		margin-bottom: 0;
+	}
+	.collection-bar {
+		max-height: calc(100vh - 14rem);
+	}
+	div.viewer .choice-viewbox {
+		margin: 0 1rem;
+		max-height: calc(100vh - 14rem);
 	}
 }
 .flextable-between,
