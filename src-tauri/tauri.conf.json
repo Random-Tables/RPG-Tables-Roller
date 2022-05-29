@@ -25,9 +25,9 @@
 			"resources": [],
 			"externalBin": [],
 			"copyright": "",
-			"category": "DeveloperTool",
-			"shortDescription": "",
-			"longDescription": "",
+			"category": "Creative Tool",
+			"shortDescription": "Random generator for Roleplaying",
+			"longDescription": "A tool to generate random rich text for creative activities such as role playing games",
 			"deb": {
 				"depends": [],
 				"useBootstrapper": false
@@ -56,7 +56,7 @@
 		},
 		"windows": [
 			{
-				"title": "tauri-app",
+				"title": "Table Roller App",
 				"width": 800,
 				"height": 600,
 				"resizable": true,

@@ -45,7 +45,7 @@ export default {
 	},
 	initRootFiles: async (): Promise<void> => {
 		return new Promise((resolve, reject) => {
-			(async () => {
+			(async function buildInitFiles() {
 				const fileChecks = Promise.all([
 					fs
 						.readTextFile(rootFolder + readmePath, {
@@ -198,21 +198,24 @@ export default {
 		});
 	},
 	initRootDir: async (): Promise<void> => {
-		return new Promise(async (resolve, reject) => {
+		return new Promise(async function buildRoot(resolve, reject) {
 			let roorDir = false;
 			try {
 				roorDir = await fs.readDir(rootFolder, {
 					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+				}).then(() => {
+					resolve();
+				}).catch((e) => {
+					fs.createDir(rootFolder, {
+						dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+					}).then(() => {
+						resolve();
+					});
+
 				});
 			} catch (e) {
 				promiseError(e, reject);
 			}
-			if (!roorDir) {
-				await fs.createDir(rootFolder, {
-					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-				});
-			}
-			resolve();
 		});
 	},
 	getCollections: async (): Promise<FileEntry[]> => {
