@@ -2,8 +2,8 @@
 	import { ErrorArray } from '$lib/CollectionsBuilder';
 </script>
 
-{#if $ErrorArray}
-	<h4>Errors found during setup</h4>
+{#if $ErrorArray.length > 0}
+	<h4 class="error">Errors found during setup</h4>
 	<ul>
 		{#each $ErrorArray as errorString}
 			<li>{errorString}</li>
@@ -12,7 +12,7 @@
 {/if}
 
 <style>
-	h4 {
+	h4.error {
 		color: indianred;
 	}
     li {

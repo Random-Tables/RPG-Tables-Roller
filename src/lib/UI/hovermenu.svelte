@@ -1,10 +1,10 @@
-<div>
+<div class="hoverwrap">
 	<button><slot name="toggle" /></button>
 	<menu class="hovermenu"><slot /></menu>
 </div>
 
 <style>
-	div {
+	div.hoverwrap {
 		transition: all 0.5s ease;
 		position: relative;
 		display: inline-block;
@@ -15,7 +15,7 @@
 		background-color: inherit;
 	}
 
-	menu {
+	menu.hovermenu {
 		position: absolute;
 		display: none;
 		margin-block-start: 0;
@@ -31,8 +31,8 @@
 		z-index: 10;
 	}
 
-	div:hover > menu,
-	div:focus > menu {
+	div:hover > menu.hovermenu,
+	div:focus > menu.hovermenu {
 		display: block;
 		visibility: visible;
 		opacity: 1;

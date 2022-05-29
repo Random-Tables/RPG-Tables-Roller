@@ -83,11 +83,4 @@
 		display: inline-block;
 		font-size: 1.1rem;
 	}
-	.setting-item input {
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 0.25em;
-		border: 0.1em solid currentColor;
-		background: transparent;
-	}
 </style>

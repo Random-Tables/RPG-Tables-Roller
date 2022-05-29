@@ -21,7 +21,7 @@
 {#if expanded}
 	<ul>
 		{#each choiceTables as tableName}
-			<li>
+			<li class="expand-item">
 				<button on:click={() => onClick(choiceGroup, tableName)}>{tableName}</button>
 			</li>
 		{/each}
@@ -48,14 +48,17 @@
 		padding: 0px;
 		margin: 0px;
 	}
-	li button {
+	li.expand-item {
+		width: 100%;
+		margin-bottom: 0.2rem;
+	}
+	li.expand-item button {
 		padding: 5px;
 		border-radius: 0px;
 		width: 100%;
 		margin: 0px;
 		text-align: left;
 		border: 1px solid transparent;
-		background: white;
 		cursor: pointer;
 	}
 	li button:hover {

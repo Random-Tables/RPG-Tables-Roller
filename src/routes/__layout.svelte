@@ -10,13 +10,13 @@
 <div class="theme-{$settingsStore.theme}">
 	<Header />
 
-	<main>
+	<main class="main">
 		<slot />
 	</main>
 </div>
 
 <style>
-	main {
+	main.main {
 		flex: 1;
 		display: flex;
 		flex-direction: column;

@@ -15,9 +15,9 @@
 			<button on:click={switchExpansion}>{expanded ? '▲' : '▼'}</button>
 		</div>
 		{#if expanded}
-			<ul>
+			<ul class="list">
 				{#each $LoadedArray as collectionString, index}
-					<li>{collectionString} {index + 1 === $LoadedArray.length ? '' : ', '}</li>
+					<li class="item">{collectionString} {index + 1 === $LoadedArray.length ? '' : ', '}</li>
 				{/each}
 			</ul>
 		{/if}
@@ -35,11 +35,12 @@
 	h4 {
 		margin: 0;
 	}
-	ul {
+	ul.list {
 		display: inline-block;
 		padding-inline-start: 0;
 	}
-	li {
+	li.item {
+		width: 100%;
 		display: inline;
 		margin-bottom: 0.4rem;
 	}
