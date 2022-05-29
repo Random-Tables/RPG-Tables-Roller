@@ -32,6 +32,7 @@
 					<label for="set-{set.key}">{set.text}</label>
 					{#if set.type === settingsTypes.check}
 						<input
+							class="setting-check"
 							name="set-{set.key}"
 							type="checkbox"
 							checked={$settingsStore[set.key]}
@@ -39,6 +40,7 @@
 						/>
 					{:else if set.type === settingsTypes.dial}
 						<input
+							class="setting-dial"
 							name="set-{set.key}"
 							type="number"
 							min={set.min}
@@ -50,6 +52,7 @@
 						<span>Set between {set.min} and {set.max}</span>
 					{:else if set.type === settingsTypes.select}
 						<select
+							class="setting-select"
 							value={$settingsStore[set.key]}
 							on:change={(evt) => onUpdateInput(set.key, evt.currentTarget.value)}
 						>
@@ -74,11 +77,6 @@
 		padding-left: 2rem;
 		margin-left: 2rem;
 		border-left: 1px solid grey;
-	}
-	.setting-item {
-		padding: 5px 0;
-		display: flex;
-		align-items: center;
 	}
 	.setting-item label {
 		min-width: 60vw;

@@ -190,11 +190,22 @@ div.viewer .choice-viewbox {
 	max-height: calc(70vh - 260px);
 	overflow-y: auto;
 }
+.setting-dial {
+	width: 3rem;
+	margin-right: 1rem;
+}
+.setting-item {
+	padding: 5px 0;
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 1px solid black;
+}
 
 @media (min-width: 720px) {
 	.choice-viewbox {
 		max-height: calc(100vh - 200px);
-	overflow-y: auto;
+		overflow-y: auto;
 	}
 	h1 {
 		font-size: 2.4rem;
@@ -224,6 +235,11 @@ div.viewer .choice-viewbox {
 	}
 	.wrap-proj-choices {
 		max-height: none;
+	}
+	.setting-item {
+		flex-direction: row;
+		align-items: center;
+		border-bottom: none;
 	}
 }
 

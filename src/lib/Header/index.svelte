@@ -1,14 +1,15 @@
 <script>
 	import { page } from '$app/stores';
 	import { ProjectDataStore } from '$lib/ProjectBuilder';
-
 </script>
 
 <header>
 	<nav class="navigation">
 		<ul>
 			<li class:active={$page.url.pathname === '/'}><a sveltekit:prefetch href="/">Home</a></li>
-			<li class:active={$page.url.pathname === '/table'}><a sveltekit:prefetch href="/table">Tables</a></li>
+			<li class:active={$page.url.pathname === '/table'}>
+				<a sveltekit:prefetch href="/table">Tables</a>
+			</li>
 			<li class:active={$page.url.pathname === '/settings'}>
 				<a sveltekit:prefetch href="/settings">Settings</a>
 			</li>
@@ -34,16 +35,6 @@
 		display: flex;
 		justify-content: center;
 		--background: rgba(255, 255, 255, 0.7);
-	}
-
-	svg {
-		width: 2em;
-		height: 3em;
-		display: block;
-	}
-
-	path {
-		fill: var(--background);
 	}
 
 	ul {
@@ -80,14 +71,20 @@
 		display: flex;
 		height: 100%;
 		align-items: center;
-		padding: 0 1em;
 		color: var(--heading-color);
 		font-weight: 700;
-		font-size: 0.8rem;
 		text-transform: uppercase;
 		letter-spacing: 10%;
 		text-decoration: none;
 		transition: color 0.2s linear;
+		padding: 0.6em;
+		font-size: 0.65rem;
+	}
+	@media (min-width: 720px) {
+		nav a {
+			padding: 0 1em;
+			font-size: 0.8rem;
+		}
 	}
 
 	a:hover {
