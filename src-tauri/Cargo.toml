@@ -1,12 +1,12 @@
 [package]
-name = "app"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+name = "Tables Roller"
+version = "1.0.0"
+description = "An app for generateing rich random items/people"
+authors = ["https://github.com/aronedwards91"]
+license = "MIT"
+repository = "https://github.com/aronedwards91/RPG-Tables-Roller"
 default-run = "app"
-edition = "2018"
+edition = "2022"
 build = "src/build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
