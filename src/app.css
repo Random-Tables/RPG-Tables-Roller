@@ -88,10 +88,12 @@ h2 {
 
 h3 {
 	font-size: 1.8rem;
+	margin: 0.6rem 0;
 }
 
 h4 {
 	font-size: 1.5rem;
+	margin: 0.2rem 0 0.4rem;
 }
 
 h5 {
@@ -159,9 +161,40 @@ div.viewer .choice-viewbox {
 	font-size: 1.1rem;
 }
 
+.card-item {
+	display: block;
+	border: 1px solid grey;
+	background: white;
+	padding: 20px;
+	border-radius: 5px;
+	width: auto;
+	max-width: 80vw;
+}
+
+.wrap-proj-data {
+	flex-grow: 1;
+	border: 2px solid black;
+	display: flex;
+	flex-direction: column;
+}
+.wrap-proj-folders {
+	border: 1px solid lightblue;
+	flex: 3 0 25%;
+	max-height: 30vh;
+	overflow-y: auto;
+}
+.wrap-proj-choices {
+	border: 1px solid lightcoral;
+	flex: 8 8 70%;
+	padding: 10px;
+	max-height: calc(70vh - 260px);
+	overflow-y: auto;
+}
+
 @media (min-width: 720px) {
 	.choice-viewbox {
 		max-height: calc(100vh - 200px);
+	overflow-y: auto;
 	}
 	h1 {
 		font-size: 2.4rem;
@@ -182,7 +215,19 @@ div.viewer .choice-viewbox {
 		margin: 0 1rem;
 		max-height: calc(100vh - 14rem);
 	}
+	.wrap-proj-data {
+		flex-direction: row;
+		max-height: calc(100vh - 14rem);
+	}
+	.wrap-proj-folders {
+		max-height: none;
+	}
+	.wrap-proj-choices {
+		max-height: none;
+	}
 }
+
+/* utility classes */
 .flextable-between,
 .flextable {
 	display: flex;

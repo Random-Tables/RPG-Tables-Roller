@@ -89,6 +89,7 @@
 <style>
 	.btn-wrap {
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5rem 1rem;

@@ -12,13 +12,6 @@
 {/if}
 
 <style>
-	.card-item {
-		display: block;
-		border: 1px solid grey;
-		background: white;
-		padding: 20px;
-		border-radius: 5px;
-	}
 	a {
 		cursor: pointer;
 	}

@@ -63,10 +63,15 @@
 </script>
 
 {#if projectData}
-	<h3>{projectData.name}</h3>
-	<p><b>Last Edited</b> {projectData.lastEdit}</p>
+	<div class="flextable-between">
+		<h3>{projectData.name}</h3>
+		<p><b>Last Edited</b> {projectData.lastEdit}</p>
+	</div>
+
 	{#if keyString && keyString !== ''}
-		<button class="project-set-default" on:click={setDefaultFolder}>Set {keyString} as default folder</button>
+		<button class="project-set-default" on:click={setDefaultFolder}
+			>Set {keyString} as default folder</button
+		>
 	{/if}
 
 	<div class="wrap-proj-data">
@@ -93,20 +98,3 @@
 {:else}
 	<h3>No project Data Found</h3>
 {/if}
-
-<style>
-	.wrap-proj-data {
-		flex-grow: 1;
-		border: 2px solid black;
-		display: flex;
-	}
-	.wrap-proj-folders {
-		border: 1px solid lightblue;
-		flex: 3 0 25%;
-	}
-	.wrap-proj-choices {
-		border: 1px solid lightcoral;
-		flex: 8 8 70%;
-		padding: 10px;
-	}
-</style>
