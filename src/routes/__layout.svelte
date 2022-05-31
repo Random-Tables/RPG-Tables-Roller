@@ -5,6 +5,7 @@
 	import Header from '$lib/Header/index.svelte';
 	import '../app.css';
 	import '../themes/fantasy.css';
+	import '../themes/horror.css';
 </script>
 
 <div class="theme-{$settingsStore.theme}">

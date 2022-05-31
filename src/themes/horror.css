@@ -1,0 +1,118 @@
+@font-face {
+	font-family: 'Pangolin';
+	src: url('/fonts/Pangolin-Regular.ttf') format('truetype');
+}
+
+div.theme-horror-mystery {
+	background: url('/theme/horror/manilla.webp');
+	font-family: 'Pangolin', cursive;
+	min-height: 100vh;
+}
+
+div.theme-horror-mystery button {
+	/* padding: 0.2rem 1rem;
+	background: rgba(57, 28, 28, 0.34);
+	border: none;
+	border-left: 4px solid rgba(29, 5, 5, 0.54);
+	border-right: 4px solid rgba(29, 5, 5, 0.54);
+	color: whitesmoke;
+	font-size: 1.2rem;
+	cursor: pointer;
+	transition: all ease-in-out 0.2s; */
+}
+div.theme-horror-mystery button:hover {
+	/* background: rgba(57, 28, 28, 0.6); */
+}
+
+div.theme-horror-mystery .navigation {
+	background: lightgray;
+	width: 100%;
+	justify-content: start;
+}
+div.theme-horror-mystery .navigation ul {
+	background: none;
+}
+div.theme-horror-mystery .navigation ul li {
+	background-image: url('/theme/horror/tab.png');
+	background-size: cover;
+	/* background: rgba(57, 28, 28, 0.2);
+	border: none;
+	cursor: pointer;
+	transition: all ease-in-out 0.2s; */
+}
+div.theme-horror-mystery .navigation ul li:hover {
+	/* background: rgba(57, 28, 28, 0.6);
+	color: darkolivegreen; */
+}
+div.theme-horror-mystery .navigation ul a {
+	padding: 0 1.2rem;
+}
+
+div.theme-horror-mystery .collection-bar {
+	/* border: 3px solid rgba(89, 16, 16, 0.22);
+	border-radius: 0;
+	padding: 0.2rem; */
+}
+div.theme-horror-mystery .collection-bar h2 {
+	/* border: none;
+	padding-top: 0.9rem;
+	color: antiquewhite;
+	background: rgba(37, 20, 20, 0.52); */
+}
+
+div.theme-horror-mystery .collection-bar h4 {
+	/* color: rgba(45, 20, 20, 0.69);
+	border: none; */
+}
+div.theme-horror-mystery .collection-bar ul {
+	/* margin: 0.5rem 0; */
+}
+div.theme-horror-mystery .collection-bar ul button {
+	/* background: rgba(64, 33, 33, 0.15);
+	color: black;
+	padding: 0.4rem 1.5rem; */
+}
+div.theme-horror-mystery .collection-bar ul button:hover {
+}
+
+div.theme-horror-mystery .choice-viewbox {
+}
+div.theme-horror-mystery .choice-viewbox .choice:not(:first-child) {
+}
+div.theme-horror-mystery .choice-viewbox .choice {
+}
+div.theme-horror-mystery .choice-viewbox .roll-options {
+}
+div.theme-horror-mystery .choice-viewbox .subchoice-item {
+}
+div.theme-horror-mystery .choice-viewbox .subchoice-item:not(:first-child) {
+}
+
+div.theme-horror-mystery .project-list .project-item:not(:first-child) {
+}
+div.theme-horror-mystery .project-list .project-item {
+}
+div.theme-horror-mystery .project-list .card-item {
+}
+div.theme-horror-mystery .project-list .card-item p {
+}
+
+div.theme-horror-mystery input#projName {
+}
+
+div.theme-horror-mystery .wrap-proj-data .choice {
+}
+div.theme-horror-mystery .project-set-default {
+}
+
+div.theme-horror-mystery menu.hovermenu li {
+}
+div.theme-horror-mystery menu.hovermenu li:hover {
+}
+
+@media (min-width: 720px) {
+	div.theme-horror-mystery .collection-bar h2 {
+	}
+	div.theme-horror-mystery .choice-viewbox {
+	}
+}
