@@ -1,10 +1,12 @@
-# SveltKit + Tauri
+# Table Roller Application
 
-Lightweight Desktop application start
+This Application is a tool for generating random rich tables for creative games & projects. Common to DnD and such games often in the form of a loot table, this app's intent is the user focused end of a larger attempt to create an table format that allows nested calls, eg instead of `red sword` you could use `{{senses/colors/red:red}} Sword` this would then return values such as `deep crimson sword`, `blood red sword` etc, allowing for deep, interesting descriptions and a shared library of resources for building upon.
 
-## Tauri Setup
+## Developer Setup
 
-[Follow the setup guide for your OS](https://tauri.studio/en/docs/getting-started/intro)
+### Tauri Setup
+
+[Follow the setup guide for your OS](https://tauri.studio/v1/guides/getting-started/prerequisites)
 
 ## Testing & working Applications
 
