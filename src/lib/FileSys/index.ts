@@ -13,7 +13,7 @@ const castlesIndex = '/Collections/castle';
 const namesIndex = '/Collections/names';
 const settingsFile = '/settings.json';
 
-function waitforme(milisec) {
+function waitforme(milisec: number) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve('');
@@ -21,7 +21,7 @@ function waitforme(milisec) {
 	});
 }
 
-function promiseError(e, reject) {
+function promiseError(e: Error, reject: Function) {
 	console.error(e);
 	reject('error::' + e);
 }
