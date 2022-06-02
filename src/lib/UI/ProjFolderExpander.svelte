@@ -77,14 +77,15 @@
 			<button class="expand" on:click={toggleSubfolders}>{subfoldersOpen ? '▲' : '▼'}</button>
 
 			<Menu>
-				<button class="dropdown" slot="toggle">:</button>
+				<div class="dropdown" slot="toggle">:</div>
 				<MenuItem
-					><button class="norm" on:click={() => setShowRenameModal(folder.name, folderIndex)}
+					><button class="drop-rename" on:click={() => setShowRenameModal(folder.name, folderIndex)}
 						>Rename</button
 					></MenuItem
 				>
 				<MenuItem
-					><button class="norm" on:click={() => setShowDeleteModal(folderIndex)}>Delete</button
+					><button class="drop-delete" on:click={() => setShowDeleteModal(folderIndex)}
+						>Delete</button
 					></MenuItem
 				>
 			</Menu>
@@ -138,11 +139,14 @@
 	.folder-header {
 		background: rgba(92, 138, 163, 0.35);
 	}
-	button.norm {
+	button.drop-delete,
+	button.drop-rename {
 		border: 0;
+		border-radius: 0;
 		padding: 0;
 		background: none;
 		padding: 0.5rem;
 		cursor: pointer;
+		width: 100%;
 	}
 </style>

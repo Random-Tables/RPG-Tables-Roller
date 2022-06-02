@@ -34,6 +34,19 @@ div.theme-horror-mystery button {
 div.theme-horror-mystery button:hover {
 	background: rgb(43, 46, 61);
 }
+div.theme-horror-mystery button.hovertrigger,
+div.theme-horror-mystery button.expand {
+	padding: 0.2rem;
+}
+div.theme-horror-mystery div.hoverwrap button.drop-delete,
+div.theme-horror-mystery div.hoverwrap button.drop-rename {
+	background: rgb(34, 32, 54);
+	margin: 0;
+}
+div.theme-horror-mystery div.hoverwrap button.drop-delete:hover,
+div.theme-horror-mystery div.hoverwrap button.drop-rename:hover {
+	background: rgb(46, 41, 92);
+}
 
 div.theme-horror-mystery .navigation {
 	background: lightgray;

@@ -170,6 +170,11 @@ div.viewer .choice-viewbox {
 	width: auto;
 	max-width: 80vw;
 }
+button.hovertrigger {
+	padding: 0.1rem;
+	border: 1px solid grey;
+	background-color: inherit;
+}
 
 .wrap-proj-data {
 	flex-grow: 1;
@@ -239,6 +244,7 @@ input.setting-dial {
 	}
 	.wrap-proj-folders {
 		max-height: none;
+		overflow-y: visible;
 	}
 	.wrap-proj-choices {
 		max-height: none;

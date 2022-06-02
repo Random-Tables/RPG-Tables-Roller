@@ -1,5 +1,5 @@
 <div class="hoverwrap">
-	<button><slot name="toggle" /></button>
+	<button class="hovertrigger"><slot name="toggle" /></button>
 	<menu class="hovermenu"><slot /></menu>
 </div>
 
@@ -8,11 +8,6 @@
 		transition: all 0.5s ease;
 		position: relative;
 		display: inline-block;
-	}
-
-	button {
-		border: none;
-		background-color: inherit;
 	}
 
 	menu.hovermenu {
