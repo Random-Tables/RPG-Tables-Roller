@@ -2,6 +2,27 @@
 
 This Application is a tool for generating random rich tables for creative games & projects. Common to DnD and such games often in the form of a loot table, this app's intent is the user focused end of a larger attempt to create an table format that allows nested calls, eg instead of `red sword` you could use `{{senses/colors/red:red}} Sword` this would then return values such as `deep crimson sword`, `blood red sword` etc, allowing for deep, interesting descriptions and a shared library of resources for building upon.
 
+### Add Collections
+
+To Add additional collections to your available list, download the zip files from the 'releases' section of any repo within https://github.com/Random-Tables
+
+```
+--- Fantasy-Tables
+  |
+  |-- Collections
+    |
+    |-- Library1
+      |
+      |--index.json
+      |--tableA.json
+      |--tableB.json
+    |
+    |--Library2
+      |
+      |--index.json
+      |--tableA.json
+```
+
 ## Developer Setup
 
 ### Tauri Setup
