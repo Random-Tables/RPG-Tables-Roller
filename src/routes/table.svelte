@@ -6,8 +6,8 @@
 	import Viewer from '$lib/Viewer/index.svelte';
 	import { viewsBuilt, choiceArrayStore } from '$lib/stores';
 	import CollectionExpansion from '$lib/CollectionsBar/expansion.svelte';
-	import CategoryBar from '$lib/CategoryBar/index.svelte';
-	import FolderSelect from '$lib/UI/FolderSelect/index.svelte';
+	import CategoryBar from '$lib/UI/Categorybar.svelte';
+	import FolderSelect from '$lib/UI/FolderSelect.svelte';
 	import { get } from 'svelte/store';
 
 	let status = STATUS.UNSTARTED;

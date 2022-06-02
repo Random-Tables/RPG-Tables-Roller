@@ -4,7 +4,7 @@
 	import ProjectBuilder from '$lib/ProjectBuilder';
 	import CollectionBuilder from '$lib/CollectionsBuilder';
 	import { STATUS } from '$lib/enums';
-	import Card from '$lib/card/index.svelte';
+	import Card from '$lib/UI/card.svelte';
 
 	let Projects: projList;
 	let isGettingProjFile = false;

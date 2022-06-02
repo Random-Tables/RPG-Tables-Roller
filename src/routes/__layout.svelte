@@ -2,7 +2,7 @@
 	// @ts-nocheck
 
 	import { settingsStore } from '$lib/SettingsManager';
-	import Header from '$lib/Header/index.svelte';
+	import Header from '$lib/UI/Header.svelte';
 	import '../app.css';
 	import '../themes/fantasy.css';
 	import '../themes/horror.css';

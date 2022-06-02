@@ -2,7 +2,7 @@
 	import ProjectBuilder, { ProjectDataStore } from '$lib/ProjectBuilder';
 	import { STATUS } from '$lib/enums';
 	import { onMount, afterUpdate } from 'svelte';
-	import FolderExpander from '$lib/UI/ProjFolderExpander/index.svelte';
+	import FolderExpander from '$lib/UI/ProjFolderExpander.svelte';
 	import ChoiceBox from '$lib/Viewer/choicebox.svelte';
 	import AddProjFolder from '$lib/AddProjFolder/index.svelte';
 
