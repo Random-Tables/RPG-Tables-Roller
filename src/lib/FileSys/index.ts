@@ -9,8 +9,8 @@ const rootFolder = 'Fantasy-Tables';
 const collectionsFolder = 'Collections';
 const projectsFolder = 'Projects';
 const readmePath = '/README.txt';
-const castlesIndex = '/Collections/castle';
-const namesIndex = '/Collections/names';
+const castlesIndex = '/Collections/example-castle';
+const namesIndex = '/Collections/example-names';
 const settingsFile = '/settings.json';
 
 function waitforme(milisec: number) {

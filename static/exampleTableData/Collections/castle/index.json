@@ -1,9 +1,0 @@
-{
-	"collectionID": "castle",
-	"collectionName": "Medieval Castles",
-	"required": ["names"],
-	"category": "Place",
-	"isUtility": false,
-	"tags": ["place", "medieval", "low-fantasy"],
-	"tables": { "castle": ["medieval", "test", "testDefault", "testMultiUtil"], "castle-japan": ["japanese"] }
-}

@@ -54,7 +54,8 @@ async function buildIndexData(): Promise<void> {
 				if (collections) {
 					// Local arrays for testing required collections
 					const CollectionIds = [];
-					const CollectionName = [];
+					const CollectionNames = [];
+					const CollectionVersions = [];
 					const requiredCheckArray = [];
 
 					await asyncForEach(collections, async (element, index) => {
@@ -62,7 +63,8 @@ async function buildIndexData(): Promise<void> {
 
 						// Build data to check required collections
 						CollectionIds.push(tableIndexData.collectionID);
-						CollectionName.push(tableIndexData.collectionName);
+						CollectionNames.push(tableIndexData.collectionName);
+						CollectionVersions.push(tableIndexData.version || 0);
 						requiredCheckArray.push(tableIndexData.required || []);
 
 						// add to category
@@ -93,10 +95,28 @@ async function buildIndexData(): Promise<void> {
 						requiredCheckArray.forEach((reqArray, collectionIndex) => {
 							reqArray.forEach((required) => {
 								// Add error if required collection missing from collections
+								let collectionReq = required;
+								let version = null;
+								if (required.includes('@')) {
+									[collectionReq, version] = required.split('@');
+								}
 
-								if (!CollectionIds.includes(required)) {
+								const requiredCollectionIndex = CollectionIds.indexOf(collectionReq);
+
+								if (requiredCollectionIndex === -1) {
 									const errorString =
-										CollectionName[collectionIndex] + ' is missing collection: ' + required;
+										CollectionNames[collectionIndex] + ' is missing collection: ' + collectionReq;
+
+									ErrorArray.update((val) => {
+										const arr = val.slice();
+										arr.push(errorString);
+										return arr;
+									});
+
+									// Checks if local collection version higher than required
+								} else if (parseInt(version) > CollectionVersions[requiredCollectionIndex]) {
+									const errorString = `'${CollectionNames[collectionIndex]}' requires collection '${CollectionNames[requiredCollectionIndex]}' to be version ${version} or higher`;
+
 									ErrorArray.update((val) => {
 										const arr = val.slice();
 										arr.push(errorString);
@@ -106,7 +126,7 @@ async function buildIndexData(): Promise<void> {
 							});
 						});
 					}
-					LoadedArray.set(CollectionName);
+					LoadedArray.set(CollectionNames);
 
 					if (debug) console.log('generalIndex', generalIndex);
 

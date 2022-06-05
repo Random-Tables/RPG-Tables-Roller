@@ -1,0 +1,9 @@
+{
+	"collectionID": "example-castle",
+	"collectionName": "Example Medieval Castles",
+	"required": ["example-names@1"],
+	"category": "Place",
+	"isUtility": false,
+	"tags": ["place", "medieval", "low-fantasy"],
+	"tables": { "castle": ["medieval"], "castle-japan": ["japanese"] }
+}
