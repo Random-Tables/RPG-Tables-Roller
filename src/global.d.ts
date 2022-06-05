@@ -15,7 +15,8 @@ interface FileEntry {
 type tableIndex = {
 	collectionID: string; // used as address
 	collectionName: string; // Readable Name
-	required?: string[]; // Used to relay to user if any externally used tables are missing
+	required?: string[]; // Used to relay to user if any externally used tables are missing, add @3 to require v[3] or above
+	version?: Number; // used to check index version if required by another table
 	category?: string; // preferred category
 	isUtility?: boolean; // If true not shown in main list, but used in background
 	tags?: string[]; // for future searching / categorisation

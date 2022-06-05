@@ -3,6 +3,7 @@
 	"collectionName": "Example Names",
 	"category": "Utility",
 	"isUtility": true,
+	"version": 2,
 	"tags": ["names", "medieval", "low-fantasy"],
 	"tables": { "place": ["medieval", "japan", "nest"] }
 }
