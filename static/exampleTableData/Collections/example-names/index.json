@@ -1,6 +1,6 @@
 {
-	"collectionID": "names",
-	"collectionName": "Names",
+	"collectionID": "example-names",
+	"collectionName": "Example Names",
 	"category": "Utility",
 	"isUtility": true,
 	"tags": ["names", "medieval", "low-fantasy"],

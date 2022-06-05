@@ -1,0 +1,17 @@
+{
+	"medieval": {
+		"label": "Medieval European Castle",
+		"tableSections": [
+			{
+				"name": "Castle Name",
+				"table": ["{{example-names/place/medieval:A}} Castle", "{{example-names/place/medieval:A}} Redoubt"],
+				"type": "simple"
+			},
+			{
+				"name": "Castle Type:",
+				"table": ["large wooden Castle", "Small hillfort"],
+				"type": "simple"
+			}
+		]
+	}
+}

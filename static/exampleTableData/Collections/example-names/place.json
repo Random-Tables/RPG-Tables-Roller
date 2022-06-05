@@ -9,6 +9,6 @@
 	},
 	"nest": {
 		"name": "Castle Name:",
-		"table": ["{{names/place/japan:A}}--{{names/place/medieval:B}}", "{{names/place/medieval:A}}--{{names/place/medieval:B}}"]
+		"table": ["{{example-names/place/japan:A}}--{{example-names/place/medieval:B}}", "{{example-names/place/medieval:A}}--{{example-names/place/medieval:B}}"]
 	}
 }
