@@ -4,7 +4,7 @@
 		"tableSections": [
 			{
 				"name": "Castle Name:",
-				"table": ["{{names/place/japan:Name}} Castle", "{{names/place/japan:Name}} Fort"],
+				"table": ["{{example-names/place/japan:Name}} Castle", "{{example-names/place/japan:Name}} Fort"],
 				"type": "simple"
 			},
 			{
