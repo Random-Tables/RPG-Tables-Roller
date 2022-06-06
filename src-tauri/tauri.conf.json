@@ -49,6 +49,7 @@
 		},
 		"allowlist": {
 			"fs": {
+				"scope": ["$DOCUMENT/*"],
 				"all": true
 			}
 		},
