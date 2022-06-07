@@ -91,7 +91,7 @@
 <div class="content">
 	<div class="collections">
 		{#if status === STATUS.BUILT && index}
-			<div class="collection-bar">
+			<div class="collection-bar scroller">
 				{#each Object.keys(index) as collection}
 					{#each Object.keys(index[collection].tablesData) as choiceGroup}
 						<CollectionExpansion

@@ -10,7 +10,7 @@
 	export let projSelected;
 </script>
 
-<div class="choice-viewbox">
+<div class="choice-viewbox scroller">
 	{#each choices as choice, index}
 		<ChoiceBox
 			{projSelected}

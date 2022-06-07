@@ -75,7 +75,7 @@
 	{/if}
 
 	<div class="wrap-proj-data">
-		<div class="wrap-proj-folders">
+		<div class="wrap-proj-folders scroller">
 			{#each projectData.folders as folder, index}
 				<FolderExpander
 					{folder}
@@ -86,7 +86,7 @@
 			{/each}
 			<AddProjFolder onComplete={updateProj} />
 		</div>
-		<div class="wrap-proj-choices">
+		<div class="wrap-proj-choices scroller">
 			<h4>CHOICES</h4>
 			{#if choiceArray}
 				{#each choiceArray as choice, index}
