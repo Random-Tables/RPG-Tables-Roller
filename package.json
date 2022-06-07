@@ -1,6 +1,6 @@
 {
 	"name": "table-roller-app",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
@@ -12,7 +12,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.32",
-		"@sveltejs/kit": "next",
+		"@sveltejs/kit": "^1.0.0-next.348",
 		"@tauri-apps/api": "^1.0.0-rc.6",
 		"@tauri-apps/cli": "^1.0.0-beta.10",
 		"@types/cookie": "^0.4.0",
