@@ -168,17 +168,21 @@ async function checkString(resultString: string): Promise<string> {
 					const collectionCall = callString[0];
 					const tableAddress = collectionCall.split('/');
 
-					if (debug) console.log('checkString--tableAddress', tableAddress);
-
-					getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true).then((response) => {
-						if (debug) console.log('checkString--getRoll-response', response);
-
-						if (response.utility === '') {
-							res(callString[1]);
-						} else {
-							res(response.utility);
-						}
-					});
+					try {
+						if (debug) console.log('checkString--tableAddress', tableAddress);
+	
+						getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true, callString[1]).then((response) => {
+							if (debug) console.log('checkString--getRoll-response', response);
+	
+							if (response.utility === '') {
+								res(callString[1]);
+							} else {
+								res(response.utility);
+							}
+						});
+					} catch(e) {
+						res(callString[1]);
+					}
 				}
 			});
 		}
@@ -206,7 +210,6 @@ function rollUtility(utility: tableUtilityItem): Promise<string> {
 			const choicesAvailable = utility.table.length;
 			const randomTable = Math.floor(Math.random() * choicesAvailable);
 			const checkedResult = await checkString(utility.table[randomTable]);
-			// return checkedResult;
 			resolve(checkedResult);
 		})();
 	});
@@ -271,7 +274,8 @@ async function getRoll(
 	collection: string,
 	group: string,
 	table: string,
-	isUtility: boolean = false
+	isUtility: boolean = false,
+	backupValue?: string 
 ): Promise<Choice> {
 	if (debug) console.log('getRoll--isUtility', isUtility);
 
@@ -301,24 +305,42 @@ async function getRoll(
 
 			const build = () => {
 				if (isUtility) {
-					rollUtility(tableData.data[table])
-						.then((rollResult) => {
-							if (debug) console.log('rollUtility-res', rollResult);
-							resolve({
-								utility: rollResult,
-								data: [
-									[
-										{
-											title: '',
-											data: rollResult
-										}
-									]
-								],
-								type: CHOICE_TYPE.string,
-								call
-							});
-						})
-						.catch((err) => console.error(err));
+					const utilityTable = tableData.data[table];
+
+					if(utilityTable) {
+						rollUtility(utilityTable)
+							.then((rollResult) => {
+								if (debug) console.log('rollUtility-res', rollResult);
+								resolve({
+									utility: rollResult,
+									data: [
+										[
+											{
+												title: '',
+												data: rollResult
+											}
+										]
+									],
+									type: CHOICE_TYPE.string,
+									call
+								});
+							})
+							.catch((err) => console.error(err));
+					} else {
+						resolve({
+							utility: backupValue,
+							data: [
+								[
+									{
+										title: '',
+										data: backupValue
+									}
+								]
+							],
+							type: CHOICE_TYPE.string,
+							call
+						});
+					}
 				} else {
 					rollTable(tableData.data[table].tableSections, CHOICE_TYPE.string, call).then(
 						(rollData) => {
