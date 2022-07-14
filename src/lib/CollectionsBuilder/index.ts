@@ -61,33 +61,41 @@ async function buildIndexData(): Promise<void> {
 					await asyncForEach(collections, async (element, index) => {
 						const tableIndexData: tableIndex = await FileSys.getCollectionIndex(element.path);
 
-						// Build data to check required collections
-						CollectionIds.push(tableIndexData.collectionID);
-						CollectionNames.push(tableIndexData.collectionName);
-						CollectionVersions.push(tableIndexData.version || 0);
-						requiredCheckArray.push(tableIndexData.required || []);
+						if (tableIndexData.collectionName !== 'error') {
+							// Build data to check required collections
+							CollectionIds.push(tableIndexData.collectionID);
+							CollectionNames.push(tableIndexData.collectionName);
+							CollectionVersions.push(tableIndexData.version || 0);
+							requiredCheckArray.push(tableIndexData.required || []);
 
-						// add to category
-						const category = tableIndexData.category.toLowerCase();
+							// add to category
+							const category = tableIndexData.category.toLowerCase();
 
-						if (category !== 'utility') {
-							generalIndex.categories.all[tableIndexData.collectionID] = tableIndexData;
+							if (category !== 'utility') {
+								generalIndex.categories.all[tableIndexData.collectionID] = tableIndexData;
+							}
+
+							if (!generalIndex.categories[category]) {
+								generalIndex.categories[category] = {};
+							}
+
+							generalIndex.categories[category][tableIndexData.collectionID] = tableIndexData;
+							generalIndex.categories[category][tableIndexData.collectionID].tablesData = {};
+
+							Object.keys(tableIndexData.tables).forEach(function (key: string) {
+								generalIndex.categories[category][tableIndexData.collectionID].tablesData[key] = {
+									dataReady: false,
+									data: null,
+									tablesList: tableIndexData.tables[key]
+								};
+							});
+						} else {
+							ErrorArray.update((val) => {
+								const arr = val.slice();
+								arr.push("Collection '" + element.name + "' is missing an index file");
+								return arr;
+							});
 						}
-
-						if (!generalIndex.categories[category]) {
-							generalIndex.categories[category] = {};
-						}
-
-						generalIndex.categories[category][tableIndexData.collectionID] = tableIndexData;
-						generalIndex.categories[category][tableIndexData.collectionID].tablesData = {};
-
-						Object.keys(tableIndexData.tables).forEach(function (key: string) {
-							generalIndex.categories[category][tableIndexData.collectionID].tablesData[key] = {
-								dataReady: false,
-								data: null,
-								tablesList: tableIndexData.tables[key]
-							};
-						});
 					});
 
 					// Check required items
@@ -170,17 +178,19 @@ async function checkString(resultString: string): Promise<string> {
 
 					try {
 						if (debug) console.log('checkString--tableAddress', tableAddress);
-	
-						getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true, callString[1]).then((response) => {
-							if (debug) console.log('checkString--getRoll-response', response);
-	
-							if (response.utility === '') {
-								res(callString[1]);
-							} else {
-								res(response.utility);
+
+						getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true, callString[1]).then(
+							(response) => {
+								if (debug) console.log('checkString--getRoll-response', response);
+
+								if (response.utility === '') {
+									res(callString[1]);
+								} else {
+									res(response.utility);
+								}
 							}
-						});
-					} catch(e) {
+						);
+					} catch (e) {
 						res(callString[1]);
 					}
 				}
@@ -275,7 +285,7 @@ async function getRoll(
 	group: string,
 	table: string,
 	isUtility: boolean = false,
-	backupValue?: string 
+	backupValue?: string
 ): Promise<Choice> {
 	if (debug) console.log('getRoll--isUtility', isUtility);
 
@@ -307,7 +317,7 @@ async function getRoll(
 				if (isUtility) {
 					const utilityTable = tableData.data[table];
 
-					if(utilityTable) {
+					if (utilityTable) {
 						rollUtility(utilityTable)
 							.then((rollResult) => {
 								if (debug) console.log('rollUtility-res', rollResult);
