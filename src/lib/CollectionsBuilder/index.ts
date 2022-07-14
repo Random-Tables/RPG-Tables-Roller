@@ -8,6 +8,11 @@ export const ErrorArray = writable([]);
 
 export const LoadedArray = writable([]);
 
+const Splitters = {
+	number: "Number#",
+	uppercase: "#UP",
+}
+
 let status = STATUS.UNSTARTED;
 let projects: projList;
 
@@ -151,6 +156,30 @@ async function buildIndexData(): Promise<void> {
 		})();
 	});
 }
+
+async function stringCaller(collectionCall, defaultVal) {
+	const tableAddress = collectionCall.split('/');
+
+	try {
+		if (debug) console.log('checkString--tableAddress', tableAddress);
+
+		return await getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true, defaultVal).then(
+			(response) => {
+				if (debug) console.log('checkString--getRoll-response', response);
+
+				if (response.utility === '') {
+					return defaultVal;
+				} else {
+					return response.utility;
+				}
+			}
+		);
+	} catch (e) {
+		return defaultVal;
+	}
+	
+}
+
 async function checkString(resultString: string): Promise<string> {
 	const externalCallFound = resultString.match(callRegex);
 
@@ -161,8 +190,14 @@ async function checkString(resultString: string): Promise<string> {
 			return new Promise((res, rej) => {
 				const callString = item.substring(2, item.length - 2).split(':'); // removes {{}} wrapper from call
 
-				// Checks type of callString; subcollection or integer range
-				if (callString[0].includes('Number#')) {
+				// Checks type of callString; subcollection, uppercase or integer range
+				if (callString[0].includes(Splitters.uppercase)) {
+					const collectionCall = callString[0].split("#")[0];
+					stringCaller(collectionCall, callString[1]).then((str) => {
+						res(str.charAt(0).toUpperCase() + str.slice(1));
+					});
+
+				}else if (callString[0].includes(Splitters.number)) {
 					const valueRange = callString[0].split('#')[1].split('-');
 
 					const lowValue = parseInt(valueRange[0]);
@@ -174,25 +209,7 @@ async function checkString(resultString: string): Promise<string> {
 					res(callString[1]);
 				} else {
 					const collectionCall = callString[0];
-					const tableAddress = collectionCall.split('/');
-
-					try {
-						if (debug) console.log('checkString--tableAddress', tableAddress);
-
-						getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true, callString[1]).then(
-							(response) => {
-								if (debug) console.log('checkString--getRoll-response', response);
-
-								if (response.utility === '') {
-									res(callString[1]);
-								} else {
-									res(response.utility);
-								}
-							}
-						);
-					} catch (e) {
-						res(callString[1]);
-					}
+					res(stringCaller(collectionCall, callString[1]));
 				}
 			});
 		}

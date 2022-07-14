@@ -3,6 +3,10 @@
 		"name": "Castle Name:",
 		"table": ["Wigville", "Tyrist", "Yeville"]
 	},
+	"lowercase": {
+		"name": "Castle Name:",
+		"table": ["gorvale", "lyrist", "borrot"]
+	},
 	"japan": {
 		"name": "Castle Name:",
 		"table": ["Himejo", "Yurijo", "Kannoji"]

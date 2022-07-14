@@ -4,7 +4,7 @@
 		"tableSections": [
 			{
 				"name": "Castle Name",
-				"table": ["{{example-names/place/medieval:A}} Castle", "{{example-names/place/medieval:A}} Redoubt"],
+				"table": ["{{example-names/place/lowercase#UP:d}} Keep", "{{example-names/place/medieval:A}} Castle", "{{example-names/place/medieval:A}} Redoubt"],
 				"type": "simple"
 			},
 			{
