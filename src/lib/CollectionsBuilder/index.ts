@@ -9,9 +9,10 @@ export const ErrorArray = writable([]);
 export const LoadedArray = writable([]);
 
 const Splitters = {
-	number: "Number#",
-	uppercase: "#UP",
-}
+	number: 'Number#',
+	dice: 'D#',
+	uppercase: '#UP'
+};
 
 let status = STATUS.UNSTARTED;
 let projects: projList;
@@ -177,7 +178,16 @@ async function stringCaller(collectionCall, defaultVal) {
 	} catch (e) {
 		return defaultVal;
 	}
-	
+}
+
+function diceRoller(diceStr) {
+	const [num, dice] = diceStr.split('d');
+	var total = 0;
+	for (var i = 0; i < num; i++) {
+		const random = Math.random() * dice;
+		total += Math.round(random + 1);
+	}
+	return total;
 }
 
 async function checkString(resultString: string): Promise<string> {
@@ -188,16 +198,36 @@ async function checkString(resultString: string): Promise<string> {
 	if (externalCallFound) {
 		function getStringRandom(item) {
 			return new Promise((res, rej) => {
-				const callString = item.substring(2, item.length - 2).split(':'); // removes {{}} wrapper from call
+				const removeCurlyBraces = item.substring(2, item.length - 2);
+				const callString = removeCurlyBraces.includes(':')
+					? removeCurlyBraces.split(':')
+					: [removeCurlyBraces, 0];
 
 				// Checks type of callString; subcollection, uppercase or integer range
 				if (callString[0].includes(Splitters.uppercase)) {
-					const collectionCall = callString[0].split("#")[0];
+					const collectionCall = callString[0].split('#')[0];
 					stringCaller(collectionCall, callString[1]).then((str) => {
 						res(str.charAt(0).toUpperCase() + str.slice(1));
 					});
-
-				}else if (callString[0].includes(Splitters.number)) {
+				} else if (callString[0].includes(Splitters.dice)) {
+					const data = callString[0];
+					try {
+						const string = data.replace('D#', '').replace('/s/g', '');
+						const valArr = string.split('+').map((s) => {
+							if (s.includes('d')) {
+								return diceRoller(s);
+							}
+							return parseInt(s, 10);
+						});
+						res(
+							valArr.reduce(function (a, b) {
+								return a + b;
+							}, 0)
+						);
+					} catch {
+						res(callString[1]);
+					}
+				} else if (callString[0].includes(Splitters.number)) {
 					const valueRange = callString[0].split('#')[1].split('-');
 
 					const lowValue = parseInt(valueRange[0]);
