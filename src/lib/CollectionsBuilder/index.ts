@@ -11,6 +11,7 @@ export const LoadedArray = writable([]);
 const Splitters = {
 	number: 'Number#',
 	dice: 'D#',
+	an: '#AN',
 	uppercase: '#UP'
 };
 
@@ -208,6 +209,13 @@ async function checkString(resultString: string): Promise<string> {
 					const collectionCall = callString[0].split('#')[0];
 					stringCaller(collectionCall, callString[1]).then((str) => {
 						res(str.charAt(0).toUpperCase() + str.slice(1));
+					});
+				} else if (callString[0].includes(Splitters.an)) {
+					// places a/an in front dependant on vowel/consonant
+					const collectionCall = callString[0].split('#')[0];
+					stringCaller(collectionCall, callString[1]).then((str) => {
+						const firstLet = str.charAt(0);
+						res(['a', 'e', 'i', 'o', 'u'].includes(firstLet) ? 'an ' + str : 'a ' + str);
 					});
 				} else if (callString[0].includes(Splitters.dice)) {
 					const data = callString[0];

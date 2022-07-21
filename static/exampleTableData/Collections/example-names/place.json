@@ -8,8 +8,10 @@
 		"table": ["gorvale", "lyrist", "borrot"]
 	},
 	"japan": {
-		"name": "Castle Name:",
-		"table": ["Himejo", "Yurijo", "Kannoji"]
+		"table": ["himejo", "yurijo", "kannoji"]
+	},
+	"feature": {
+		"table": ["keep", "dungeon", "aviary", "onager"]
 	},
 	"nest": {
 		"name": "Castle Name:",
