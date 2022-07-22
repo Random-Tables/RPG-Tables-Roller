@@ -1,37 +1,36 @@
-## Welcome to GitHub Pages
+# RPG Table Roller Application
 
-You can use the [editor on GitHub](https://github.com/Random-Tables/RPG-Tables-Roller/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+The RPG roller application is a desktop App designed as a tool for Pen & Paper RPG DM/ Creative Fantasy projects.
+Like the Loot tables of DnD, it randomly generates items, places, etc.. , the unique part of this project is the modular (composable) nature of the tables file format.
+In effect you can create tables replacing descriptive adjectives, such as color with a sub-table meaning each 'roll' can vary greatly adding a further layer depth of descriptiveness.
+Another advantage here is the hosting of tables in modular Open Source Repository allowing for a highly extendable Open collection of tables which people can easily extend.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+##### Desktop App ?
 
-### Markdown
+Currently just a desktop app as they tend to be longer lasting than web sites and it's easier to download and add custom tables to a desktop app.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+If I get a good response I will look at create a toolset to help people create random table generators for their websites.
 
-```markdown
-Syntax highlighted code block
+## Status
 
-# Header 1
-## Header 2
-### Header 3
+Currently the app is in it's first iteration whilst I get a feel for interest, if strong I will look into further extending it's functionality
 
-- Bulleted
-- List
+- Tables Roller 👍
+- Projects (Saved 'rolls') 👍
+- themes (working but lacks polish and options) 😐
 
-1. Numbered
-2. List
+- Windows App 👍
+- Linux App 👍
+- Mac App 😡, either need to bite the buller abd get one or find other build alternatives
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
+## Creating Your own Tables
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+The github organisation Random-Tables contains Reos for all the Tables
+https://github.com/orgs/Random-Tables/repositories
+First download one and using a Text editor have a read through the .json files to get a feel for how they are built, it should be fairly simple to replicate the design format as they are quite a simple, readable format.
 
-### Jekyll Themes
+Tables have a few options for how they generate data, se below
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Random-Tables/RPG-Tables-Roller/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Table data types 
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
