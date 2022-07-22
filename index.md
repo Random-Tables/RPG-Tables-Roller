@@ -34,3 +34,7 @@ Tables have a few options for how they generate data, se below
 
 ### Table data types 
 
+- String : 'Just type out your text'
+- Call : {{table-repo/table-group/table:Default}} - Each 'table-repo' is the id the individual collection has, below that is the grouping and within each group are the actual tables that get called.
+- Number: {{Number#20-40}} Returns a random number between 20 & 40
+- Dice: {{D#3d6 + 4 + 2d6}} 3d6 is 3 rolls of a 6 sided dice, you can space out multiple additions and all of them will be added together
