@@ -5,6 +5,11 @@ Like the Loot tables of DnD, it randomly generates items, places, etc.. , the un
 In effect you can create tables replacing descriptive adjectives, such as color with a sub-table meaning each 'roll' can vary greatly adding a further layer depth of descriptiveness.
 Another advantage here is the hosting of tables in modular Open Source Repository allowing for a highly extendable Open collection of tables which people can easily extend.
 
+#### Links - V1.0.0
+
+[Windows x64](/RPG-Tables-Roller/downloads/table-roller-app_1.0.0_x64_en-US.msi)
+[Linux Deb](/RPG-Tables-Roller/downloads/table-roller-app_1.1.0_amd64.deb)
+
 ##### Desktop App ?
 
 Currently just a desktop app as they tend to be longer lasting than web sites and it's easier to download and add custom tables to a desktop app.
@@ -23,6 +28,28 @@ Currently the app is in it's first iteration whilst I get a feel for interest, i
 - Linux App 👍
 - Mac App 😡, either need to bite the buller abd get one or find other build alternatives
 
+## Tables
+
+These are the main, detailed tables currently available
+
+- [Full Collection]((/RPG-Tables-Roller/downloads/tables/tables-selection@1.7z))
+
+- [Biome](/RPG-Tables-Roller/downloads/tables/biome@1.7z)
+    - Req: sdf
+- [Fantasy NPC](/RPG-Tables-Roller/downloads/tables/npc-fantasy@4.7z)
+    - Req: sdf
+
+### Utility - Tables
+
+Used by tables above
+
+- [Fantasy Names](/RPG-Tables-Roller/downloads/utilities/utility-names-fantasy@2.7z)
+- [Names Historic](/RPG-Tables-Roller/downloads/utilities/utility-names-historic@2.7z)
+- [Names](/RPG-Tables-Roller/downloads/utilities/utility-names@2.7z)
+- [Nature](/RPG-Tables-Roller/downloads/utilities/utility-nature@2.7z)
+- [NPC Fantasy Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc-fantasy@3.7z)
+- [NPC Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc@4.7z)
+- [Senses](/RPG-Tables-Roller/downloads/utilities/utility-senses@10.7z)
 
 ## Creating Your own Tables
 
