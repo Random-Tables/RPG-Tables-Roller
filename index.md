@@ -32,7 +32,7 @@ Currently the app is in it's first iteration whilst I get a feel for interest, i
 
 These are the main, detailed tables currently available
 
-- Full Collection, with required utility tables[7z](/RPG-Tables-Roller/downloads/tables/tables-selection.7z)[zip](/RPG-Tables-Roller/downloads/tables/tables-selection.zip)
+- Full Collection, with required utility tables  &nbsp;&nbsp;&nbsp;[7z](/RPG-Tables-Roller/downloads/tables/tables-selection.7z) &nbsp;&nbsp;&nbsp;[zip](/RPG-Tables-Roller/downloads/tables/tables-selection.zip)
 
 - [Biome](/RPG-Tables-Roller/downloads/tables/biome@1.7z)
   - Req: [Nature](/RPG-Tables-Roller/downloads/utilities/utility-nature@2.7z)
