@@ -32,12 +32,12 @@ Currently the app is in it's first iteration whilst I get a feel for interest, i
 
 These are the main, detailed tables currently available
 
-- [Full Collection]((/RPG-Tables-Roller/downloads/tables/tables-selection@1.7z))
+- [Full Collection, with required utility tables]((/RPG-Tables-Roller/downloads/tables/tables-selection@1.7z))
 
 - [Biome](/RPG-Tables-Roller/downloads/tables/biome@1.7z)
-    - Req: sdf
+    - Req: [Nature](/RPG-Tables-Roller/downloads/utilities/utility-nature@2.7z)
 - [Fantasy NPC](/RPG-Tables-Roller/downloads/tables/npc-fantasy@4.7z)
-    - Req: sdf
+    - Req: [Fantasy Names](/RPG-Tables-Roller/downloads/utilities/utility-names-fantasy@2.7z), [NPC Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc@4.7z), [NPC Fantasy Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc-fantasy@3.7z), [Senses](/RPG-Tables-Roller/downloads/utilities/utility-senses@10.7z)
 
 ### Utility - Tables
 
