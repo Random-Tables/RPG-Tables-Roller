@@ -8,6 +8,13 @@ export const ErrorArray = writable([]);
 
 export const LoadedArray = writable([]);
 
+const Splitters = {
+	number: 'Number#',
+	dice: 'D#',
+	an: '#AN',
+	uppercase: '#UP'
+};
+
 let status = STATUS.UNSTARTED;
 let projects: projList;
 
@@ -61,33 +68,41 @@ async function buildIndexData(): Promise<void> {
 					await asyncForEach(collections, async (element, index) => {
 						const tableIndexData: tableIndex = await FileSys.getCollectionIndex(element.path);
 
-						// Build data to check required collections
-						CollectionIds.push(tableIndexData.collectionID);
-						CollectionNames.push(tableIndexData.collectionName);
-						CollectionVersions.push(tableIndexData.version || 0);
-						requiredCheckArray.push(tableIndexData.required || []);
+						if (tableIndexData.collectionName !== 'error') {
+							// Build data to check required collections
+							CollectionIds.push(tableIndexData.collectionID);
+							CollectionNames.push(tableIndexData.collectionName);
+							CollectionVersions.push(tableIndexData.version || 0);
+							requiredCheckArray.push(tableIndexData.required || []);
 
-						// add to category
-						const category = tableIndexData.category.toLowerCase();
+							// add to category
+							const category = tableIndexData.category.toLowerCase();
 
-						if (category !== 'utility') {
-							generalIndex.categories.all[tableIndexData.collectionID] = tableIndexData;
+							if (category !== 'utility') {
+								generalIndex.categories.all[tableIndexData.collectionID] = tableIndexData;
+							}
+
+							if (!generalIndex.categories[category]) {
+								generalIndex.categories[category] = {};
+							}
+
+							generalIndex.categories[category][tableIndexData.collectionID] = tableIndexData;
+							generalIndex.categories[category][tableIndexData.collectionID].tablesData = {};
+
+							Object.keys(tableIndexData.tables).forEach(function (key: string) {
+								generalIndex.categories[category][tableIndexData.collectionID].tablesData[key] = {
+									dataReady: false,
+									data: null,
+									tablesList: tableIndexData.tables[key]
+								};
+							});
+						} else {
+							ErrorArray.update((val) => {
+								const arr = val.slice();
+								arr.push("Collection '" + element.name + "' is missing an index file");
+								return arr;
+							});
 						}
-
-						if (!generalIndex.categories[category]) {
-							generalIndex.categories[category] = {};
-						}
-
-						generalIndex.categories[category][tableIndexData.collectionID] = tableIndexData;
-						generalIndex.categories[category][tableIndexData.collectionID].tablesData = {};
-
-						Object.keys(tableIndexData.tables).forEach(function (key: string) {
-							generalIndex.categories[category][tableIndexData.collectionID].tablesData[key] = {
-								dataReady: false,
-								data: null,
-								tablesList: tableIndexData.tables[key]
-							};
-						});
 					});
 
 					// Check required items
@@ -143,6 +158,39 @@ async function buildIndexData(): Promise<void> {
 		})();
 	});
 }
+
+async function stringCaller(collectionCall, defaultVal) {
+	const tableAddress = collectionCall.split('/');
+
+	try {
+		if (debug) console.log('checkString--tableAddress', tableAddress);
+
+		return await getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true, defaultVal).then(
+			(response) => {
+				if (debug) console.log('checkString--getRoll-response', response);
+
+				if (response.utility === '') {
+					return defaultVal;
+				} else {
+					return response.utility;
+				}
+			}
+		);
+	} catch (e) {
+		return defaultVal;
+	}
+}
+
+function diceRoller(diceStr) {
+	const [num, dice] = diceStr.split('d');
+	var total = 0;
+	for (var i = 0; i < num; i++) {
+		const random = Math.random() * dice;
+		total += Math.round(random + 1);
+	}
+	return total;
+}
+
 async function checkString(resultString: string): Promise<string> {
 	const externalCallFound = resultString.match(callRegex);
 
@@ -151,10 +199,43 @@ async function checkString(resultString: string): Promise<string> {
 	if (externalCallFound) {
 		function getStringRandom(item) {
 			return new Promise((res, rej) => {
-				const callString = item.substring(2, item.length - 2).split(':'); // removes {{}} wrapper from call
+				const removeCurlyBraces = item.substring(2, item.length - 2);
+				const callString = removeCurlyBraces.includes(':')
+					? removeCurlyBraces.split(':')
+					: [removeCurlyBraces, 0];
 
-				// Checks type of callString; subcollection or integer range
-				if (callString[0].includes('Number#')) {
+				// Checks type of callString; subcollection, uppercase or integer range
+				if (callString[0].includes(Splitters.uppercase)) {
+					const collectionCall = callString[0].split('#')[0];
+					stringCaller(collectionCall, callString[1]).then((str) => {
+						res(str.charAt(0).toUpperCase() + str.slice(1));
+					});
+				} else if (callString[0].includes(Splitters.an)) {
+					// places a/an in front dependant on vowel/consonant
+					const collectionCall = callString[0].split('#')[0];
+					stringCaller(collectionCall, callString[1]).then((str) => {
+						const firstLet = str.charAt(0);
+						res(['a', 'e', 'i', 'o', 'u'].includes(firstLet) ? 'an ' + str : 'a ' + str);
+					});
+				} else if (callString[0].includes(Splitters.dice)) {
+					const data = callString[0];
+					try {
+						const string = data.replace('D#', '').replace('/s/g', '');
+						const valArr = string.split('+').map((s) => {
+							if (s.includes('d')) {
+								return diceRoller(s);
+							}
+							return parseInt(s, 10);
+						});
+						res(
+							valArr.reduce(function (a, b) {
+								return a + b;
+							}, 0)
+						);
+					} catch {
+						res(callString[1]);
+					}
+				} else if (callString[0].includes(Splitters.number)) {
 					const valueRange = callString[0].split('#')[1].split('-');
 
 					const lowValue = parseInt(valueRange[0]);
@@ -166,23 +247,7 @@ async function checkString(resultString: string): Promise<string> {
 					res(callString[1]);
 				} else {
 					const collectionCall = callString[0];
-					const tableAddress = collectionCall.split('/');
-
-					try {
-						if (debug) console.log('checkString--tableAddress', tableAddress);
-	
-						getRoll(tableAddress[0], tableAddress[1], tableAddress[2], true, callString[1]).then((response) => {
-							if (debug) console.log('checkString--getRoll-response', response);
-	
-							if (response.utility === '') {
-								res(callString[1]);
-							} else {
-								res(response.utility);
-							}
-						});
-					} catch(e) {
-						res(callString[1]);
-					}
+					res(stringCaller(collectionCall, callString[1]));
 				}
 			});
 		}
@@ -275,7 +340,7 @@ async function getRoll(
 	group: string,
 	table: string,
 	isUtility: boolean = false,
-	backupValue?: string 
+	backupValue?: string
 ): Promise<Choice> {
 	if (debug) console.log('getRoll--isUtility', isUtility);
 
@@ -307,7 +372,7 @@ async function getRoll(
 				if (isUtility) {
 					const utilityTable = tableData.data[table];
 
-					if(utilityTable) {
+					if (utilityTable) {
 						rollUtility(utilityTable)
 							.then((rollResult) => {
 								if (debug) console.log('rollUtility-res', rollResult);

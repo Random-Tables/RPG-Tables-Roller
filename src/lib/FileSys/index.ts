@@ -201,18 +201,20 @@ export default {
 		return new Promise(async function buildRoot(resolve, reject) {
 			let roorDir = false;
 			try {
-				roorDir = await fs.readDir(rootFolder, {
-					dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-				}).then(() => {
-					resolve();
-				}).catch((e) => {
-					fs.createDir(rootFolder, {
+				roorDir = await fs
+					.readDir(rootFolder, {
 						dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
-					}).then(() => {
+					})
+					.then(() => {
 						resolve();
+					})
+					.catch((e) => {
+						fs.createDir(rootFolder, {
+							dir: window.__TAURI__.fs.BaseDirectory[TauriDocumentKey]
+						}).then(() => {
+							resolve();
+						});
 					});
-
-				});
 			} catch (e) {
 				promiseError(e, reject);
 			}
@@ -243,7 +245,7 @@ export default {
 					},
 					function (error) {
 						console.error(error);
-						reject({ collectionID: null, collectionName: 'error' });
+						resolve({ collectionID: null, collectionName: 'error', path: '' });
 					}
 				)
 				.catch((e) => promiseError(e, reject));

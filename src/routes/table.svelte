@@ -93,9 +93,9 @@
 		{#if status === STATUS.BUILT && index}
 			<div class="collection-bar scroller">
 				{#each Object.keys(index) as collection}
+					<div class="title"><h2>{index[collection].collectionName}</h2></div>
 					{#each Object.keys(index[collection].tablesData) as choiceGroup}
 						<CollectionExpansion
-							title={index[collection].collectionName}
 							{choiceGroup}
 							choiceTables={index[collection].tablesData[choiceGroup].tablesList}
 							onClick={(groupkey, tableName) => onClickTable(collection, groupkey, tableName)}
@@ -121,6 +121,14 @@
 </div>
 
 <style>
+	h2 {
+		padding: 5px;
+		border: 1px solid grey;
+		margin: 0;
+		background: lightblue;
+		color: white;
+		font-weight: bold;
+	}
 	.content {
 		width: 100%;
 		margin: var(--column-margin-top) auto 0 auto;

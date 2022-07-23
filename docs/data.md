@@ -12,6 +12,8 @@ The main feature, this allows you to nest variation in strings, this must call a
 
 `{{RootLibrary/SubLibrary/Table:Default Value}}`
 
+`{{RootLibrary/SubLibrary/Table#UP:Default Value}}` - Uppercase call
+
 `{{Number#1-20:9}}`
 
 ### Data types

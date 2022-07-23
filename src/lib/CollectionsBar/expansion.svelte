@@ -1,17 +1,15 @@
 <script lang="ts">
-	export let title: string;
 	export let onClick: Function;
 	export let choiceTables: Array<string>;
 	export let choiceGroup: string;
 
-	let expanded = true;
+	let expanded = false;
 
 	function switchExpansion() {
 		expanded = !expanded;
 	}
 </script>
 
-<div class="title"><h2>{title}</h2></div>
 
 <div class="flextable-between">
 	<h4>{choiceGroup}</h4>
@@ -29,14 +27,6 @@
 {/if}
 
 <style>
-	h2 {
-		padding: 5px;
-		border: 1px solid grey;
-		margin: 0;
-		background: lightblue;
-		color: white;
-		font-weight: bold;
-	}
 	h4 {
 		margin: 0;
 		padding: 5px;

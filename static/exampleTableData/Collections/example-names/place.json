@@ -3,9 +3,15 @@
 		"name": "Castle Name:",
 		"table": ["Wigville", "Tyrist", "Yeville"]
 	},
-	"japan": {
+	"lowercase": {
 		"name": "Castle Name:",
-		"table": ["Himejo", "Yurijo", "Kannoji"]
+		"table": ["gorvale", "lyrist", "borrot"]
+	},
+	"japan": {
+		"table": ["himejo", "yurijo", "kannoji"]
+	},
+	"feature": {
+		"table": ["keep", "dungeon", "aviary", "onager"]
 	},
 	"nest": {
 		"name": "Castle Name:",
