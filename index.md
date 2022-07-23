@@ -8,7 +8,7 @@ Another advantage here is the hosting of tables in modular Open Source Repositor
 #### Links - V1.0.0
 
 [Windows x64](/RPG-Tables-Roller/downloads/table-roller-app_1.2.1_x64_en-US.msi)
-[Linux Deb](/RPG-Tables-Roller/downloads/table-roller-app_1.1.0_amd64.deb)
+[Linux Deb](/RPG-Tables-Roller/downloads/table-roller-app_1.2.1_amd64.deb)
 
 ##### Desktop App ?
 
