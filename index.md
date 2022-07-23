@@ -7,7 +7,7 @@ Another advantage here is the hosting of tables in modular Open Source Repositor
 
 #### Links - V1.0.0
 
-[Windows x64](/RPG-Tables-Roller/downloads/table-roller-app_1.0.0_x64_en-US.msi)
+[Windows x64](/RPG-Tables-Roller/downloads/table-roller-app_1.2.1_x64_en-US.msi)
 [Linux Deb](/RPG-Tables-Roller/downloads/table-roller-app_1.1.0_amd64.deb)
 
 ##### Desktop App ?
@@ -32,12 +32,14 @@ Currently the app is in it's first iteration whilst I get a feel for interest, i
 
 These are the main, detailed tables currently available
 
-- [Full Collection, with required utility tables]((/RPG-Tables-Roller/downloads/tables/tables-selection@1.7z))
+- Full Collection, with required utility tables[7z](/RPG-Tables-Roller/downloads/tables/tables-selection.7z)[zip](/RPG-Tables-Roller/downloads/tables/tables-selection.zip)
 
 - [Biome](/RPG-Tables-Roller/downloads/tables/biome@1.7z)
-    - Req: [Nature](/RPG-Tables-Roller/downloads/utilities/utility-nature@2.7z)
+  - Req: [Nature](/RPG-Tables-Roller/downloads/utilities/utility-nature@2.7z)
 - [Fantasy NPC](/RPG-Tables-Roller/downloads/tables/npc-fantasy@4.7z)
-    - Req: [Fantasy Names](/RPG-Tables-Roller/downloads/utilities/utility-names-fantasy@2.7z), [NPC Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc@4.7z), [NPC Fantasy Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc-fantasy@3.7z), [Senses](/RPG-Tables-Roller/downloads/utilities/utility-senses@10.7z)
+  - Req: [Fantasy Names](/RPG-Tables-Roller/downloads/utilities/utility-names-fantasy@2.7z), [NPC Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc@4.7z), [NPC Fantasy Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc-fantasy@3.7z), [Senses](/RPG-Tables-Roller/downloads/utilities/utility-senses@10.7z)
+- [Biome](/RPG-Tables-Roller/downloads/tables/factions@2.7z)
+  - Req: [Faction Utilities](/RPG-Tables-Roller/downloads/utilities/utility-factions@2.7z)
 
 ### Utility - Tables
 
@@ -50,6 +52,7 @@ Used by tables above
 - [NPC Fantasy Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc-fantasy@3.7z)
 - [NPC Utilities](/RPG-Tables-Roller/downloads/utilities/utility-npc@4.7z)
 - [Senses](/RPG-Tables-Roller/downloads/utilities/utility-senses@10.7z)
+- [Faction Utilities](/RPG-Tables-Roller/downloads/utilities/utility-factions@2.7z) - Req (Senses)
 
 ## Creating Your own Tables
 
@@ -59,7 +62,7 @@ First download one and using a Text editor have a read through the .json files t
 
 Tables have a few options for how they generate data, se below
 
-### Table data types 
+### Table data types
 
 - String : 'Just type out your text'
 - Call : {{table-repo/table-group/table:Default}} - Each 'table-repo' is the id the individual collection has, below that is the grouping and within each group are the actual tables that get called.
