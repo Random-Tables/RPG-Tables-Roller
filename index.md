@@ -5,7 +5,7 @@ Like the Loot tables of DnD, it randomly generates items, places, etc.. , the un
 In effect you can create tables replacing descriptive adjectives, such as color with a sub-table meaning each 'roll' can vary greatly adding a further layer depth of descriptiveness.
 Another advantage here is the hosting of tables in modular Open Source Repository allowing for a highly extendable Open collection of tables which people can easily extend.
 
-#### Links - V1.0.0
+#### Links - V1.2.0
 
 [Windows x64](/RPG-Tables-Roller/downloads/table-roller-app_1.2.1_x64_en-US.msi)
 [Linux Deb](/RPG-Tables-Roller/downloads/table-roller-app_1.1.0_amd64.deb)
