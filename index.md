@@ -5,12 +5,31 @@ Like the Loot tables of DnD, it randomly generates items, places, etc.. , the un
 In effect you can create tables replacing descriptive adjectives, such as color with a sub-table meaning each 'roll' can vary greatly adding a further layer depth of descriptiveness.
 Another advantage here is the hosting of tables in modular Open Source Repository allowing for a highly extendable Open collection of tables which people can easily extend.
 
-#### Links - V1.2.0
+## Links - V1.2.0
 
 [Windows x64](/RPG-Tables-Roller/downloads/table-roller-app_1.2.1_x64_en-US.msi)
 [Linux Deb](/RPG-Tables-Roller/downloads/table-roller-app_1.2.1_amd64.deb)
 
-##### Desktop App ?
+### Adding Tables
+
+Once you run the application once, you will find in your documents folder a new folder called `Fantasy-Tables` within that folder is another called `Collections`, inside this folder is where you place new tables, making sure that any folders added have an index.json file inside and not nested within another sub folder:
+
+✔️
+- Fantasy-Tables
+  - Collections
+    - fantasy-npc@2
+      - index.json
+
+❌
+
+- Fantasy-Tables
+  - Collections
+    - fantasy-npc@2
+      - new folder
+        - index.json
+
+
+### Desktop App ?
 
 Currently just a desktop app as they tend to be longer lasting than web sites and it's easier to download and add custom tables to a desktop app.
 
@@ -19,6 +38,7 @@ If I get a good response I will look at create a toolset to help people create r
 ## Status
 
 Currently the app is in it's first iteration whilst I get a feel for interest, if strong I will look into further extending it's functionality
+
 
 - Tables Roller 👍
 - Projects (Saved 'rolls') 👍
