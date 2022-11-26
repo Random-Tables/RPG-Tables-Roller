@@ -1,6 +1,33 @@
 # Table Roller Application
 
-This Application is a tool for generating random rich tables for creative games & projects. Common to DnD and such games often in the form of a loot table, this app's intent is the user focused end of a larger attempt to create an table format that allows nested calls, eg instead of `red sword` you could use `{{senses/colors/red:red}} Sword` this would then return values such as `deep crimson sword`, `blood red sword` etc, allowing for deep, interesting descriptions and a shared library of resources for building upon.
+##### What
+
+A theasaurus for random tables (think D&D, pathfinder, etc).
+
+This collection of tools standardises a way of collecting variations that you can pepper your random generations with a rich selection of variations.
+
+Take a loot table for example
+
+Instead of one of the below
+`A blue spear`, `A gold key`
+
+You can nest variability
+"A {{utility-senses/color-blue/dark}} spear", "A {{utility-senses/color-material/metal-copper}} key"
+
+will produce results such as, with variance each time you 'roll'
+`A sapphire spear`, `A greened bronze key`
+
+##### Why
+
+Random generators are awesome, but writing them with sufficient variability to be interesting can be hard, I hope this library can add a rich depth to the tables people create
+
+##### How
+
+Currently only the desktop app is ready, but I'm working on a web version so people can more easily add generators to their website.
+
+### Terminology
+
+{{Collection/TableGroup/Table}}
 
 ### Add Collections
 
